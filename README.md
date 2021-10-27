@@ -1,11 +1,11 @@
 # EddieShop
 ## Dự án trang Web bán hàng 
 Bắt đầu thi công: 27/10/2021  
-#1. Công nghệ sử dụng
+# 1. Công nghệ sử dụng
 * Front-end: Vuejs
 * Back-end: Asp.net Core Web API
-* Database: MySQL
-#2. Cách sử dụng 
+* Database: MySQL  
+* # 2. Cách sử dụng 
 * Clone project hoặc download file zip
 * Tải một công cụ sử dụng MySQL
 * Connect Server MySQL: 
