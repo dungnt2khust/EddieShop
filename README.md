@@ -5,7 +5,7 @@ Bắt đầu thi công: 27/10/2021
 * Front-end: Vuejs
 * Back-end: Asp.net Core Web API
 * Database: MySQL  
-* # 2. Cách sử dụng 
+# 2. Cách sử dụng 
 * Clone project hoặc download file zip
 * Tải một công cụ sử dụng MySQL
 * Connect Server MySQL: 
