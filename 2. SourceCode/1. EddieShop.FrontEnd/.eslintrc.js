@@ -24,6 +24,15 @@ module.exports = {
     // allow async-await
     'generator-star-spacing': 'off',
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
-  }
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+  },
+  overrides: [
+    {
+      "files": ["spec/**/*.js"],
+      "rules": {
+        "no-use-before-define": ["off"],
+        "max-lines-per-function": ["off"]
+      }
+    }
+  ]
 }

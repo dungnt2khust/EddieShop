@@ -1,15 +1,19 @@
-import Vue from 'vue'
+import Vue from 'vue' 
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+
+// Router
+import User from './route/User'
+import Admin from './route/Admin'
+import Authen from './route/Authen'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
-  ]
+    mode: "history",
+    routes: [
+        ...Authen,
+        ...User,
+        ...Admin,
+        {path: "/*", redirect: "/not-found"}
+    ]
 })

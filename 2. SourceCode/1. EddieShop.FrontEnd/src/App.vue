@@ -1,23 +1,28 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <Header/>
+    <Main/>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'App'
-}
-</script>
+// Components
+import Header from "@/layouts/header/Header.vue"
+import Main from "@/layouts/main/Main.vue"
 
+// Plugins
+
+export default {
+  name: "App",
+  components: {
+    Header,
+    Main
+  } 
+};
+</script>
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  @import url('./assets/css/main.css');
+</style>
+<style lang="scss">
+  @import "@/assets/scss/common/common.scss";
 </style>
