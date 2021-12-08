@@ -1,6 +1,6 @@
 <template lang="">
   <div class="login">
-    <ed-popup title="Đăng kí">
+    <ed-popup title="Đăng kí" :autoScroll="false">
       <template v-slot:header>
         <ed-logo txtColor="#fff" txtSize="24px" bgColor="#12007B" />
       </template>
@@ -23,15 +23,7 @@
             </ed-col>
           </ed-row>
           <ed-row class="m-t-20">
-            <ed-col class="fx-row">
-              <ed-button
-                class="m-r-10"
-                label="Đăng nhập"
-                txtPos="center"
-                @click.native="register"
-                :type="2"
-              >
-              </ed-button>
+            <ed-col class="fx-row"> 
               <ed-button
                 class="m-r-10"
                 label="Đăng kí"
@@ -43,6 +35,11 @@
               </ed-button>
             </ed-col>
           </ed-row>
+          <ed-row class="m-t-20">
+            <ed-col>
+              <router-link to="login">{{$t('i18nMenu.Authen.Login')}}</router-link>
+            </ed-col>
+          </ed-row>
         </div>
       </template>
     </ed-popup>
@@ -52,6 +49,7 @@
 // Library
 import { AccountType } from "@/models/enum/AccountType.js";
 import { ConnectionState } from "@/models/enum/ConnectionState.js";
+import AccountAPI from "@/api/components/Account/AccountAPI.js";
 
 export default {
   name: "Register",
@@ -77,11 +75,24 @@ export default {
     /**
      * Đăng nhập
      * CreatedBy: NTDUNG (22/11/2021)
+     * ModifiedBy: NTDUNG (06/12/2021)
      */
     register() {
       if (this.password != this.retypePassword)
         alert("Mật khẩu nhập lại không đúng. Vui lòng thử lại !!!");
       else {
+        AccountAPI.registerAccount({Name: this.accountName, PassWord: this.password})
+          .then(res => {
+            if (res.data.Success) {
+              alert('Đăng kí tài khoản thành công');
+              this.$router.push('/login');
+            } else {
+              alert('Tài khoản đã tồn tại. Vui lòng thử lại với tài khoản khác.');
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     },
     /**

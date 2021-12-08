@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using EddieShop.Core.Entities;
 using EddieShop.Core.Interfaces.Base;
 using Microsoft.Extensions.Configuration;
 using MySqlConnector;
@@ -37,10 +38,11 @@ namespace EddieShop.Infrastructure.Repository
         /// <summary>
         /// Lấy toàn bộ dữ liệu
         /// </summary>
+        /// <param name="sessionID"></param>
         /// <returns></returns>  
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
-        public IEnumerable<TEntity> GetAllEntities()
+        public IEnumerable<TEntity> GetAllEntities(Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -58,10 +60,11 @@ namespace EddieShop.Infrastructure.Repository
         /// Lấy thông tin theo Id
         /// </summary>
         /// <param name="entityId">Id đối tượng</param>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021) 
-        public virtual TEntity GetEntityById(Guid entityId)
+        public virtual TEntity GetEntityById(Guid entityId, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -78,9 +81,10 @@ namespace EddieShop.Infrastructure.Repository
         /// <summary>
         /// Lấy thông tin theo property
         /// </summary>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/11/2021)
-        public TEntity GetEntityByProperties(object columnsGet)
+        public TEntity GetEntityByProperties(object columnsGet, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             { 
@@ -107,9 +111,10 @@ namespace EddieShop.Infrastructure.Repository
         /// <summary>
         /// Lấy thông tin theo các cột có giá trị
         /// </summary>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/11/2021)
-        public List<TEntity> GetByValueColumns(TEntity columnsGet)
+        public List<TEntity> GetByValueColumns(TEntity columnsGet, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -139,9 +144,10 @@ namespace EddieShop.Infrastructure.Repository
         /// Lấy theo các id
         /// </summary>
         /// <param name="ids"></param>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG (24/11/2021)
-        public List<TEntity> GetByIds(List<Guid> ids)
+        public List<TEntity> GetByIds(List<Guid> ids, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -184,7 +190,7 @@ namespace EddieShop.Infrastructure.Repository
                     var propName = property.Name;
                     var propValue = property.GetValue(entity);
                     // Gán Id mới
-                    if (propName.Equals($"{_className}ID") && property.PropertyType == typeof(Guid))
+                    if (propName.Equals($"{_className}ID") && (property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?)))
                     {
                         propValue = Guid.NewGuid();
                     }
@@ -227,10 +233,11 @@ namespace EddieShop.Infrastructure.Repository
         /// </summary>
         /// <param name="entity">Thông tin cần sửa</param>
         /// <param name="entityId">Id </param>
+        /// <param name="sessionID"></param>
         /// <returns>số bản ghi được sửa</returns>
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
-        public int Update(TEntity entity, Guid entityId)
+        public int Update(TEntity entity, Guid entityId, Guid? sessionID)
         {
             MySqlConnection mySqlConnection = null;
             IDbTransaction transaction = null;
@@ -293,10 +300,11 @@ namespace EddieShop.Infrastructure.Repository
         /// Xóa theo Id
         /// </summary>
         /// <param name="entityId">Id </param>
+        /// <param name="sessionID"></param>
         /// <returns>Số bản ghi được xóa</returns>
         /// CreatedBy: NTDUNG(27/8/2021)
         /// ModifiedBy: NTDUNG(27/8/2021)
-        public int Delete(Guid entityId)
+        public int Delete(Guid entityId, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -316,10 +324,11 @@ namespace EddieShop.Infrastructure.Repository
         /// Xóa nhiều 
         /// </summary>
         /// <param name="entityIds"> mảng chứa các Id</param>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(19/8/2021)
         /// ModifiedBy: NTDUNG(19/8/2021)
-        public int DeleteMultiple(List<Guid> entityIds)
+        public int DeleteMultiple(List<Guid> entityIds, Guid? sessionID)
         {
             MySqlConnection mySqlConnection = null;
             IDbTransaction transaction = null;
@@ -372,8 +381,9 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="entity"></param>
         /// <param name="fieldName"></param>
         /// <param name="mode"></param>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
-        public bool CheckDuplicate(TEntity entity, string fieldName, string mode)
+        public bool CheckDuplicate(TEntity entity, string fieldName, string mode, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -405,9 +415,10 @@ namespace EddieShop.Infrastructure.Repository
         /// <summary>
         /// Lấy mã mới
         /// </summary>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(07/10/2021)
-        public string GetNewCode()
+        public string GetNewCode(Guid? sessionID)
         {
 
             using (_dbConnection = new MySqlConnection(_connectionString))
@@ -418,7 +429,7 @@ namespace EddieShop.Infrastructure.Repository
             }
         }
         #endregion
-        
+
         #region GetFilterPaging
         /// <summary>
         /// Lọc và phân trang
@@ -426,9 +437,10 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="filterString"></param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(27/10/2021)
-        public Object GetFilterPaging(string filterString, int pageNumber, int pageSize, List<String> totalFields)
+        public Object GetFilterPaging(string filterString, int pageNumber, int pageSize, List<String> totalFields, Guid? sessionID)
         {
             using(_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -440,6 +452,7 @@ namespace EddieShop.Infrastructure.Repository
                 dynamicParameters.Add("@filterString", filterString);
                 dynamicParameters.Add("@pageStart", (pageNumber - 1) * pageSize);
                 dynamicParameters.Add("@pageSize", pageSize);
+                dynamicParameters.Add("@sessionID", sessionID);
 
                 var proceduceFilterPaging = $"Proc_Get{_className}FilterPaging";
                 var proceduceFilter = $"Proc_Get{_className}Filter";
@@ -489,7 +502,7 @@ namespace EddieShop.Infrastructure.Repository
                             InPage = totalInPage,
                             All = totalAll
                         };
-                        AddProperty(totalDatas, field, totalData);
+                        AddProperty(totalDatas, field, totalData, sessionID);
                     } 
                 }
                 
@@ -505,7 +518,7 @@ namespace EddieShop.Infrastructure.Repository
                 return filterResult;
             }    
         }
-        public static void AddProperty(ExpandoObject expando, string propertyName, object propertyValue)
+        public static void AddProperty(ExpandoObject expando, string propertyName, object propertyValue, Guid? sessionID)
         {
             // ExpandoObject supports IDictionary so we can extend it like this
             var expandoDict = expando as IDictionary<string, object>;
@@ -523,9 +536,10 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="entity"></param>
         /// <param name="entityId"></param>
         /// <param name="columns"></param>
+        /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG (14/11/2021) 
-        public int UpdateColumns(TEntity entity, Guid entityId, List<string> columns)
+        public int UpdateColumns(TEntity entity, Guid entityId, List<string> columns, Guid? sessionID)
         {
             MySqlConnection mySqlConnection = null;
             IDbTransaction transaction = null;

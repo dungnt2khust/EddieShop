@@ -27,9 +27,18 @@ namespace EddieShop.Core.Interfaces.Repository
         /// <summary>
         /// Đăng kí tài khoản mới
         /// </summary>
-        /// <param name="account"></param>
+        /// <param name="user"></param>
         /// <returns></returns>
-        /// CreatedBy: NTDUNG (30/11/2021
-        Object registerAccount(Account account);
+        /// CreatedBy: NTDUNG (30/11/2021)
+        /// ModifiedBy: NTDUNG (06/12/2021)
+        Object registerAccount(User user);
+
+        /// <summary>
+        /// Chỉnh sửa thông tin tài khoản
+        /// </summary>
+        /// <param name="newInfo"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (08/12/2021)
+        int changeAccountInfo(object newInfo);
     }
 }

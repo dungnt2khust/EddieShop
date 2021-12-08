@@ -75,12 +75,51 @@ namespace EddieShop.Core.Services
         /// </summary>
         /// <param name="account"></param>
         /// <returns></returns>
-        /// CreatedBy: NTDUNG (30/11/2021
-        public ServiceResult registerAccount(Account account) {
+        /// CreatedBy: NTDUNG (30/11/2021)
+        public ServiceResult registerAccount(User user) {
             try
             {
                 var serviceResult = new ServiceResult();
-                serviceResult.Data = _accountRepository.registerAccount(account);
+                serviceResult.Data = _accountRepository.registerAccount(user);
+                if (serviceResult.Data == null)
+                {
+                    serviceResult.Msg = ResourceVN.Username_Exists;
+                    serviceResult.Success = false;
+                } else
+                {
+                    serviceResult.Msg = ResourceVN.Success_Register;
+                    serviceResult.Success = true;
+                }
+                return serviceResult;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
+
+        #region ChangeInfo
+        /// <summary>
+        /// Chỉnh sửa thông tin tài khoản 
+        /// </summary>
+        /// <param name="newInfo"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (08/12/2021)
+        public ServiceResult changeAccountInfo(object newInfo)
+        {
+            try
+            {
+                var serviceResult = new ServiceResult();
+                serviceResult.Data = _accountRepository.changeAccountInfo(newInfo);
+                if (serviceResult.Data == null)
+                {
+                    serviceResult.Success = false;
+                }
+                else
+                {
+                    serviceResult.Success = true;
+                }
                 return serviceResult;
             }
             catch (Exception)

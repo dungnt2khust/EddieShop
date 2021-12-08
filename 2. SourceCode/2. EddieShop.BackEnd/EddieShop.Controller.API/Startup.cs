@@ -106,11 +106,11 @@ namespace EddieShop.Controller.API
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<SignalRHub>("/hub/chat");
+                endpoints.MapHub<SignalRHub>("/hub/signalr");
             });
             app.UseSignalR(routes =>
             {
-                routes.MapHub<SignalRHub>("/hub/chat");
+                routes.MapHub<SignalRHub>("/hub/signalr");
             });
         }
     }

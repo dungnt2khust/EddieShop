@@ -1,19 +1,17 @@
 <template lang="">
   <div class="not-found">
-    <ed-popup title="Không tìm thấy">
+    <ed-popup :title="$t('i18nMenu.Authen.NotFound')">
       <template v-slot:header>
         <ed-logo txtColor="#fff" txtSize="24px" bgColor="#12007B" />
       </template>
       <template v-slot:content>
         <ed-row class="m-t-20">
-          <span
-            >Đường dẫn của bạn không có trong trang web hoặc đã xảy ra lỗi. Vui
-            lòng sử dụng những chức năng khác và liên hệ quản trị viên nếu cần
-            thiết. Xin cảm ơn !!!</span
-          >
+          <span>
+            {{ $t("i18nNotify.NotFound") }}
+          </span>
         </ed-row>
         <ed-row class="m-t-20">
-          <ed-button label="Trở lại trang web" @click.native="back" :type="2" />
+          <ed-button :label="$t('i18nNotify.BackToHome')" @click.native="back" :type="2" />
         </ed-row>
       </template>
     </ed-popup>

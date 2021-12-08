@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="logo" :style="customizeStyle(styleCustom)">
+    <div class="logo" :style="customizeStyle(styleCustom)" @click="handleClickLogo">
         <div class="logo__icon">
             <i class="fas fa-store"></i>
         </div>
@@ -9,6 +9,9 @@
     </div>
 </template>
 <script>
+// Plugins 
+import { AccountType } from "@/models/enum/AccountType.js"
+
 export default {
     name: "Logo",
     props: {
@@ -35,8 +38,28 @@ export default {
             }
         }
     },
-    computed: {
-        
+    methods: {
+        /**
+         * Xử lý khi click vào logo
+         * CreatedBy: NTDUNG (01/12/2021)
+         */
+        handleClickLogo() {
+            switch (this._getLocalStorage("AccountType")) {
+                case AccountType.ADMIN:
+                    if (this.$route.path != "/admin/dashboard")
+                        this.$router.push("/admin/dashboard");
+                    else
+                        this.$router.go(0);
+                    break;
+                case AccountType.USER:
+                case AccountType.GUEST:
+                    if (this.$route.path != "/home")
+                        this.$router.push("/home");
+                    else
+                        this.$router.go(0);
+                    break;
+            } 
+        }   
     }
 }
 </script>

@@ -7,6 +7,7 @@ $star-gold: #ffce3e;
 .gridproduct-wrapper {
     border-radius: 20px;
     padding: 20px;
+    font-family: Notosans-Semibold;
     // Chủ đề sản phẩm yêu thích
     &.gridproduct--hot {
         background-color: rgba(250, 85, 28, 0.7);
@@ -179,30 +180,31 @@ $star-gold: #ffce3e;
         position: absolute;
         right: 0;
         top: 0;
-        width: 40px;
-        height: 36px;
+        width: 50px;
         background-color: rgba(255, 216, 64, 1);
         text-align: center;
         &::after {
             content: "";
             position: absolute;
             left: 0;
-            bottom: -4px;
-            border-width: 0 20px 4px;
+            bottom: -8px;
+            border-width: 0 25px 8px;
             border-style: solid;
             border-color: transparent rgba(255, 216, 64, 1) transparent rgba(255, 216, 64, 1);
         }
         .product-item__discount-percent {
             font-weight: 600;
-            font-size: 12px;
+            font-size: 14px;
             color: $orange;
-            padding: 4px;
             display: block;
         }
         .product-item__discount-label {
-            font-size: 12px;
+            font-size: 10px;
             font-weight: 500;
-            color: $white;
+            color: #444;
+            position: relative;
+            white-space: nowrap;
+            top: -4px;
         }
     }
 }

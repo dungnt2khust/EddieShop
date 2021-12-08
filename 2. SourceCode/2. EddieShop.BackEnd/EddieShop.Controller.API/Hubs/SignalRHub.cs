@@ -55,19 +55,19 @@ namespace EddieShop.Controller.API.Hubs
 
             columns.Add("ConnectionID");
 
-            var _accountId = accountData.AccountId;
+            var _accountId = accountData.AccountID;
 
             switch(accountData.AccountType)
             {
                 case (int)AccountType.USER:
                     var newDataUser = new User();
                     newDataUser.ConnectionID = Context.ConnectionId;
-                    serviceResult = _userService.UpdateColumns(newDataUser, _accountId, columns);
+                    serviceResult = _userService.UpdateColumns(newDataUser, _accountId, columns, newDataUser.SessionID);
                     break;
                 case (int)AccountType.ADMIN:
                     var newDataAdmin = new Admin();
                     newDataAdmin.ConnectionID = Context.ConnectionId;
-                    serviceResult = _adminService.UpdateColumns(newDataAdmin, _accountId, columns);
+                    serviceResult = _adminService.UpdateColumns(newDataAdmin, _accountId, columns, newDataAdmin.SessionID);
                     break;
             }
 
@@ -92,7 +92,7 @@ namespace EddieShop.Controller.API.Hubs
             // Lấy connectionid của username truyền lên
             var userQuery = new User();
             userQuery.Name = userName;
-            IEnumerable<User> users = _userRepository.GetByValueColumns(userQuery);
+            IEnumerable<User> users = _userRepository.GetByValueColumns(userQuery, userSent.SessionID);
             if (users != null)
             {
                 IReadOnlyList<string> userConnectionIDs = users.Select(user => user.ConnectionID).ToList().AsReadOnly();
@@ -115,7 +115,7 @@ namespace EddieShop.Controller.API.Hubs
         public async Task SendMessageToUsers(User userSent, List<Guid> userReceiveIDs, string message)
         {
             IReadOnlyList<string> connectionIDs;
-            List<User> userReceives = _userRepository.GetByIds(userReceiveIDs);
+            List<User> userReceives = _userRepository.GetByIds(userReceiveIDs, userSent.SessionID);
             connectionIDs = userReceives.Select(user => user.ConnectionID).ToList().AsReadOnly();
             await Clients.Clients(connectionIDs).SendAsync("ReceiveMessage", userSent, message);
         }
@@ -133,7 +133,7 @@ namespace EddieShop.Controller.API.Hubs
         public async Task SendNotifyToUsers(User userSent, List<Guid> userReceiveIDs, object notify)
         {
             IReadOnlyList<string> connectionIDs;
-            List<User> userReceives = _userRepository.GetByIds(userReceiveIDs);
+            List<User> userReceives = _userRepository.GetByIds(userReceiveIDs, userSent.SessionID);
             connectionIDs = userReceives.Select(user => user.ConnectionID).ToList().AsReadOnly();
             await Clients.Clients(connectionIDs).SendAsync("ReceiveNotify", userSent, notify);
         }

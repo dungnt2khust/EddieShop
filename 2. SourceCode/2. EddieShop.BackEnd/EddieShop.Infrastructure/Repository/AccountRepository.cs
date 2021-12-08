@@ -131,13 +131,56 @@ namespace EddieShop.Infrastructure.Repository
         /// <summary>
         /// Đăng kí tài khoản mới
         /// </summary>
-        /// <param name="account"></param>
+        /// <param name="user"></param>
         /// <returns></returns>
-        /// CreatedBy: NTDUNG (30/11/2021
-        public object registerAccount(Account account)
+        /// CreatedBy: NTDUNG (30/11/2021)
+        /// ModifiedBy: NTDUNG (06/12/2021)
+        public object registerAccount(User user)
         {
-            return _userRepository.Insert((User)account);
+            using (_dbConnection = new MySqlConnection(_connectionString))
+            {
+                string userName = user.Name;
+
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("@Name", userName);
+                var sqlCommandUser = "SELECT * FROM User WHERE Name = @Name";
+                var sqlCommandAdmin = "SELECT * FROM Admin WHERE Name = @Name";
+                var userDuplicate = _dbConnection.QueryFirstOrDefault<User>(sqlCommandUser, param: dynamicParameters);
+                var adminDuplicate = _dbConnection.QueryFirstOrDefault<Admin>(sqlCommandAdmin, param: dynamicParameters);
+
+                if (userDuplicate != null || adminDuplicate != null)
+                {
+                    return null;
+                }
+                else
+                {
+                    user.SessionID = Guid.NewGuid();
+                    user.Code = _userRepository.GetNewCode(null);
+                    var rowEffect = _userRepository.Insert(user);
+                    if (rowEffect > 0)
+                        return user;
+                    else
+                        return null;
+                }
+            }
         }
+        #endregion
+
+        #region ChangeInfo
+        /// <summary>
+        /// Chỉnh sửa thông tin tài khoản 
+        /// </summary>
+        /// <param name="newInfo"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (08/12/2021)
+        public int changeAccountInfo(object newInfo)
+        {
+            using (_dbConnection = new MySqlConnection(_connectionString))
+            {
+                return 1;
+            }
+        }
+    
         #endregion
         #endregion
     }

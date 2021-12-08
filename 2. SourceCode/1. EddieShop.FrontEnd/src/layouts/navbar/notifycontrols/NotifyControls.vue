@@ -1,13 +1,14 @@
 <template lang="">
-  <div class="notify">
+  <div class="notify pos-relative">
     <ed-icon
-      class="pos-relative"
       :size="30"
-      iconCls="mi-notify-white "
+      iconCls="mi-notify-white"
+      :tooltip="$t('i18nNotify.Notify')"
     >
-      <ed-blur id="notify" v-model="showNotify"/>
+      <ed-blur id="notify" v-model="showNotify" :zIndex="1" />
       <ed-icon
         v-if="listNotify.length"
+        style="z-index: 0"
         class="pos-absolute"
         bgColor="red"
         top="0"
@@ -18,18 +19,20 @@
         txtColor="#fff"
         :size="18"
       >
-        {{listNotify.length}}
+        {{ listNotify.length }}
       </ed-icon>
-      <BaseContentFrame
-        v-if="showNotify"
-        class="blurable pos-absolute p-10"
-        tabindex="0"
-        width="300px"
-        height="400px"
-        top="100%"
-        right="0"
-        border="1px solid #ccc"
-      >
+    </ed-icon>
+    <BaseContentFrame
+      v-if="showNotify"
+      class="blurable pos-absolute p-10"
+      tabindex="0"
+      width="300px"
+      height="400px"
+      top="100%"
+      right="0"
+      border="1px solid #ccc"
+    >
+      <template v-slot:content>
         <div class="list-notify defaultScrollbar">
           <div
             v-for="(notify, index) in listNotify.slice().reverse()"
@@ -43,22 +46,21 @@
             Không có thông báo
           </div>
         </div>
-      </BaseContentFrame>
-    </ed-icon>
+      </template>
+    </BaseContentFrame>
   </div>
 </template>
 <script>
 export default {
-  name: "Notify",
+  name: "NotifyControls",
   data() {
     return {
       showNotify: false,
-      listNotify: [ 
-      ]
+      listNotify: []
     };
   },
   mounted() {
-    // KhởI tạo hàm nhận thông báo 
+    // KhởI tạo hàm nhận thông báo
     this.receiveNotify();
   },
   methods: {
@@ -68,12 +70,17 @@ export default {
      */
     receiveNotify() {
       this.$SignalR.on("ReceiveNotify", (user, notify) => {
-        this.listNotify.push({ User: user, Title: notify.Title, Content: notify.Content });
+        console.log(user, notify);
+        this.listNotify.push({
+          User: user,
+          Title: notify.Title,
+          Content: notify.Content
+        });
       });
     }
   }
 };
 </script>
 <style lang="scss">
-@import "@/assets/scss/layouts/notify/notify.scss";
+@import "@/assets/scss/layouts/navbar/notify/notify.scss";
 </style>
