@@ -314,7 +314,14 @@
     cursor: grab !important;
 }
 
-// Link
-.link {
-
+// Scale 
+@mixin setScale() {
+    @for $scale from 1 to 51 {
+        $residuals: $scale % 10;
+        $natural: ($scale - $residuals) / 10;
+        .#{'scale-' + $natural + '\\.' + $residuals} {
+            transform: scale($scale/10)
+        }
+    }
 }
+@include setScale;

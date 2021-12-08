@@ -98,6 +98,8 @@ export default {
         .catch(error => {
           // Kết nối thất bại
           console.log(error);
+          // Tắt loading
+          this.$loading.hideLoading();
         });
     },
     /**

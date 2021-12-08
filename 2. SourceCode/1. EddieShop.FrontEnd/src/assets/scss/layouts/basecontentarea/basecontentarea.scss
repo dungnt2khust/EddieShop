@@ -4,6 +4,7 @@
     display: flex;
     min-height: 0;
     .area-header {
+        display: flex;
         padding: 10px 20px;
         border-bottom: 1px solid #ccc;
         .area-header__title {

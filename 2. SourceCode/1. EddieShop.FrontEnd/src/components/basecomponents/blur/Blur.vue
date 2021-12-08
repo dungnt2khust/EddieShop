@@ -56,7 +56,6 @@ export default {
     inputListeners() {
       return Object.assign({}, this.listeners, {
         blur: e => {
-          console.log(e)
           this.timeoutBlur = setTimeout(() => {
             var relatedTarget = e.relatedTarget;
             if (

@@ -8,7 +8,9 @@
         <div class="area-header__title">
           {{ title }}
         </div>
-        <slot name="header"></slot>
+        <div class="flex-1">
+          <slot name="header"></slot>
+        </div>
       </div>
       <div class="area-content fx-wrap p-10">
         <slot name="content"></slot>
