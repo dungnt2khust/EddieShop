@@ -1,4 +1,5 @@
 ﻿using EddieShop.Core.Entities;
+using EddieShop.Core.Entities.Common;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -123,11 +124,12 @@ namespace EddieShop.Core.Interfaces.Base
         /// <param name="filterString"></param>
         /// <param name="pageNumber"></param>
         /// <param name="pageSize"></param>
-        /// <param name="totalFields"></param>
+        /// <param name="filterData"></param>
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(27/10/2021)
-        ServiceResult GetFilterPaging(string filterString, int pageNumber, int pageSize, List<string> totalFields, Guid? sessionID);
+        /// ModifiedBy: NTDUNG (10/12/2021)
+        ServiceResult GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID);
 
         /// <summary>
         /// Cập nhật theo tên cột

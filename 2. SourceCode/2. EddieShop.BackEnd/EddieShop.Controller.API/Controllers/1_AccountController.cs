@@ -131,37 +131,7 @@ namespace EddieShop.Controller.API.Controllers
                 return StatusCode(500, errorObj);
             }
         }
-        #endregion 
-
-        #region ChangeInfo
-        /// <summary>
-        /// Sửa thông tin tài khoản
-        /// </summary>
-        /// <returns></returns>
-        /// CreatedBy: NTDUNG (08/12/2021)
-        [HttpPost("change-info")]
-        public IActionResult ChangeAccountInfo(object newInfo)
-        {
-            try
-            {
-                var serviceResult = _accountService.changeAccountInfo(newInfo);
-                return StatusCode(200, serviceResult);
-            }
-            catch (Exception ex)
-            {
-                var errorObj = new ServiceResult();
-
-                errorObj.Success = false;
-                errorObj.Msg = ResourceVN.Exception_ErrorMsg;
-                errorObj.DevMsg = ex.Message;
-                errorObj.Code = "Eddie-001";
-                errorObj.MoreInfo = "https://openapi.Eddie.com.vn/errorcode/Eddie-001";
-                errorObj.TraceId = "ba9587fd-1a79-4ac5-a0ca-2c9f74dfd3fb";
-
-                return StatusCode(500, errorObj);
-            }
-        }
-        #endregion 
+        #endregion  
         #endregion
     }
 }

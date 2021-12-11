@@ -1,8 +1,23 @@
 @import 'library', 'app', 'var_icon';
+
 // Reset css
 * {
     padding: 0;
     margin: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    /* remove default margin */
+    padding: 0;
+    /* remove default padding */
+    width: 100%;
+    /* take full browser width */
+    height: 100%;
+    /* take full browser height*/
     border: 0;
     box-sizing: border-box;
 }

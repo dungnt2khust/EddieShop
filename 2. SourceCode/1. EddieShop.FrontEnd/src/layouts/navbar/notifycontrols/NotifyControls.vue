@@ -30,7 +30,7 @@
       height="400px"
       top="100%"
       right="0"
-      border="1px solid #ccc"
+      boxShadow="0px 0px 15px 10px rgba(162,228,76, 0.5)"
     >
       <template v-slot:content>
         <div class="list-notify defaultScrollbar">

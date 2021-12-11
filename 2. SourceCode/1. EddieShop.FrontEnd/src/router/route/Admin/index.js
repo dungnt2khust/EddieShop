@@ -1,7 +1,6 @@
 import {AccountType} from "@/models/enum/AccountType.js"
 
 var routes = [
-  { path: "/", redirect: "/admin/dashboard" },
   {
     path: "/admin/dashboard",
     name: "AdminDashboard",

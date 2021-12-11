@@ -165,23 +165,6 @@ namespace EddieShop.Infrastructure.Repository
             }
         }
         #endregion
-
-        #region ChangeInfo
-        /// <summary>
-        /// Chỉnh sửa thông tin tài khoản 
-        /// </summary>
-        /// <param name="newInfo"></param>
-        /// <returns></returns>
-        /// CreatedBy: NTDUNG (08/12/2021)
-        public int changeAccountInfo(object newInfo)
-        {
-            using (_dbConnection = new MySqlConnection(_connectionString))
-            {
-                return 1;
-            }
-        }
-    
-        #endregion
         #endregion
     }
 }

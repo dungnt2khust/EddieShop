@@ -98,36 +98,6 @@ namespace EddieShop.Core.Services
             }
         }
         #endregion
-
-        #region ChangeInfo
-        /// <summary>
-        /// Chỉnh sửa thông tin tài khoản 
-        /// </summary>
-        /// <param name="newInfo"></param>
-        /// <returns></returns>
-        /// CreatedBy: NTDUNG (08/12/2021)
-        public ServiceResult changeAccountInfo(object newInfo)
-        {
-            try
-            {
-                var serviceResult = new ServiceResult();
-                serviceResult.Data = _accountRepository.changeAccountInfo(newInfo);
-                if (serviceResult.Data == null)
-                {
-                    serviceResult.Success = false;
-                }
-                else
-                {
-                    serviceResult.Success = true;
-                }
-                return serviceResult;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-        #endregion
         #endregion
     }
 }

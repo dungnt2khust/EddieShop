@@ -1,4 +1,5 @@
 ﻿using EddieShop.Core.Entities;
+using EddieShop.Core.Entities.Common;
 using EddieShop.Core.Interfaces.Base;
 using System;
 using System.Collections.Generic;
@@ -397,12 +398,12 @@ namespace EddieShop.Core.Services
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(28/10/2021)
-        public ServiceResult GetFilterPaging(string filterString, int pageNumber, int pageSize, List<String> totalFields, Guid? sessionID)
+        public ServiceResult GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID)
         {
             try
             {
                 var serviceResult = new ServiceResult();
-                serviceResult.Data = _baseRepository.GetFilterPaging(filterString, pageNumber, pageSize, totalFields, sessionID);
+                serviceResult.Data = _baseRepository.GetFilterPaging(filterString, pageNumber, pageSize, filterData, sessionID);
                 return serviceResult;
             }
             catch (Exception)

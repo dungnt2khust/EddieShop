@@ -1,4 +1,5 @@
 ﻿using EddieShop.Core.Entities;
+using EddieShop.Core.Entities.Common;
 using EddieShop.Core.Interfaces.Base;
 using EddieShop.Core.Resources;
 using Microsoft.AspNetCore.Http;
@@ -114,7 +115,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/11/2021)
-        [HttpPost("get-by-properties")]
+        [HttpPost("GetByProperties")]
         public IActionResult GetByProperties(TEntity columnsGet, Guid? sessionID)
         {
             try
@@ -151,7 +152,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/11/2021)
-        [HttpPost("get-by-value-columns")]
+        [HttpPost("GetByValueColumns")]
         public IActionResult GetByValueColumns(TEntity columnsGet, Guid? sessionID)
         {
             try
@@ -187,7 +188,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG (24/11/2021)
-        [HttpPost("get-by-ids")]
+        [HttpPost("GetByIds")]
         public IActionResult GetByIds(List<Guid> ids, Guid? sessionID)
         {
             try
@@ -409,11 +410,11 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG(28/10/2021)
         [HttpPost("Paging")]
-        public IActionResult GetFilterPaging(string filterString, int pageNumber, int pageSize, [FromBody] List<String> totalFields, Guid? sessionID)
+        public IActionResult GetFilterPaging(string filterString, int pageNumber, int pageSize, [FromBody] FilterData filterData, Guid? sessionID)
         {
             try
             {
-                var serviceResult = _baseService.GetFilterPaging(filterString, pageNumber, pageSize, totalFields, sessionID);
+                var serviceResult = _baseService.GetFilterPaging(filterString, pageNumber, pageSize, filterData, sessionID);
                 //4.Trả về kết quả cho client
                 if (serviceResult.Data != null)
                 {

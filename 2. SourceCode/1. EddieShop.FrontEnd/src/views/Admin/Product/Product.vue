@@ -24,7 +24,11 @@
           <ed-list-grid
             class="m-t-20"
             :listData="listProduct"
-            :dblClick="(productID) => {productDetail(productID)}"
+            :dblClick="
+              productID => {
+                productDetail(productID);
+              }
+            "
             itemID="ProductID"
             query="ProductName"
           ></ed-list-grid>
@@ -60,14 +64,15 @@ export default {
      * CreatedBy: NTDUNG (08/12/2021)
      */
     productDetail(productID) {
-        this.$router.push(`/product-detail/${productID}`);
+      this.$router.push(`/product-detail/${productID}`);
     },
     /**
      * Lấy dữ liệu danh sách sản phẩm
      * CreatedBy: NTDUNG (08/12/2021)
      */
-    getProducts(filterString, pageNum, pageSize, totalFields = []) {
-      ProductAPI.getFilterPaging(filterString, pageNum, pageSize, totalFields)
+    getProducts(filterString, pageNum, pageSize, filterData) {
+      console.log(filterData);
+      ProductAPI.getFilterPaging(filterString, pageNum, pageSize, filterData)
         .then(res => {
           if (res.data.Success) {
             this.listProduct = res.data.Data.Records;
@@ -83,13 +88,35 @@ export default {
     getProductsFilterPaging(option) {
       switch (option) {
         case 0:
-          this.getProducts("", 1, 10);
+          var filterData = {
+            TotalFields: ["Price", "OldPrice"],
+            RangeDates: [
+              {
+                FieldName: "ModifiedDate",
+                FromDate: new Date(2021, 11, 22),
+                ToDate: new Date(2021, 11, 24)
+              }
+            ]
+          };
+          this.getProducts("", 1, 10, filterData);
           break;
         case 1:
+          var filterData = {
+            TotalFields: ["Price", "OldPrice"],
+          };
+          this.getProducts("", 1, 10, filterData);
           break;
         case 2:
+          var filterData = {
+            TotalFields: ["Price", "OldPrice"],
+          };
+          this.getProducts("", 1, 1, filterData);
           break;
         case 3:
+          var filterData = {
+            TotalFields: ["Price", "OldPrice"],
+          };
+          this.getProducts("", 1, 2, filterData);
           break;
       }
     }

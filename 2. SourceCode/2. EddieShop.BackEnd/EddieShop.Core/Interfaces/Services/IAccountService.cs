@@ -32,13 +32,5 @@ namespace EddieShop.Core.Interfaces.Services
         /// CreatedBy: NTDUNG (30/11/2021)
         /// ModifiedBy: NTDUNG (06/12/2021)
         ServiceResult registerAccount(User user);
-
-        /// <summary>
-        /// Chỉnh sửa thông tin tài khoản
-        /// </summary>
-        /// <param name="newInfo"></param>
-        /// <returns></returns>
-        /// CreatedBy: NTDUNG (08/12/2021)
-        ServiceResult changeAccountInfo(object newInfo);
     }
 }

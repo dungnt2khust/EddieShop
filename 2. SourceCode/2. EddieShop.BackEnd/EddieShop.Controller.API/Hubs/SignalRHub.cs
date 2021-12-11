@@ -29,17 +29,7 @@ namespace EddieShop.Controller.API.Hubs
         #endregion
 
         #region Method
-        #region OnConnectedAsync
-        /// <summary>
-        /// Client kết nối với server
-        /// </summary>
-        /// <returns></returns>
-        public override async Task OnConnectedAsync()
-        {
-            await base.OnConnectedAsync();
-        }
-        #endregion
-
+       
         #region UpdateConnectionID
         /// <summary>
         /// Cập nhật connectionID mới cho tài khoản

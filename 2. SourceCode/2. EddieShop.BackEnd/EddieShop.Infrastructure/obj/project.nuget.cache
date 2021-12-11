@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "2sm6ztKphH8DAGcqvEQN0jtE56gM3Upo9JLb/bEL+14+nFEvhq0lQfQwyj1oVTtpTpDJ7Ag4vBfXUodKt//6kQ==",
+  "dgSpecHash": "J6BFvnVJ2oEaOl0Xz98pUX6U44UZvTjmK0Qin/uDTO7fonYLMWB6qRYineK7+iYM/37XSpL2FJILsvovrgVMuQ==",
   "success": true,
   "projectFilePath": "F:\\HUST\\20211\\Tài liệu 20211\\7. Project III - Thầy Trần Hải Anh\\EddieShop\\2. SourceCode\\2. EddieShop.BackEnd\\EddieShop.Infrastructure\\EddieShop.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -10,7 +10,12 @@
     "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\mysqlconnector\\1.3.14\\mysqlconnector.1.3.14.nupkg.sha512",
     "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\npgsql\\5.0.10\\npgsql.5.0.10.nupkg.sha512",
     "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512",
-    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512"
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.text.json\\4.6.0\\system.text.json.4.6.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.threading.channels\\4.7.0\\system.threading.channels.4.7.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512"
   ],
   "logs": []
 }

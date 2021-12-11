@@ -90,13 +90,14 @@ export default class BaseAPI {
      * @param {String} filterString 
      * @param {Number} pageNumber 
      * @param {Number} pageSize 
-     * @param {Array} totalFields 
+     * @param {Object} filterData
      * @returns {Promise}
      * CreatedBy: NTDUNG(29/10/2021)
+	 * ModifiedBy: NTDUNG (10/12/2021)
      */
-    getFilterPaging(filterString, pageNumber, pageSize, totalFields = []) {
+    getFilterPaging(filterString, pageNumber, pageSize, filterData = {}) {
         let api = this.controller + `/Paging?filterString=${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}` + `&&${this.getSession()}`;
-        return BaseAPIConfig.post(api, totalFields);
+        return BaseAPIConfig.post(api, filterData);
     }
 
 	/**
@@ -112,6 +113,5 @@ export default class BaseAPI {
 			Entity: newInfo,
 			Columns: columns
 		});
-  
 	}
 }

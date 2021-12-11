@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "cUSYOe2iAkHTw5DlA8Be/2kMkaTTAGs3wDIAK2uq8kxzqDsr6TO22tkGQepNfMRQYLoLL6cl3MRAjfnYRXraNw==",
+  "dgSpecHash": "fvn3EjwJgsR1gRHFh204SYoJqY/dZfD0m+sWTc2QVk++QNYPZIEM2ype+3U9+Rh4S9ohi/f202GkEgdNPEVwxQ==",
   "success": true,
   "projectFilePath": "F:\\HUST\\20211\\Tài liệu 20211\\7. Project III - Thầy Trần Hải Anh\\EddieShop\\2. SourceCode\\2. EddieShop.BackEnd\\EddieShop.Core\\EddieShop.Core.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

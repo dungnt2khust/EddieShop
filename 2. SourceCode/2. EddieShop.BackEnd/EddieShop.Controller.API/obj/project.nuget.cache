@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "YZatbPRsPlVP+tuyRvVTwFk08MiaGMB1pytvPoBrQK9CcmAZkqP3ojA+7le4SlsvYUmdEAtTkBsPpkDgF/kIAA==",
+  "dgSpecHash": "ZUB1/33VqZYxBZjGxbYfAfQPQPCxpuh1EHaliOwDBoeSZory7k8bwtWzF4J4LcW50vp+mBh9Uuj6vk+5BelYHQ==",
   "success": true,
   "projectFilePath": "F:\\HUST\\20211\\Tài liệu 20211\\7. Project III - Thầy Trần Hải Anh\\EddieShop\\2. SourceCode\\2. EddieShop.BackEnd\\EddieShop.Controller.API\\EddieShop.Controller.API.csproj",
   "expectedPackageFiles": [
@@ -16,7 +16,13 @@
     "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\5.6.3\\swashbuckle.aspnetcore.swaggergen.5.6.3.nupkg.sha512",
     "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\5.6.3\\swashbuckle.aspnetcore.swaggerui.5.6.3.nupkg.sha512",
     "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.reflection.emit.lightweight\\4.7.0\\system.reflection.emit.lightweight.4.7.0.nupkg.sha512",
-    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512"
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.6.0\\system.runtime.compilerservices.unsafe.4.6.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.text.json\\4.6.0\\system.text.json.4.6.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\system.threading.channels\\4.7.0\\system.threading.channels.4.7.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.0.3\\microsoft.netcore.app.host.win-x64.3.0.3.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.0.1\\microsoft.aspnetcore.app.ref.3.0.1.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.0.0\\microsoft.windowsdesktop.app.ref.3.0.0.nupkg.sha512",
+    "C:\\Users\\NGUYEN TIEN DUNG\\.nuget\\packages\\microsoft.netcore.app.ref\\3.0.0\\microsoft.netcore.app.ref.3.0.0.nupkg.sha512"
   ],
   "logs": []
 }
