@@ -6,7 +6,7 @@
           v-for="(navbar, index) in $store.state.navBar"
           @click="navBarItemClick(index)"
           class="navbar__item"
-          :class="{ selected: $route.path == navbar.Path }"
+          :class="{ selected: $route.path.includes(navbar.Path)}"
           :to="navbar.Path"
           :key="index"
         >

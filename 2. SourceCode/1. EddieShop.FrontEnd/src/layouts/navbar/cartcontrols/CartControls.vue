@@ -1,7 +1,10 @@
 <template lang="">
-  <div class="cartcontrols pos-relative">
-    <ed-icon class="pos-relative" :size="30" :tooltip="$t('i18nCart.Cart')">
-      <ed-blur id="cart" v-model="showCart" :zIndex="1" />
+  <div class="cartcontrols pos-relative" @click="toggleCart" v-click-outside="hideCart">
+    <ed-icon
+      class="pos-relative"
+      :size="30"
+      :tooltip="$t('i18nCart.Cart')"
+    > 
       <span class="txt-b-0 txt-s-24 m-r-20"
         ><i class="fas fa-shopping-cart"></i
       ></span>
@@ -22,8 +25,9 @@
       </ed-icon>
     </ed-icon>
     <BaseContentFrame
-      v-if="showCart"
-      class="blurable pos-absolute p-10 fx-col aln-i-sbtn"
+      v-show="showCart"
+      class="pos-absolute p-10 fx-col aln-i-sbtn"
+      :stopPropagation="true"
       tabindex="0"
       width="300px"
       minHeight="200px"
@@ -33,7 +37,7 @@
     >
       <template v-slot:content>
         <div class="list-notify defaultScrollbar">
-          <div 
+          <div
             v-for="(cart, index) in listCart.slice().reverse()"
             class="list-notify__item m-r-10 p-l-10"
             :key="index"
@@ -63,6 +67,18 @@ export default {
       listCart: [],
       showCart: false
     };
+  },
+  methods: {
+    /**
+     * Bật tắt giỏ hàng
+     * CreatedBy: NTDUNG (13/12/2021)
+     */
+    toggleCart() {
+      this.showCart = !this.showCart;
+    },
+    hideCart() {
+      this.showCart = false;
+    }
   }
 };
 </script>

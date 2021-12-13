@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="main">
+  <div class="main"> 
     <router-view />
   </div>
 </template>
@@ -167,6 +167,9 @@ export default {
     $route: {
       deep: true,
       handler(to, from) {
+        // Tách router
+        var routeArr = to.path.split('/');
+        this.$store.dispatch('setRoute', routeArr);
         // Đặt title
         document.title = this.$t(to.meta.Title);
         // Kiểm tra session
@@ -182,6 +185,8 @@ export default {
           )
             this.checkSession(from);
           else this.updateNavbar();
+        } else {
+          this.checkPermission();
         }
       }
     }

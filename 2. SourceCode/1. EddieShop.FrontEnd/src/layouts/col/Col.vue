@@ -76,7 +76,7 @@ export default {
   @for $col from 1 to 13 {
     $flexBasis: percentage(1 / 12 * $col);
     .#{"col-" + $name + "-" + $col} {
-      flex-basis: $flexBasis !important;
+        flex-basis: $flexBasis !important;
     }
   }
 }

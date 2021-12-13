@@ -112,6 +112,10 @@ export default {
     boxShadow: {
       type: [String],
       default: null
+    },
+    stopPropagation: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -138,6 +142,13 @@ export default {
         "box-shadow": this.boxShadow
       }
     };
+  },
+  mounted() {
+    if (this.stopPropagation) {
+      this.$el.addEventListener('click', (e) => {
+        e.stopPropagation()
+      });
+    }
   }
 };
 </script>

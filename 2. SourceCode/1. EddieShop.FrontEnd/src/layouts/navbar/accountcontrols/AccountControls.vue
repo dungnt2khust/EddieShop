@@ -1,14 +1,13 @@
 <template lang="">
-  <div class="accountcontrols pos-relative">
-    <div class="accountcontrols__icon fx-center cur-p" v-on="tooltipListeners($t('i18nAccount.Account'))">
+  <div class="accountcontrols pos-relative" @click="showAccountControls = !showAccountControls" v-click-outside="hideAccount">
+    <div class="accountcontrols__icon fx-center cur-p" v-tooltip.bottom-center="$t('i18nAccount.Account')">
       <i class="fas fa-user-circle"></i>
-      <ed-blur id="accountcontrols" v-model="showAccountControls" />
     </div>
     <BaseContentFrame
-      v-if="showAccountControls"
-      :zIndex="10"
+      v-show="showAccountControls"
+      :stopPropagation="true"
       tabindex="0"
-      class="blurable pos-absolute p-10"
+      class="pos-absolute p-10"
       width="220px"
       top="100%"
       right="0"
@@ -126,6 +125,9 @@ export default {
               })
             break;
         }
+    },
+    hideAccount() {
+      this.showAccountControls = false;
     }
   }
 };

@@ -1,4 +1,5 @@
 <template lang="">
+ 
   <base-content-area
     class="jus-c-center"
     title="Quản lý sản phẩm"
@@ -10,7 +11,7 @@
         <ed-button width="fit-content" label="Thêm sản phẩm" type="1" />
       </div>
     </template>
-    <template v-slot:content>
+    <template v-slot:content> 
       <div class="fx-wrap w-full">
         <ed-row>
           <ed-select-box
@@ -64,7 +65,7 @@ export default {
      * CreatedBy: NTDUNG (08/12/2021)
      */
     productDetail(productID) {
-      this.$router.push(`/product-detail/${productID}`);
+      this.$router.push(`/admin/product/product-detail/${productID}`);
     },
     /**
      * Lấy dữ liệu danh sách sản phẩm

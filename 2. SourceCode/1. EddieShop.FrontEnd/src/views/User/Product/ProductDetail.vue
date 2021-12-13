@@ -6,9 +6,9 @@
     bgColor="#fff"
   >
     <template v-slot:content>
-      <div class="fx-wrap w-full">
+      <div class="fx-wrap gut-h-12">
         <ed-row>
-          <ed-col :colW="3">
+          <ed-col :colLg="4" :colXl="6" :colXs="12" :colSm="12">
             <div
               class="productdetail__img"
               :style="{
@@ -18,7 +18,7 @@
               }"
             ></div>
           </ed-col>
-          <ed-col :colW="9" class="fx-col jus-c-sbtn m-l-20">
+          <ed-col :colLg="8" :colXl="6" :colXs="12" :colSm="12" class="fx-col jus-c-sbtn">
             <div class="productdetail__price">
               {{ formatMoney(ProductDetailData.Price) }}
             </div>
@@ -115,4 +115,25 @@ export default {
 </script>
 <style lang="scss">
 @import "@/assets/scss/views/user/product/productdetail.scss";
+/* >= Tablet */
+@media (max-width: 740px) {
+  .productdetail {
+    padding: 0 10px !important;
+  }
+}
+/* PC medium resolution > */
+@media (min-width: 1113px) {
+}
+/* Tablet - PC low resolution */
+@media (min-width: 740px) and (max-width: 1023px) {
+  .productdetail {
+    padding: 0 50px !important;
+  }
+}
+/* > PC low resolution */
+@media (min-width: 1024px) and (max-width: 1239px) {
+}
+/* PC height resolution */
+@media (min-width: 1240px) {
+}
 </style>

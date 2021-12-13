@@ -29,6 +29,15 @@ var routes = [
     }
   },
   {
+    path: "/admin/product/product-detail/:ProductID",
+    name: "ProductDetail",
+    component: () => import("@/views/User/Product/ProductDetail.vue"),
+    meta: {
+      Title: "i18nMenu.ProductDetail",
+      permission: [AccountType.ADMIN]
+    }
+  },
+  {
     path: "/admin/push-notify",
     name: "AdminPushNotify",
     component: () => import("@/views/Admin/PushNotify/PushNotify.vue"),

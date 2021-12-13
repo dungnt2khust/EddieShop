@@ -161,7 +161,7 @@
                 padding-right: $gut + px !important;
             }
         }   
-        .#{'gut-h'+ $gut} {
+        .#{'gut-h-'+ $gut} {
             margin-left: -$gut + px !important;
             margin-right: -$gut + px !important;
             & > .row > .col {

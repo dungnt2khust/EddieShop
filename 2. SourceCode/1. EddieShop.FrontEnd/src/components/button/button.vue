@@ -1,7 +1,7 @@
 <template lang="">
   <div
     class="button"
-    v-on="tooltip ? tooltipListeners(tooltip) : {}"
+    :title="tooltip"
     @click="handleButtonClick"
     :class="[`button--${type}`, { 'button--disable': disable }]"
     :style="customizeStyle(style)"

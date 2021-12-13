@@ -1,9 +1,10 @@
 <template lang="">
+    <!-- v-on="tooltip ? tooltipListeners(tooltip) : {}" -->
   <div
     class="icon"
-    v-on="tooltip ? tooltipListeners(tooltip) : {}"
     :style="customizeStyle(styleCustom)"
     :class="`mi-${size}`"
+    v-tooltip.bottom-center="tooltip"
   >
     <div :class="iconCls ? iconCls : ''">
       <slot></slot>

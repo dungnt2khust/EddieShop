@@ -42,9 +42,6 @@ Vue.component('EdButton', Button);
 const Icon = () => import('@/components/icon/Icon.vue');
 Vue.component('EdIcon', Icon);
 
-const Blur = () => import('@/components/basecomponents/blur/Blur.vue');
-Vue.component('EdBlur', Blur);
-
 const INumber = () => import('@/components/number/Number.vue');
 Vue.component('EdNumber', INumber);
 

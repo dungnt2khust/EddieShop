@@ -7,6 +7,7 @@ import Tooltip from '@/common/Tooltip.js'
 import Notify from '@/common/Notify.js'
 import Loading from '@/common/Loading.js'
 import VTooltip from 'v-tooltip'
+import ClickOutside from 'vue-click-outside'
 // Account Auth
 import AccountAPI from '@/api/components/Account/AccountAPI.js'
 
@@ -19,6 +20,11 @@ Vue.prototype.$tooltip = Tooltip;
 Vue.prototype.$notify = Notify;
 Vue.prototype.$loading = Loading;
 Vue.prototype.$account = AccountAPI;
+Vue.prototype.$appInfo = {
+    appName: "EddieShop"
+}
+
+Vue.directive("ClickOutside", ClickOutside);
 
 
 // Chart

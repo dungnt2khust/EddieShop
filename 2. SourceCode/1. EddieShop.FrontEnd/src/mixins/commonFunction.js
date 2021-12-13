@@ -10,7 +10,7 @@ export default {
            var customizeStyleObject = {};
            for(var att in attributes) {
                if (attributes[att]) { 
-                   customizeStyleObject[att] = attributes[att] + "!important";
+                   customizeStyleObject[att] = attributes[att];
                }
            }
            return customizeStyleObject;

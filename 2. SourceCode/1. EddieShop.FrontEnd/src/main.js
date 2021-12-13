@@ -39,6 +39,7 @@ const app = new Vue({
   }
 });
 
+
 // Thêm content-loading khi chuyển routing
 router.beforeEach((to, from, next) => {
   app.contentLoading = true;

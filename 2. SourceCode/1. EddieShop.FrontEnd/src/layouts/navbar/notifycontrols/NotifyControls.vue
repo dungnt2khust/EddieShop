@@ -1,11 +1,10 @@
 <template lang="">
-  <div class="notify pos-relative">
+  <div class="notify pos-relative" @click="showNotify = !showNotify" v-click-outside="hideNotify">
     <ed-icon
       :size="30"
       iconCls="mi-notify-white"
       :tooltip="$t('i18nNotify.Notify')"
     >
-      <ed-blur id="notify" v-model="showNotify" :zIndex="1" />
       <ed-icon
         v-if="listNotify.length"
         style="z-index: 0"
@@ -23,8 +22,9 @@
       </ed-icon>
     </ed-icon>
     <BaseContentFrame
-      v-if="showNotify"
-      class="blurable pos-absolute p-10"
+      v-show="showNotify"
+      class="pos-absolute p-10"
+      :stopPropagation="true"
       tabindex="0"
       width="300px"
       height="400px"
@@ -77,6 +77,9 @@ export default {
           Content: notify.Content
         });
       });
+    },
+    hideNotify() {
+      this.showNotify = false;
     }
   }
 };

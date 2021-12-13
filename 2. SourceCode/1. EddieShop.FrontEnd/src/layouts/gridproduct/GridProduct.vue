@@ -27,6 +27,7 @@
     >
       <ed-col
         :colLg="3"
+        :colXl="4"
         :colXs="6"
         :colSm="12"
         v-for="(product, index) in products"
