@@ -1,6 +1,6 @@
 <template lang="">
     <div class="label">
-        <span>{{value}}</span> 
+        <span>{{value}} <span v-if="required" class="label--required">*</span></span> 
     </div>
 </template>
 <script>

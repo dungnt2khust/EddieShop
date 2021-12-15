@@ -4,7 +4,7 @@
     class="icon"
     :style="customizeStyle(styleCustom)"
     :class="`mi-${size}`"
-    v-tooltip.bottom-center="tooltip"
+    v-on="tooltipListeners(tooltip)"
   >
     <div :class="iconCls ? iconCls : ''">
       <slot></slot>

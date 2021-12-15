@@ -6,6 +6,9 @@
       :style="customizeStyle(styleCustom)"
       v-on="textareaListeners"
       :value="value"
+      :class="{'input--invalid': errorMessage != ''}"
+      :title="errorMessage"
+      @blur="handleOnBlur"
     />
   </div>
 </template>
@@ -20,6 +23,10 @@ export default {
     row: {
       type: Number,
       default: 5
+    },
+    required: {
+      type: Boolean,
+      default: false
     },
     resize: {
       type: String,
@@ -44,7 +51,8 @@ export default {
         "resize": this.resize,
         "width": this.width,
         "height": this.height
-      }
+      },
+      errorMessage: ''
     };
   },
   computed: {
@@ -56,8 +64,18 @@ export default {
       return Object.assign({}, this.listeners, {
         input: (event) => {
           this.$emit('input', event.target.value);
+        },
+        focus: () => {
+          this.errorMessage = "";
         }
       })
+    }
+  },
+  methods: {
+    handleOnBlur() {
+      if (this.required && !this.value) {
+        this.errorMessage = "This field is required";
+      }
     }
   }
 };

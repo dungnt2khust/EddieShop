@@ -1,0 +1,64 @@
+:root {
+    /* SIZE */
+    --radio-size: 18px;
+    --radio-icon-size: 10px;
+}
+
+/* RADIO */
+.radio {
+}
+    /* RADIO LIST */
+    .radio__list {
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    /* RADIO ITEM */
+    .radio__item {
+        margin-right: 20px !important;
+        outline: none;
+        display: flex;
+        align-items: center;
+    }
+        /* RADIO BORDER */
+        .radio__border {
+            width: 24px;
+            height: 24px; 
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .radio__item:focus .radio__border {
+            border: 1px solid #16b9b1;
+        }
+            /* RADIO MAIN */
+            .radio__main {
+                width: var(--radio-size);
+                height: var(--radio-size);
+                border: 1px solid #afafaf;    
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            } 
+            .radio__item--selected .radio__main {
+                border: 1px solid #2ca01c;
+            }
+                /* RADIO ICON */
+                .radio__icon {
+                    display: none;
+                    width: var(--radio-icon-size);
+                    height: var(--radio-icon-size);
+                    border-radius: 50%;
+                    background: #2ca01c;
+                }
+                .radio__item--selected .radio__icon {
+                    display: block;
+                }
+        /* RADIO VALUE */
+        .radio__value {
+            font-size: 13px;
+        }

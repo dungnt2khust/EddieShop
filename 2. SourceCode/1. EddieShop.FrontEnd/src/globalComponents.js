@@ -24,6 +24,9 @@ Vue.component('EdCol', Col);
 const Row = () => import('@/layouts/row/Row.vue');
 Vue.component('EdRow', Row);
 
+const Frame = () => import('@/layouts/frame/Frame.vue');
+Vue.component('EdFrame', Frame);
+
 const Popup = () => import('@/components/popup/Popup.vue');
 Vue.component('EdPopup', Popup);
 
@@ -32,6 +35,9 @@ Vue.component('EdLabel', Label);
 
 const Input = () => import('@/components/input/Input.vue');
 Vue.component('EdInput', Input);
+
+const InputFile = () => import('@/components/input/InputFile.vue');
+Vue.component('EdInputFile', InputFile);
 
 const Textarea = () => import('@/components/textarea/Textarea.vue');
 Vue.component('EdTextarea', Textarea);
@@ -53,3 +59,15 @@ Vue.component('EdListGrid', ListGrid);
 
 const CheckBox = () => import('@/components/checkbox/CheckBox.vue');
 Vue.component('EdCheckBox', CheckBox);
+
+const Radio = () => import('@/components/radio/Radio.vue');
+Vue.component('EdRadio', Radio);
+
+const Dialog = () => import('@/components/dialog/Dialog.vue');
+Vue.component('EdDialog', Dialog);
+
+const Datepicker = () => import('@/components/datepicker/Datepicker.vue');
+Vue.component('EdDatepicker', Datepicker);
+
+const Toast = () => import('@/components/toast/Toast.vue');
+Vue.component('EdToast', Toast);

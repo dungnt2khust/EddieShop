@@ -1,9 +1,9 @@
 <template lang="">
-  <base-content-area class="jus-c-center p-t-20" width="90%">
+  <BaseContentArea class="jus-c-center p-t-20" width="90%">
     <template v-slot:content>
-      <ed-row class="fx-wrap gut-12 gut-v-12" :rowW="12">
-        <ed-col :orderLg="1" :colLg="4" :colXl="6" :colXs="12" :colSm="12">
-          <base-content-frame
+      <EdFrame :gutH="12" :gutV="12" height="fit-content">
+        <EdCol :orderLg="1" :colLg="4" :colXl="6" :colXs="12" :colSm="12">
+          <BaseContentFrame
             title=" Nhịp tim 7 ngày gần đây"
             bgColor="#fff"
             height="100%"
@@ -19,11 +19,11 @@
                 :categories="heartBeatDate"
               />
             </template>
-          </base-content-frame>
-        </ed-col>
-        <ed-col :orderLg="3" :colLg="4" :colXl="6" :colXs="12" :colSm="12">
+          </BaseContentFrame>
+        </EdCol>
+        <EdCol :orderLg="3" :colLg="4" :colXl="6" :colXs="12" :colSm="12">
           <div class="fx-wrap gut-12 gut-v-12">
-            <ed-col :colLg="12" :colXl="12" :colXs="6" :colSm="12">
+            <EdCol :colLg="12" :colXl="12" :colXs="6" :colSm="12">
               <base-content-frame
                 title="Báo cáo của bạn"
                 bgColor="#fff"
@@ -51,8 +51,8 @@
                   <div class="txt-smb-1 txt-s-30 txt-align-center">77</div>
                 </template>
               </base-content-frame>
-            </ed-col>
-            <ed-col :colLg="12" :colXl="12" :colXs="6" :colSm="12">
+            </EdCol>
+            <EdCol :colLg="12" :colXl="12" :colXs="6" :colSm="12">
               <base-content-frame
                 title="Thông tin cho bạn"
                 bgColor="#fff"
@@ -76,10 +76,10 @@
                   />
                 </template>
               </base-content-frame>
-            </ed-col>
+            </EdCol>
           </div>
-        </ed-col>
-        <ed-col :orderLg="2" :colLg="4" :colXl="12" :colXs="12" :colSm="12">
+        </EdCol>
+        <EdCol :orderLg="2" :colLg="4" :colXl="12" :colXs="12" :colSm="12">
           <base-content-frame
             title="Cao nhất, thấp nhất trong ngày"
             bgColor="#fff"
@@ -99,10 +99,10 @@
               />
             </template>
           </base-content-frame>
-        </ed-col>
-      </ed-row>
+        </EdCol>
+      </EdFrame>
     </template>
-  </base-content-area>
+  </BaseContentArea>
 </template>
 <script>
 export default {

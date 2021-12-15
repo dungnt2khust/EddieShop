@@ -1,10 +1,10 @@
 <template lang="">
-  <div class="listgrid w-full">
+  <div class="listgrid w-full fx-col">
     <div class="listgrid__header">
       {{ title }}
       <slot name="header"></slot>
     </div>
-    <div class="listgrid__content">
+    <div class="listgrid__content flex-1 defaultScrollbar">
       <ul class="listgrid__list">
         <li
           v-for="(item, index) in listData"

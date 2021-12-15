@@ -3,6 +3,7 @@
     height: 100%; 
     display: flex;
     min-height: 0;
+    overflow-x: hidden;
     .area-header {
         display: flex;
         padding: 10px 20px;

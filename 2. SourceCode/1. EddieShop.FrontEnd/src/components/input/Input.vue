@@ -4,7 +4,11 @@
       :type="typeTemp"
       :value="value"
       :placeholder="placeholder"
+      :autofocus="autoFocus"
+      :title="errorMessage"
+      :class="{'input--invalid': errorMessage != ''}"
       v-on="inputListeners"
+      @blur="handleOnBlur"
     />
     <div
       v-if="type == 'password'"
@@ -36,6 +40,18 @@ export default {
     placeholder: {
       type: [Number, String],
       default: null
+    },
+    autoFocus: {
+      type: Boolean,
+      default: false
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    isNumber: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -44,7 +60,8 @@ export default {
         'width': this.width
       },
       showPassword: false,
-      typeTemp: this.type
+      typeTemp: this.type,
+      errorMessage: ""
     };
   },
   computed: {
@@ -54,7 +71,14 @@ export default {
     inputListeners() {
       return Object.assign({}, this.$listener, {
         input: event => {
-          this.$emit("input", event.target.value);
+          if (this.isNumber)
+            this.$emit("input", +event.target.value);
+          else 
+            this.$emit("input", event.target.value);
+        }, 
+        focus: () => {
+          // Clear lỗi
+          this.errorMessage = "";
         }
       });
     } 
@@ -67,6 +91,11 @@ export default {
     togglePassword() {
       this.showPassword = !this.showPassword;
       this.typeTemp = this.typeTemp == "text" ? "password" : "text";
+    },
+    handleOnBlur() {
+      if (this.required && !this.value) {
+        this.errorMessage = "This field is required";
+      }
     }
   },
   watch: {

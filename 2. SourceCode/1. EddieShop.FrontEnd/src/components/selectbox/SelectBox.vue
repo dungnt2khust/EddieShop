@@ -2,6 +2,7 @@
   <div class="selectbox pos-relative" :style="customizeStyle(styleWrapperCustom)">
     <div
       @click="toggleSelectBox"
+      v-click-outside="() => {selectBoxState = false}"
       class="selectbox__curr p-h-16 p-v-8"
       :style="{ width: width }"
     >

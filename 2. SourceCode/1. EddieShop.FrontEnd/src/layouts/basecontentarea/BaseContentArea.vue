@@ -4,11 +4,11 @@
     :style="customizeStyle(styleWrapperCustom)"
   >
     <div class="fx-col w-full h-full " :style="customizeStyle(styleCustom)">
-      <div class="route">
+      <!-- <div class="route">
         <span v-for="(item, index) in $store.Route" class="route__item" :key="index">
           {{item}} >
         </span>
-      </div>
+      </div> -->
       <div v-if="title" class="area-header">
         <div class="area-header__title">
           {{ title }}
@@ -17,7 +17,7 @@
           <slot name="header"></slot>
         </div>
       </div>
-      <div class="area-content p-10 w-full h-full box-sizing-b">
+      <div class="area-content p-10 h-full w-full box-sizing-b">
         <slot name="content"></slot>
       </div>
       <div class="area-footer">

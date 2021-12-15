@@ -57,32 +57,33 @@ namespace EddieShop.Core.Entities
         /// <summary>
         /// Hiển thị giảm giá
         /// </summary>
-        public int ShowDiscount{ get; set; }
+        public int? ShowDiscount{ get; set; }
 
         /// <summary>
         /// Giảm giá
         /// </summary>
-        public int Discount { get; set; }
+        public int? Discount { get; set; }
 
         /// <summary>
         /// Sản phẩm yêu thích
         /// </summary>
-        public int Hot { get; set; }
+        public int? Hot { get; set; }
 
         /// <summary>
         /// Đã bán
         /// </summary>
-        public int Sold { get; set; }
+        public int? Sold { get; set; }
 
         /// <summary>
         /// Đánh giá
         /// </summary>
-        public int Star { get; set; }
+        public int? Star { get; set; }
 
         /// <summary>
         /// Yêu thích
         /// </summary>
-        public int Like { get; set; }
+        [EddieNotMap]
+        public int? Like { get; set; }
         #endregion
     }
 }

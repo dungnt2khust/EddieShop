@@ -1,5 +1,7 @@
 .popup {
     .popup__header {
+        border-bottom: 1px solid #888;
+        padding-bottom: 10px;
         .popup__title {
             font-size: 24px;
             font-family: Notosans-Semibold;
@@ -10,6 +12,5 @@
     }
 
     .popup__footer {
-
     }
 }

@@ -1,5 +1,5 @@
 <template lang="">
-  <BaseContentFrame class="m-l-30" width="400px" height="100%" bgColor="#ccc">
+  <BaseContentFrame height="100%" bgColor="#fff">
     <template v-slot:content>
       <div class="list-user defaultScrollbar">
         <div

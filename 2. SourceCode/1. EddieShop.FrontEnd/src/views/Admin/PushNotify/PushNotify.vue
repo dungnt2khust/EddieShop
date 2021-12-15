@@ -1,24 +1,34 @@
 <template lang="">
-  <BaseContentArea class="fx-row aln-i-center jus-c-center">
+  <BaseContentArea>
     <template v-slot:content>
-      <BaseContentFrame bgColor="#ccc" width="300px">
-        <template v-slot:content>
-          <div class="fx-row wrap">
-            <ed-row class="fx-col">
-              <ed-label value="Tiêu đề" />
-              <ed-input v-model="title" />
-            </ed-row>
-            <ed-row class="fx-col">
-              <ed-label value="Nội dung" />
-              <ed-textarea v-model="content" :col="10" :row="5" />
-            </ed-row>
-            <ed-row>
-              <ed-button label="Send" @click.native="sendNotify" :type="1" />
-            </ed-row>
-          </div>
-        </template>
-      </BaseContentFrame>
-      <ListUser v-model="listUsers" />
+      <EdFrame :gutH="12" :gutV="12" height="100%" class="jus-c-center">
+        <EdCol :colLg="4" :colXl="4" :colXs="6" :colSm="12">
+          <BaseContentFrame bgColor="#fff">
+            <template v-slot:content>
+              <div class="fx-row wrap">
+                <ed-row class="fx-col">
+                  <ed-label value="Tiêu đề" />
+                  <ed-input v-model="title" />
+                </ed-row>
+                <ed-row class="fx-col">
+                  <ed-label value="Nội dung" />
+                  <ed-textarea v-model="content" :col="10" :row="5" />
+                </ed-row>
+                <ed-row>
+                  <ed-button
+                    label="Send"
+                    @click.native="sendNotify"
+                    :type="1"
+                  />
+                </ed-row>
+              </div>
+            </template>
+          </BaseContentFrame>
+        </EdCol>
+        <EdCol :colLg="4" :colXl="4" :colXs="6" :colSm="12" class="h-full">
+          <ListUser v-model="listUsers" />
+        </EdCol>
+      </EdFrame>
     </template>
   </BaseContentArea>
 </template>

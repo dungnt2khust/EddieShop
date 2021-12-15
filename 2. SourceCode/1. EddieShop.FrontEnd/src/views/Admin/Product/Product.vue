@@ -1,5 +1,4 @@
 <template lang="">
- 
   <base-content-area
     class="jus-c-center"
     title="Quản lý sản phẩm"
@@ -8,42 +7,53 @@
   >
     <template v-slot:header>
       <div class="fx-row jus-c-fend">
-        <ed-button width="fit-content" label="Thêm sản phẩm" type="1" />
+        <ed-button
+          :method="
+            () => {
+              showAddProduct = true;
+            }
+          "
+          width="fit-content"
+          label="Thêm sản phẩm"
+          type="1"
+        />
       </div>
     </template>
-    <template v-slot:content> 
-      <div class="fx-wrap w-full">
-        <ed-row>
-          <ed-select-box
-            :options="options"
-            v-model="currValue"
-            width="200px"
-            query="name"
-          />
-        </ed-row>
-        <ed-row>
-          <ed-list-grid
-            class="m-t-20"
-            :listData="listProduct"
-            :dblClick="
-              productID => {
-                productDetail(productID);
-              }
-            "
-            itemID="ProductID"
-            query="ProductName"
-          ></ed-list-grid>
-        </ed-row>
-      </div>
+    <template v-slot:content>
+      <EdFrame class="h-full fx-col">
+        <ed-select-box
+          :options="options"
+          v-model="currValue"
+          width="200px"
+          query="name"
+        />
+        <ed-list-grid
+          class="m-t-20 flex-1 defaultScrollbar"
+          :listData="listProduct"
+          :dblClick="
+            productID => {
+              productDetail(productID);
+            }
+          "
+          itemID="ProductID"
+          query="ProductName"
+        ></ed-list-grid>
+      </EdFrame>
+      <AddProduct @close="showAddProduct = false" v-if="showAddProduct" />
     </template>
   </base-content-area>
 </template>
 <script>
 // Plugins
 import ProductAPI from "@/api/components/Product/ProductAPI.js";
+// Components
+import AddProduct from "@/views/Admin/Product/AddProduct.vue";
 
 export default {
   name: "Product",
+  components: {
+    AddProduct
+  },
   data() {
     return {
       options: [
@@ -53,7 +63,8 @@ export default {
         { name: "Hàng 2hand" }
       ],
       currValue: 0,
-      listProduct: []
+      listProduct: [],
+      showAddProduct: false
     };
   },
   mounted() {
@@ -90,6 +101,12 @@ export default {
       switch (option) {
         case 0:
           var filterData = {
+            TotalFields: ["Price", "OldPrice"]
+          };
+          this.getProducts("", 1, -1, filterData);
+          break;
+        case 1:
+          var filterData = {
             TotalFields: ["Price", "OldPrice"],
             RangeDates: [
               {
@@ -101,21 +118,15 @@ export default {
           };
           this.getProducts("", 1, 10, filterData);
           break;
-        case 1:
-          var filterData = {
-            TotalFields: ["Price", "OldPrice"],
-          };
-          this.getProducts("", 1, 10, filterData);
-          break;
         case 2:
           var filterData = {
-            TotalFields: ["Price", "OldPrice"],
+            TotalFields: ["Price", "OldPrice"]
           };
           this.getProducts("", 1, 1, filterData);
           break;
         case 3:
           var filterData = {
-            TotalFields: ["Price", "OldPrice"],
+            TotalFields: ["Price", "OldPrice"]
           };
           this.getProducts("", 1, 2, filterData);
           break;

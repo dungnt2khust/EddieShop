@@ -7,8 +7,8 @@
   >
     <template v-slot:content>
       <div class="fx-wrap gut-h-12">
-        <ed-row>
-          <ed-col :colLg="4" :colXl="6" :colXs="12" :colSm="12">
+        <EdRow>
+          <EdCol :colLg="4" :colXl="6" :colXs="12" :colSm="12">
             <div
               class="productdetail__img"
               :style="{
@@ -17,8 +17,8 @@
                 }`
               }"
             ></div>
-          </ed-col>
-          <ed-col :colLg="8" :colXl="6" :colXs="12" :colSm="12" class="fx-col jus-c-sbtn">
+          </EdCol>
+          <EdCol :colLg="8" :colXl="6" :colXs="12" :colSm="12" class="fx-col jus-c-sbtn">
             <div class="productdetail__price">
               {{ formatMoney(ProductDetailData.Price) }}
             </div>
@@ -65,8 +65,8 @@
               :type="3"
               txtPos="center"
             />
-          </ed-col>
-        </ed-row>
+          </EdCol>
+        </EdRow>
       </div>
     </template>
   </base-content-area>
@@ -74,6 +74,7 @@
 <script>
 // Plugins
 import ProductAPI from "@/api/components/Product/ProductAPI.js";
+import {AccountType} from "@/models/enum/AccountType.js"
 
 export default {
   name: "ProductDetail",

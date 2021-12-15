@@ -11,8 +11,9 @@
         .selectbox__item {
             cursor: pointer;
             font-family: Notosans-Regular;
+            transition: all 0.3s ease;
             &:hover, &.selected {
-                background-color: #ccc;
+                background-color: #5DCE00;
                 color: #fff;
             }
         }

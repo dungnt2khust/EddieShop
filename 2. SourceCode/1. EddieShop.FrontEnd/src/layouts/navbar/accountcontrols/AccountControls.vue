@@ -1,6 +1,6 @@
 <template lang="">
   <div class="accountcontrols pos-relative" @click="showAccountControls = !showAccountControls" v-click-outside="hideAccount">
-    <div class="accountcontrols__icon fx-center cur-p" v-tooltip.bottom-center="$t('i18nAccount.Account')">
+    <div class="accountcontrols__icon fx-center cur-p" v-on="tooltipListeners($t('i18nAccount.Account'))">
       <i class="fas fa-user-circle"></i>
     </div>
     <BaseContentFrame
@@ -11,7 +11,7 @@
       width="220px"
       top="100%"
       right="0"
-      boxShadow="0px 0px 15px 10px rgba(162,228,76, 0.5)"
+      boxShadow="0px 4px 10px rgba(0,0,0, 0.2)"
     >
       <template v-slot:content>
         <ed-row class="fx-center">

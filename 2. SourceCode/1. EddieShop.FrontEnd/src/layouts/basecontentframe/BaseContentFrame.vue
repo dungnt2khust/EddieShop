@@ -1,6 +1,6 @@
 <template lang="">
   <div class="base-content-frame defaultScrollbar" :style="customizeStyle(styleCustom)">
-    <div v-if="title" class="area-header">
+    <div v-if="title" class="area-header fx-row">
         <div class="area-header__title">
           {{ title }}
         </div>

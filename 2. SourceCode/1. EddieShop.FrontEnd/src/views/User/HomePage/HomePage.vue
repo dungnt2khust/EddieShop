@@ -27,7 +27,7 @@ export default {
      * CreatedBy: NTDUNG (01/12/2021)
      */
     getGridProductHot() {
-      this.getListProduct()
+      this.getListProduct(1, 20)
         .then(res => {
           this.listProductHot = res;
         })

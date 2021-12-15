@@ -6,7 +6,7 @@ export default {
          * CreatedBy: NTDUNG (01/12/2021)
          */
         formatMoney(money) {
-            if (!Number.isNaN(+money))
+            if (money && !Number.isNaN(+money))
                 return money.toLocaleString('vi', {style : 'currency', currency : 'VND'});
             else 
                 return null;

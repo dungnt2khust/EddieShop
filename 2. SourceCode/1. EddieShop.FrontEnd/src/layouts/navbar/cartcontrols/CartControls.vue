@@ -33,7 +33,7 @@
       minHeight="200px"
       top="100%"
       right="0"
-      boxShadow="0px 0px 15px 10px rgba(162,228,76, 0.5)"
+      boxShadow="0px 4px 10px rgba(0,0,0, 0.2)"
     >
       <template v-slot:content>
         <div class="list-notify defaultScrollbar">
@@ -52,7 +52,7 @@
       </template>
       <template v-slot:footer>
         <ed-row class="fx-row jus-c-sbtn">
-          <ed-button :label="$t('i18nCart.Checkout')" :type="3" />
+          <ed-button :label="$t('i18nCart.Checkout')" :method="callDialog" :type="3" />
           <ed-button :label="$t('i18nCart.Cart')" :type="3" />
         </ed-row>
       </template>
@@ -78,6 +78,9 @@ export default {
     },
     hideCart() {
       this.showCart = false;
+    },
+    callDialog() {
+      this.$bus.$emit('showToastMessage', {duration: 1000, message: "Sai rồi bạn ơi"})
     }
   }
 };

@@ -24,7 +24,7 @@ const store = new Vuex.Store({
       } 
       payload.shift();
       this.Route = payload;
-    }
+    } 
   },
   actions: {
     setLang({commit}, payload) {

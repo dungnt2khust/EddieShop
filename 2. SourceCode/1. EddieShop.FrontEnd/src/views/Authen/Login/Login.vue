@@ -1,45 +1,52 @@
 <template lang="">
   <div class="login">
-    <ed-popup :title="$t('i18nMenu.Authen.Login')" :autoScroll="false">
-      <template v-slot:header>
-        <ed-logo txtColor="#fff" txtSize="24px" bgColor="#12007B" />
-      </template>
-      <template v-slot:content>
-        <div class="fx-wrap p-t-20 p-b-20 gut-8">
-          <ed-row class="fx-col">
-            <ed-label :value="$t('i18nAccount.AccountName')" />
-            <ed-input v-model="accountName" :value="accountName" />
-          </ed-row>
-          <ed-row class="fx-col">
-            <ed-label :value="$t('i18nAccount.PassWord')" />
-            <ed-input v-model="password" :value="password" type="password" />
-          </ed-row>
-          <ed-row class="m-t-20">
-            <ed-button
-              class="m-r-10"
-              :label="$t('i18nMenu.Authen.Login')"
-              txtPos="center"
-              @click.native="login"
-              :type="2"
-            >
-            </ed-button>
-            <ed-button
-              :label="$t('i18nMenu.Authen.Guest')"
-              @click.native="guestMode"
-              :type="0"
-            >
-            </ed-button>
-          </ed-row>
-          <ed-row class="m-t-20">
-            <ed-col>
-              <router-link to="register">
-                {{ $t("i18nMenu.Authen.Register") }}
-              </router-link>
-            </ed-col>
-          </ed-row>
-        </div>
-      </template>
-    </ed-popup>
+    <FullScreen class="fx-center">
+      <BaseContentFrame
+        :title="$t('i18nMenu.Authen.Login')"
+        :autoScroll="false"
+      >
+        <template v-slot:header>
+          <div class="fx-row jus-c-fend">
+            <EdLogo style="width: fit-content;" txtColor="#fff" txtSize="24px" bgColor="#12007B" />
+          </div>
+        </template>
+        <template v-slot:content>
+          <div class="fx-wrap p-t-20 p-b-20 gut-8">
+            <ed-row class="fx-col">
+              <ed-label :value="$t('i18nAccount.AccountName')" />
+              <ed-input v-model="accountName" :value="accountName" />
+            </ed-row>
+            <ed-row class="fx-col">
+              <ed-label :value="$t('i18nAccount.PassWord')" />
+              <ed-input v-model="password" :value="password" type="password" />
+            </ed-row>
+            <ed-row class="m-t-20">
+              <ed-button
+                class="m-r-10"
+                :label="$t('i18nMenu.Authen.Login')"
+                txtPos="center"
+                @click.native="login"
+                :type="2"
+              >
+              </ed-button>
+              <ed-button
+                :label="$t('i18nMenu.Authen.Guest')"
+                @click.native="guestMode"
+                :type="0"
+              >
+              </ed-button>
+            </ed-row>
+            <ed-row class="m-t-20">
+              <ed-col>
+                <router-link to="register">
+                  {{ $t("i18nMenu.Authen.Register") }}
+                </router-link>
+              </ed-col>
+            </ed-row>
+          </div>
+        </template>
+      </BaseContentFrame>
+    </FullScreen>
   </div>
 </template>
 <script>

@@ -30,8 +30,8 @@ var routes = [
   },
   {
     path: "/admin/product/product-detail/:ProductID",
-    name: "ProductDetail",
-    component: () => import("@/views/User/Product/ProductDetail.vue"),
+    name: "AdminProductDetail",
+    component: () => import("@/views/Admin/Product/ProductDetail.vue"),
     meta: {
       Title: "i18nMenu.ProductDetail",
       permission: [AccountType.ADMIN]
@@ -52,24 +52,6 @@ var routes = [
     component: () => import("@/views/Admin/Cart/Cart.vue"),
     meta: {
       Title: "i18nMenu.Admin.Cart",
-      permission: [AccountType.ADMIN]
-    }
-  },
-  {
-    path: "/admin/cart",
-    name: "AdminCart",
-    component: () => import("@/views/Admin/Cart/Cart.vue"),
-    meta: {
-      Title: "i18nMenu.Admin.Cart",
-      permission: [AccountType.ADMIN]
-    }
-  },
-  {
-    path: "/admin/product",
-    name: "AdminProduct",
-    component: () => import("@/views/Admin/Product/Product.vue"),
-    meta: {
-      Title: "i18nMenu.Admin.Product",
       permission: [AccountType.ADMIN]
     }
   } 

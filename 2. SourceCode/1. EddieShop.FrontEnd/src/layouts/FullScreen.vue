@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="full-screen fx-center" :style="customizeStyle(styleCustom)">
+    <div class="full-screen fx-row" :style="customizeStyle(styleCustom)">
         <slot></slot> 
     </div>
 </template>

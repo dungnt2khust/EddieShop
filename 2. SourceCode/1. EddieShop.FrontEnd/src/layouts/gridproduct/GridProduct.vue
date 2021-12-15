@@ -29,7 +29,7 @@
         :colLg="3"
         :colXl="4"
         :colXs="6"
-        :colSm="12"
+        :colSm="6"
         v-for="(product, index) in products"
         class="gridproduct__item"
         @click.native="handleProductDetail(product.ProductID)"
