@@ -6,6 +6,7 @@
         border: 1px solid #ccc;
     }
     .selectbox__list {
+        z-index: 1000;
         list-style: none;
         border: 1px solid #ccc;
         .selectbox__item {

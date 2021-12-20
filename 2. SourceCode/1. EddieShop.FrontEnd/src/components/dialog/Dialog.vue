@@ -1,16 +1,19 @@
 <template lang="">
-	<div v-show="dialogState" class="dialog" :class="'dialog--' + dialogType">
+	<div v-show="dialogState" class="dialog" :class="dialogType ? 'dialog--' + dialogType : ''">
 		<div class="dialog__main">
 			<div class="dialog__content">
-				<div class="dialog__icon"></div>
-				<div class="dialog__message">
-					{{ dialogMessage }}
+				<div class="dialog__icon">
+					<div v-if="dialogType == 'error'" class="mi-error"></div>
+					<div v-if="dialogType == 'warn' || dialogType == 'confirm'" class="mi-warn"></div>
+					<div v-if="dialogType == 'confirmCancel'" class="mi-question"></div>
+				</div>
+				<div class="dialog__message" v-html="dialogMessage">
 				</div>
 			</div>
 			<div class="dialog__separate"></div>
 			<div class="dialog__control">
 				<div
-					@click="confirm($enum.DIALOG_RESULT.Cancel)"
+					@click="confirm(dialogAnswer.CANCEL)"
 					class="dialog__cancel button"
 					:class="{'button--green': cancelGreen}"
 				>
@@ -18,14 +21,14 @@
 				</div>
 				<div class="dialog__answer">
 					<div
-						@click="confirm($enum.DIALOG_RESULT.No)"
+						@click="confirm(dialogAnswer.NO)"
 						class="dialog__no button"
 					>
 						Không
 					</div>
 					<div
-						@click="confirm($enum.DIALOG_RESULT.Yes)"
-						class="dialog__yes button button--green"
+						@click="confirm(dialogAnswer.YES)"
+						class="dialog__yes button m-l-10 button--green"
 					>
 						Có
 					</div>
@@ -35,13 +38,18 @@
 	</div>
 </template>
 <script>
+// Plugins 
+import {DialogAnswer} from "@/models/enum/DialogAnswer.js"
+
 	export default {
 		name: "Dialog",
 		data() {
 			return {
 				dialogType: null,
 				dialogState: false,
-                dialogMessage: ''
+                dialogMessage: '',
+				dialogFunctions: {},
+				dialogAnswer: DialogAnswer
 			};
 		},
 		computed: {
@@ -82,21 +90,35 @@
 
 				// Gán thông điệp
 				this.dialogMessage= data.message;
+
+				// Thực thi hàm
+				this.dialogFunctions = data.functions
 			});
 		},
 		methods: {
 			/**
-			 * Bắt sự kiện nhấn vào nút không hoặc có
-			 * @param {boolean} answer kết quả của dialog (false: không , true: có)
-			 * CreatedBy: NTDUNG (31/08/2021)
+			 * Trả lời khi nhấn phím
+			 * CreatedBy: NTDUNG (19/12/2021)
 			 */
-			confirm(answer) {
-				// Ẩn dialog 
-				this.dialogState = false;
-
-				// Gửi kết quả trả về 
-				this.$bus.$emit('dialogConfirm', answer);
-			}	
+			confirm(type) {
+				switch(type) {
+					case DialogAnswer.CANCEL:
+						this.dialogState = false;
+						break;
+					case DialogAnswer.YES:
+						if (this.dialogFunctions && this.dialogFunctions.YES) {
+							this.dialogFunctions.YES();
+						}
+						this.dialogState = false;
+						break;
+					case DialogAnswer.NO:
+						if (this.dialogFunctions && this.dialogFunctions.NO) {
+							this.dialogFunctions.NO();
+						}
+						this.dialogState = false;
+						break;
+				}
+			}
 		}
 	};
 </script>

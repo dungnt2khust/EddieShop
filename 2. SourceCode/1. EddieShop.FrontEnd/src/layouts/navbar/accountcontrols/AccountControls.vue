@@ -38,18 +38,18 @@
             v-if="_getLocalStorageNotParse('AccountID')"
             :label="$t('i18nMenu.Authen.Logout')"
             @click.native="logout"
-            :type="1"
+            :styleBtn="1"
           />
           <div v-else class="fx-row">
             <ed-button
               :label="$t('i18nMenu.Authen.Login')"
               @click.native="login"
-              :type="2"
+              :styleBtn="2"
             />
             <ed-button
               :label="$t('i18nMenu.Authen.Register')"
               @click.native="register"
-              :type="1"
+              :styleBtn="1"
             />
           </div>
         </ed-row>

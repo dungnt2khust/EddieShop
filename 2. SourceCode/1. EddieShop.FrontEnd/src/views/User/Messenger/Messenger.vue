@@ -38,7 +38,7 @@
     </div>
     <BaseContentFrame class="m-l-30" width="400px" height="100%" bgColor="#ccc">
       <template v-slot:content>
-        <div class="list-user defaultScrollbar">
+        <div class="list-user default-scrollbar">
           <div
             v-for="(user, index) in listUsers"
             class="list-user__item fx-row aln-i-center jus-c-sbtn m-10 p-l-10"

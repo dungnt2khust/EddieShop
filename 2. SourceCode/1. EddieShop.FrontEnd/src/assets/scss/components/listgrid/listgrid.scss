@@ -1,36 +1,75 @@
 .listgrid {
-    .listgrid__header {
+    .listgrid__header {}
 
-    }
     .listgrid__content {
-        .listgrid__list {
-            list-style: none;
-            .listgrid__item {
-                border-bottom: 1px solid #ccc;
-                border-right: 1px solid #ccc;
-                border-left: 1px solid #ccc;
-                &:first-child {
-                    border-top: 1px solid #ccc;
-                }
-                &:hover {
-                    background-color: #eee;
-                    .listgrid__function {
-                        display: flex;
-                    }
-                }
-                .listgrid__checkbox {
+        .listgrid__table {
+            table-layout: auto;
+            border-collapse: collapse;
+            border-spacing: 0;
+            position: relative;
 
-                }
-                .listgrid__function {
-                    display: none;
-                    div {
-                        cursor: pointer;
+            .listgrid__table-header {
+                top: 0;
+                background-color: #eee;
+                position: sticky;
+                height: 51px;
+                z-index: 100;
+                th {
+                    height: 50px;
+                    border: 1px solid #ccc;
+                    padding: 0 10px;
+                    font-family: Notosans-Semibold;
+                    white-space: nowrap;
+                    border-top: 0;
+                    &:first-child {
+                        border-left: 0;
+                    }
+                    &:last-child {
+                        border-right: 0;
                     }
                 }
+            }
+
+            .listgrid__table-body {
+                tr {
+                    td {
+                        height: 40px;
+                        padding: 0 10px;
+                        border: 1px solid #ccc;
+                        &:first-child {
+                            border-left: none;
+                        }
+                        &:last-child {
+                            border-right: none;
+                        }
+                    }
+                    &:first-child {
+                        td {
+                            border-top: none;
+                        }
+                    }
+                    &:last-child {
+                        td {
+                            border-bottom: none;
+                        }
+                    }
+                    // .listgrid__function {
+                    //     display: none;
+                    // }
+                    &:hover {
+                        cursor: pointer;
+                        // .listgrid__function {
+                        //     display: flex;
+                        // }
+                    }
+                }
+            }
+
+            .listgrid__table-footer {
             }
         }
     }
     .listgrid__footer {
-
+        border-top: 1px solid #ccc;
     }
 }

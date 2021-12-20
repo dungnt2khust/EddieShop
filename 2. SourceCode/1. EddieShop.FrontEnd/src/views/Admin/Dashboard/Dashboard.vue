@@ -34,17 +34,17 @@
               >
                 <template v-slot:content>
                   <ed-button
-                    class="m-t-20"
+                    class="m-t-20 w-full"
                     label="Nhịp tim cao nhất"
-                    :type="1"
+                    :styleBtn="1"
                     txtPos="center"
                     bgColor="#5DCE00"
                   />
                   <div class="txt-smb-1 txt-s-30 txt-align-center">90</div>
                   <ed-button
-                    class="m-t-20"
+                    class="m-t-20 w-full"
                     label="Nhịp tim thấp nhất"
-                    :type="2"
+                    :styleBtn="2"
                     txtPos="center"
                     bgColor="#A2E44C"
                   />
@@ -64,14 +64,15 @@
               >
                 <template v-slot:content>
                   <ed-button
+                    class="m-t-20 w-full"
                     label="Nhịp tim của bạn cao vãi lìn ra. Đi bệnh viện đê."
-                    :type="1"
+                    :styleBtn="1"
                     bgColor="#00E396"
                   />
                   <ed-button
-                    class="m-t-20"
+                    class="m-t-20 w-full"
                     label="Nhịp tim của bạn cao vãi lìn ra. Đi bệnh viện đê."
-                    :type="1"
+                    :styleBtn="1"
                     bgColor="#008FFB"
                   />
                 </template>

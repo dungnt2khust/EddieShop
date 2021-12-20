@@ -1,14 +1,9 @@
 <template lang="">
   <div
-    class="base-content-area defaultScrollbar"
+    class="base-content-area default-scrollbar"
     :style="customizeStyle(styleWrapperCustom)"
   >
     <div class="fx-col w-full h-full " :style="customizeStyle(styleCustom)">
-      <!-- <div class="route">
-        <span v-for="(item, index) in $store.Route" class="route__item" :key="index">
-          {{item}} >
-        </span>
-      </div> -->
       <div v-if="title" class="area-header">
         <div class="area-header__title">
           {{ title }}

@@ -2,15 +2,14 @@
   <div
     :class="[
       'col',
-      'col-w-' + colW,
-      'col-sm-' + colSm,
-      'col-xs-' + colXs,
-      'col-xl-' + colXl,
-      'col-lg-' + colLg,
-      'order-lg-' + orderLg,
-      'order-xs-' + orderXs,
-      'order-sm-' + orderSm,
-      'order-xl-' + orderXl
+      colLg || colW ? 'col-lg-' + (colLg || colW) : '',
+      colXl || colW ? 'col-xl-' + (colXl || colW) : '',
+      colXs || colW ? 'col-xs-' + (colXs || colW) : '',
+      colSm || colW ? 'col-sm-' + (colSm || colW) : '',
+      orderLg ? 'order-lg-' + orderLg : '',
+      orderXl ? 'order-xl-' + orderXl : '',
+      orderXs ? 'order-xs-' + orderXs : '',
+      orderSm ? 'order-sm-' + orderSm : '',
     ]"
     :style="customizeStyle(styleCustom)"
   >
@@ -43,19 +42,19 @@ export default {
     },
     orderXs: {
       type: [Number, String],
-      default: 20
+      default: 0
     },
     orderXl: {
       type: [Number, String],
-      default: 20
+      default: 0
     },
     orderSm: {
       type: [Number, String],
-      default: 20
+      default: 0
     },
     orderLg: {
       type: [Number, String],
-      default: 20
+      default: 0
     },
     height: {
       type: [Number, String],

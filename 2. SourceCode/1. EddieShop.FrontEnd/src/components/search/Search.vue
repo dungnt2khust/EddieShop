@@ -5,7 +5,7 @@
 </template>
 <script>
 export default {
-   name: "BaseSearch" 
+   name: "Search" 
 }
 </script>
 <style lang="scss">

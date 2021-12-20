@@ -57,6 +57,9 @@ Vue.component('EdSelectBox', SelectBox);
 const ListGrid = () => import('@/components/listgrid/ListGrid.vue');
 Vue.component('EdListGrid', ListGrid);
 
+const ListGridTable = () => import('@/components/listgrid/ListGridTable.vue');
+Vue.component('EdListGridTable', ListGridTable);
+
 const CheckBox = () => import('@/components/checkbox/CheckBox.vue');
 Vue.component('EdCheckBox', CheckBox);
 
@@ -71,3 +74,9 @@ Vue.component('EdDatepicker', Datepicker);
 
 const Toast = () => import('@/components/toast/Toast.vue');
 Vue.component('EdToast', Toast);
+
+const Search = () => import('@/components/search/Search.vue');
+Vue.component('EdSearch', Search);
+
+const Pagination = () => import('@/components/pagination/Pagination.vue');
+Vue.component('EdPagination', Pagination);

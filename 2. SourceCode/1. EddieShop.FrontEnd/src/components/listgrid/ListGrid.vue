@@ -1,10 +1,17 @@
 <template lang="">
-  <div class="listgrid w-full fx-col">
-    <div class="listgrid__header">
-      {{ title }}
-      <slot name="header"></slot>
+  <div class="listgrid w-full fx-col" :class="{'default-scrollbar': autoScroll}">
+    <div class="listgrid__header fx-row m-b-10">
+      <EdSearch v-show="listChecked.length < 1" class="w-full"/>
+      <div v-show="listChecked.length >= 1" class="listgrid__controls fx-row">
+        <div>Đã chọn {{listChecked.length}}</div>
+        <div>Bỏ chọn</div>
+        <div>Xoá</div>
+      </div>
+      <div class="flex-1 fx-row jus-c-fend">
+        <slot name="header"></slot>
+      </div>
     </div>
-    <div class="listgrid__content flex-1 defaultScrollbar">
+    <div class="listgrid__content flex-1 default-scrollbar">
       <ul class="listgrid__list">
         <li
           v-for="(item, index) in listData"
@@ -15,14 +22,22 @@
         >
           <div class="fx-row">
             <div class="listgrid__checkbox p-r-10">
-              <ed-check-box v-model="listCheck[index]" />
+              <ed-check-box v-model="value[index]" />
             </div>
             {{ query ? item[query] : item }}
           </div>
 
           <div class="listgrid__function fx-row">
-            <div class="mi-edit scale-1.3 m-h-16" v-on="tooltipListeners('Chỉnh sửa')"></div>
-            <div class="mi-delete scale-1.3" v-on="tooltipListeners('Xoá')"></div>
+            <div
+              @click="editItem(item)"
+              class="mi-edit scale-1.3 m-h-16"
+              v-on="tooltipListeners('Chỉnh sửa')"
+            ></div>
+            <div
+              @click="deleteItem(item)"
+              class="mi-delete scale-1.3"
+              v-on="tooltipListeners('Xoá')"
+            ></div>
           </div>
         </li>
       </ul>
@@ -37,10 +52,6 @@
 export default {
   name: "ListGrid",
   props: {
-    title: {
-      type: [Number, String],
-      default: null
-    },
     listData: {
       type: Array,
       default: () => []
@@ -56,12 +67,34 @@ export default {
     itemID: {
       type: String,
       default: null
+    },
+    editItem: {
+      type: Function,
+      default: () => {}
+    },
+    deleteItem: {
+      type: Function,
+      default: () => {}
+    },
+    autoScroll: {
+      type: Boolean,
+      default: true
+    },
+    value: {
+      type: Array,
+      default: () => []
     }
   },
-  data() {
-    return {
-      listCheck: []
-    };
+  computed: {
+    /**
+     * Những bản ghi đang check
+     * CreatedBy: NTDUNG (20/12/2021)
+     */
+    listChecked() {
+      return this.value.filter(check => {
+        return check;
+      });
+    }
   }
 };
 </script>

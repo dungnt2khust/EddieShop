@@ -28,10 +28,10 @@
                 class="m-r-10"
                 label="Đăng kí"
                 @click.native="register"
-                :type="1"
+                :styleBtn="1"
               >
               </ed-button>
-              <ed-button label="Khách" @click.native="guestMode" :type="0">
+              <ed-button label="Khách" @click.native="guestMode" :styleBtn="0">
               </ed-button>
             </ed-col>
           </ed-row>

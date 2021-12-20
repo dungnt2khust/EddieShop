@@ -3,7 +3,8 @@
     class="frame fx-wrap flex-1"
     :class="[
       gutH ? 'gut-h-' + gutH : '',
-      gutV ? 'gut-v-' + gutV : ''
+      gutV ? 'gut-v-' + gutV : '',
+      {'default-scrollbar': autoScroll}
     ]"
     :style="customizeStyle(styleCustom)"
   >

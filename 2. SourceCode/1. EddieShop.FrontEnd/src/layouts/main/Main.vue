@@ -135,7 +135,7 @@ export default {
       var permissions = this.$route.meta.permission;
 
       if (permissions.length !== 0) {
-        this.$loading.showLoading("Đường dẫn này không dành cho tất cả người dùng. Vui lòng đợi chúng tôi xác thực.");
+        this.$loading.showLoading();
 
         // Kiểm tra loại tài khoản có nằm trong danh sách cấp quyền không
         var foundIdx = permissions.findIndex(permission => permission == accountType);

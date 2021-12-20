@@ -1,10 +1,11 @@
 <template lang="">
-  <div
+  <button
     class="button"
+    :type="type"
     :title="tooltip"
     @click="handleButtonClick"
-    :class="[`button--${type}`, { 'button--disable': disable }]"
-    :style="customizeStyle(style)"
+    :class="[`button--${styleBtn}`, { 'button--disable': disable }]"
+    :style="customizeStyle(styleCustom)"
   >
     <div class="button__label">
       {{ label }}
@@ -12,7 +13,7 @@
     <div class="button__sublabel">
       {{ subLabel }}
     </div>
-  </div>
+  </button>
 </template>
 <script>
 // Library
@@ -34,7 +35,7 @@ export default {
       type: String,
       default: null
     },
-    type: {
+    styleBtn: {
       type: [Number, String],
       default: 0
     },
@@ -57,11 +58,15 @@ export default {
     bgColor: {
       type: String,
       default: null
+    },
+    type: {
+      type: String,
+      default: 'button'
     }
   },
   data() {
     return {
-      style: {
+      styleCustom: {
         width: this.width,
         "text-align": this.txtPos,
         "background-color": this.bgColor

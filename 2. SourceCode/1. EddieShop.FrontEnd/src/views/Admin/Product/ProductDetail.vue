@@ -6,11 +6,12 @@
     bgColor="#fff"
   >
     <template v-slot:content>
-      <div class="fx-wrap gut-h-12">
+      <EdFrame :gutH="12">
         <EdRow>
           <EdCol :colLg="4" :colXl="6" :colXs="12" :colSm="12">
             <div
-              class="productdetail__img"
+              @click="showImg(0)"
+              class="productdetail__img cur-p"
               :style="{
                 'background-image': `url(data:image/gif;base64,${
                   ProductDetailData.Image ? ProductDetailData.Image : ''
@@ -39,7 +40,15 @@
             </div>
           </EdCol>
         </EdRow>
-      </div>
+        <vue-easy-lightbox
+          :visible="visible"
+          :imgs="[{src: `data:image/gif;base64,${ProductDetailData.Image ? ProductDetailData.Image : ''}`, title: ProductDetailData.Title}]"
+          :index="0"
+          @hide="handleHide"
+          @on-prev-click="prevImage"
+          @on-next-click="nextImage"
+        ></vue-easy-lightbox>
+      </EdFrame>
     </template>
   </base-content-area>
 </template>
@@ -54,7 +63,8 @@ export default {
     return {
       ProductID: null,
       ProductDetailData: {},
-      ProductNum: 1
+      ProductNum: 1,
+      visible: false
     };
   },
   mounted() {
@@ -81,6 +91,18 @@ export default {
      */
     handleOrder() {
       alert("Order");
+    },
+    handleHide() {
+      this.visible = false;
+    },
+    showImg() {
+      this.visible = true;
+    }, 
+    prevImage(oldIdx, newIdx) {
+      alert(oldIdx + ':' + newIdx);
+    },
+    nextImage(oldIdx, newIdx) {
+      alert(oldIdx + ':' + newIdx);
     }
   }
 };

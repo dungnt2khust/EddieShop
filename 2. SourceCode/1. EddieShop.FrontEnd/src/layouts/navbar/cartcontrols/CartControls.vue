@@ -36,7 +36,7 @@
       boxShadow="0px 4px 10px rgba(0,0,0, 0.2)"
     >
       <template v-slot:content>
-        <div class="list-notify defaultScrollbar">
+        <div class="list-notify default-scrollbar">
           <div
             v-for="(cart, index) in listCart.slice().reverse()"
             class="list-notify__item m-r-10 p-l-10"
@@ -52,8 +52,8 @@
       </template>
       <template v-slot:footer>
         <ed-row class="fx-row jus-c-sbtn">
-          <ed-button :label="$t('i18nCart.Checkout')" :method="callDialog" :type="3" />
-          <ed-button :label="$t('i18nCart.Cart')" :type="3" />
+          <ed-button :label="$t('i18nCart.Checkout')" :method="callDialog" :styleBtn="3" />
+          <ed-button :label="$t('i18nCart.Cart')" :styleBtn="3" />
         </ed-row>
       </template>
     </BaseContentFrame>

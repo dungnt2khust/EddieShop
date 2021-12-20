@@ -70,6 +70,7 @@
     @for $size from 1 to 10 {
         .#{'flex-' + $size} {
             flex: $size;
+            min-height: 0;
         }
     }
 }
@@ -230,7 +231,7 @@
     } 
 }
 @include setIcon;
-
+/* #region Padding */
 // Padding
 @mixin setPaddingAll {
     @for $size from 2 to 101 {
@@ -260,8 +261,9 @@
     } 
 }
 @include setPaddingAll;
+/* #endregion Padding */
 
-// Margin 
+/* #region Margin */
 @mixin setMarginAll {
     @for $size from 2 to 101 {
         .#{'m-' +  $size} {
@@ -290,8 +292,9 @@
     } 
 }
 @include setMarginAll;
+/* #endregion Margin */
 
-// Width & Height
+/* #region Width & height */
 @mixin setSize {
     .w-full {
         width: 100%;
@@ -316,6 +319,7 @@
     }
 }
 @include setSize;
+/* #endregion Width & Height */
 
 // Display 
 .d-block {
@@ -379,7 +383,7 @@
     }  
 } 
 // Default ScrollBar
-@include SetScrollBar(defaultScrollbar, 10, #f1f1f1, #888, #555, 4, 4, 0);
+@include SetScrollBar(default-scrollbar, 10, #f1f1f1, #888, #555, 4, 4, 0);
 // Hidden scrollbar
 .hidden-scrollbar {
     overflow: auto;

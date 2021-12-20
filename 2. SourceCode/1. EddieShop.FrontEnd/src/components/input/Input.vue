@@ -1,29 +1,39 @@
 <template lang="">
   <div class="input" :style="customizeStyle(styleCustom)">
-    <input
-      :type="typeTemp"
-      :value="value"
-      :placeholder="placeholder"
-      :autofocus="autoFocus"
-      :title="errorMessage"
-      :class="{'input--invalid': errorMessage != ''}"
-      v-on="inputListeners"
-      @blur="handleOnBlur"
-    />
+    <div class="w-full">
+      <input
+        :type="typeTemp"
+        :value="value"
+        :placeholder="placeholder"
+        :autofocus="autoFocus"
+        :title="errMsg"
+        :name="name"
+        :class="{ 'input--invalid': errMsg != '' }"
+        v-on="inputListeners"
+        v-validate="rules"
+      />
+      <div
+        v-if="type == 'password'"
+        @click="togglePassword"
+        class="show-password"
+      >
+        <div v-if="showPassword" class="mi-hidden"></div>
+        <div v-else class="mi-show"></div>
+      </div>
+    </div>
     <div
-      v-if="type == 'password'"
-      @click="togglePassword"
-      class="show-password"
+      v-if="errMsg"
+      class="input__error txt-reg-1 txt-s-12 m-t-10"
+      style="color: red;"
     >
-      <div v-if="showPassword" class="mi-hidden"></div>
-      <div v-else class="mi-show"></div>
+      {{ errMsg }}
     </div>
   </div>
 </template>
 <script>
-
 export default {
   name: "Input",
+  inject: ["parentValidator"],
   props: {
     width: {
       type: String,
@@ -45,24 +55,30 @@ export default {
       type: Boolean,
       default: false
     },
-    required: {
-      type: Boolean,
-      default: false
+    rules: {
+      type: [Object, String],
+      default: () => {}
     },
-    isNumber: {
-      type: Boolean,
-      default: false
+    name: {
+      type: [Number, String],
+      default: ""
+    },
+    errMsg: {
+      type: [Number, String],
+      default: ""
     }
   },
   data() {
     return {
       styleCustom: {
-        'width': this.width
+        width: this.width
       },
       showPassword: false,
-      typeTemp: this.type,
-      errorMessage: ""
+      typeTemp: this.type
     };
+  },
+  created() {
+    this.$validator = this.parentValidator;
   },
   computed: {
     /**
@@ -71,17 +87,11 @@ export default {
     inputListeners() {
       return Object.assign({}, this.$listener, {
         input: event => {
-          if (this.isNumber)
-            this.$emit("input", +event.target.value);
-          else 
-            this.$emit("input", event.target.value);
-        }, 
-        focus: () => {
-          // Clear lỗi
-          this.errorMessage = "";
+          if (this.type == "number") this.$emit("input", +event.target.value);
+          else this.$emit("input", event.target.value);
         }
       });
-    } 
+    }
   },
   methods: {
     /**
@@ -91,22 +101,21 @@ export default {
     togglePassword() {
       this.showPassword = !this.showPassword;
       this.typeTemp = this.typeTemp == "text" ? "password" : "text";
-    },
-    handleOnBlur() {
-      if (this.required && !this.value) {
-        this.errorMessage = "This field is required";
-      }
-    }
-  },
-  watch: {
-    value(val) {
-      if (this.type == "password" && (val + "").length > 20) {
-        alert("Mặt khẩu tối đa là 20 kí tự");
-      }
     }
   }
 };
 </script>
 <style lang="scss">
 @import "@/assets/scss/components/input/input.scss";
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 </style>

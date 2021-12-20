@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="base-content-frame defaultScrollbar" :style="customizeStyle(styleCustom)">
+  <div class="base-content-frame default-scrollbar" :style="customizeStyle(styleCustom)">
     <div v-if="title" class="area-header fx-row">
         <div class="area-header__title">
           {{ title }}
@@ -8,7 +8,7 @@
           <slot name="header"></slot>
         </div>
       </div> 
-    <div class="frame__content box-sizing-b w-full h-full" :class="{defaultScrollbar: autoScroll}">
+    <div class="frame__content box-sizing-b w-full h-full" :class="{'default-scrollbar': autoScroll}">
       <slot name="content"></slot>
     </div>
     <div class="frame__footer">

@@ -2,7 +2,7 @@
   <base-content-area
     class="jus-c-center"
     title="Quản lý sản phẩm"
-    width="70%"
+    pHor="20px"
     bgColor="#fff"
   >
     <template v-slot:header>
@@ -15,31 +15,38 @@
           "
           width="fit-content"
           label="Thêm sản phẩm"
-          type="1"
+          styleBtn="1"
         />
       </div>
     </template>
     <template v-slot:content>
-      <EdFrame class="h-full fx-col">
-        <ed-select-box
-          :options="options"
-          v-model="currValue"
-          width="200px"
-          query="name"
-        />
-        <ed-list-grid
-          class="m-t-20 flex-1 defaultScrollbar"
-          :listData="listProduct"
-          :dblClick="
-            productID => {
-              productDetail(productID);
-            }
-          "
+      <EdFrame class="h-full fx-col" autoScroll>
+        <EdListGridTable
+          class="flex-1"
           itemID="ProductID"
+          :listData="listProduct"
+          :dblClick="productDetail"
+          :deleteItem="deleteProduct"
+          :editItem="editProduct"
+          :listHeader="listHeader"
+          v-model="listCheck"
           query="ProductName"
-        ></ed-list-grid>
+        >
+          <template v-slot:header>
+            <ed-select-box
+              :options="options"
+              v-model="currOption"
+              width="200px"
+              query="name"
+            />
+          </template>
+        </EdListGridTable>
       </EdFrame>
-      <AddProduct @close="showAddProduct = false" v-if="showAddProduct" />
+      <AddProduct
+        @addProduct="addProduct"
+        @close="showAddProduct = false"
+        v-if="showAddProduct"
+      />
     </template>
   </base-content-area>
 </template>
@@ -62,28 +69,50 @@ export default {
         { name: "Hàng tồn kho" },
         { name: "Hàng 2hand" }
       ],
-      currValue: 0,
+      currOption: 0,
       listProduct: [],
-      showAddProduct: false
+      showAddProduct: false,
+      listCheck: [],
+      listHeader: [
+        {
+          title: "Mã sản phẩm",
+          field: "ProductCode",
+          type: "text",
+          width: '100px'
+        },
+        {
+          title: "Tên sản phẩm",
+          field: "ProductName",
+          type: "text",
+          width: '120px'
+        },
+        { title: " Hình ảnh", field: "Image", type: "image", width: '200px'},
+        {
+          title: "Giá",
+          field: "Price",
+          type: "number",
+          width: '100px'
+        },
+        { title: "Số lượng", field: "Quantity", type: "number", width: 'auto' }
+      ]
     };
   },
   mounted() {
-    this.getProductsFilterPaging(this.currValue);
+    this.getProductsFilterPaging(this.currOption);
   },
   methods: {
     /**
      * Đi đến trang chi tiết sản phẩm
      * CreatedBy: NTDUNG (08/12/2021)
      */
-    productDetail(productID) {
-      this.$router.push(`/admin/product/product-detail/${productID}`);
+    productDetail(product) {
+      this.$router.push(`/admin/product/product-detail/${product.ProductID}`);
     },
     /**
      * Lấy dữ liệu danh sách sản phẩm
      * CreatedBy: NTDUNG (08/12/2021)
      */
     getProducts(filterString, pageNum, pageSize, filterData) {
-      console.log(filterData);
       ProductAPI.getFilterPaging(filterString, pageNum, pageSize, filterData)
         .then(res => {
           if (res.data.Success) {
@@ -97,8 +126,8 @@ export default {
     /**
      * Tạo ra lọc cho danh sách sản phẩm
      * CreatedBy: NTDUNG (08/12/2021) */
-    getProductsFilterPaging(option) {
-      switch (option) {
+    getProductsFilterPaging() {
+      switch (this.currOption) {
         case 0:
           var filterData = {
             TotalFields: ["Price", "OldPrice"]
@@ -131,10 +160,57 @@ export default {
           this.getProducts("", 1, 2, filterData);
           break;
       }
+    },
+    /**
+     * Xoá sản phẩm
+     * CreatedBy: NTDUNG (19/12/2021)
+     */
+    deleteProduct(product) {
+      this.$dialog.confirm(
+        `Bạn có muốn xoá <<b>${product.ProductCode} - ${product.ProductName}</b>> không`,
+        {
+          YES: () => {
+            ProductAPI.delete(product.ProductID)
+              .then(res => {
+                console.log(res);
+                this.getProductsFilterPaging();
+                this.$toast.success("Xoá thành công");
+              })
+              .catch(err => {
+                console.log(err);
+              });
+          },
+          NO: () => {}
+        }
+      );
+    },
+    /**
+     * Chỉnh sửa sản phẩm
+     * CreatedBy: NTDUNG (19/12/2021)
+     */
+    editProduct(product) {
+      console.log(product);
+    },
+    /**
+     * Thêm sản phẩm
+     * CreatedBy: NTDUNG (20/12/2021)
+     */
+    addProduct(product) {
+      ProductAPI.post(product)
+        .then(res => {
+          console.log(res);
+          this.$toast.success("Thêm mới sản phẩm thành công");
+          this.showAddProduct = false;
+          this.getProductsFilterPaging();
+        })
+        .catch(err => {
+          console.log(err);
+          this.$toast.error("Thêm mới sản phẩm thất bại");
+        });
     }
   },
   watch: {
-    currValue: function(value) {
+    currOption: function(value) {
       this.getProductsFilterPaging(value);
     }
   }

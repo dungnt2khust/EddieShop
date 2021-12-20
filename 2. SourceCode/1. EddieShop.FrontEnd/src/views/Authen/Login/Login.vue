@@ -26,13 +26,13 @@
                 :label="$t('i18nMenu.Authen.Login')"
                 txtPos="center"
                 @click.native="login"
-                :type="2"
+                :styleBtn="2"
               >
               </ed-button>
               <ed-button
                 :label="$t('i18nMenu.Authen.Guest')"
                 @click.native="guestMode"
-                :type="0"
+                :styleBtn="0"
               >
               </ed-button>
             </ed-row>

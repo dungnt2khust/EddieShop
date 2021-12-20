@@ -34,38 +34,11 @@
                 justify-content: center;
                 align-items: center;
             }
-                .dialog--confirmCancel .dialog__icon::after {
-                    content: "";
-                    display: block;
-                    background: url('/src/assets/svg/Sprites.6114dba8.svg') no-repeat -832px -462px;
-                    width: 36px;
-                    height: 36px;
-                }
-                .dialog--confirm .dialog__icon::after {
-                    content: "";
-                    display: block;
-                    background: url('/src/assets/svg/Sprites.6114dba8.svg') no-repeat -598px -463px;
-                    width: 36px;
-                    height: 37px;
-                }
-                .dialog--warn .dialog__icon::after {
-                    content: "";
-                    display: block;
-                    background: url('/src/assets/svg/Sprites.6114dba8.svg') no-repeat -598px -463px;
-                    width: 36px;
-                    height: 37px;
-                }
-                .dialog--error .dialog__icon::after {
-                    content: "";
-                    display: block;
-                    background: url('/src/assets/svg/Sprites.6114dba8.svg') no-repeat -752px -462px;
-                    width: 36px;
-                    height: 36px;
-                }
             /* Dialog message */
             .dialog__message {
-                font-size: 13px;
+                font-size: 14px;
                 padding: 12px 0 0 16px;
+                font-family: Notosans-Regular;
             }
         /* Dialog separate */
         .dialog__separate {
@@ -103,6 +76,8 @@
                 flex: 1;
                 justify-content: space-between;
             } 
-                .dialog__answer .button--green {
-                    margin-left: 8px;
-                }
+
+            .button--green {
+                background-color: #48a000 !important;
+                color: #fff;
+            }

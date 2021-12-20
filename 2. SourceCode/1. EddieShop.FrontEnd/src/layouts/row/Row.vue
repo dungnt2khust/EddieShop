@@ -2,15 +2,14 @@
   <div
     :class="[
       'row fx-wrap',
-      'row-w-' + rowW,
-      'row-xs-' + rowXs,
-      'row-sm-' + rowSm,
-      'row-lg-' + rowLg, 
-      'row-xl-' + rowXl,
-      'order-lg-' + orderLg,
-      'order-xs-' + orderXs,
-      'order-sm-' + orderSm,
-      'order-xl-' + orderXl
+      rowLg || rowW ? 'row-lg-' + (rowLg || rowW) : '',
+      rowXl || rowW ? 'row-xl-' + (rowXl || rowW) : '',
+      rowXs || rowW ? 'row-xs-' + (rowXs || rowW) : '',
+      rowSm || rowW ? 'row-sm-' + (rowSm || rowW) : '',
+      orderLg ? 'order-lg-' + orderLg : '',
+      orderXl ? 'order-xl-' + orderXl : '',
+      orderXs ? 'order-xs-' + orderXs : '',
+      orderSm ? 'order-sm-' + orderSm : '', 
     ]"
     :style="customizeStyle(styleCustom)"
   >
@@ -19,7 +18,7 @@
 </template>
 <script>
 export default {
-  name: "Row",
+  name: "row",
   props: {
     rowW: {
       type: [Number, String],
@@ -43,19 +42,19 @@ export default {
     },
     orderXs: {
       type: [Number, String],
-      default: 20
+      default: 0
     },
     orderSm: {
       type: [Number, String],
-      default: 20
+      default: 0
     },
     orderLg: {
       type: [Number, String],
-      default: 20
+      default: 0
     },
     orderXl: {
       type: [Number, String],
-      default: 20
+      default: 0
     }, 
     height: {
       type: [Number, String],
@@ -72,7 +71,7 @@ export default {
 };
 </script>
 <style lang="scss">
-@mixin setRow($name) {
+@mixin setrow($name) {
   @for $row from 1 to 13 {
     $flexBasis: percentage(1 / 12 * $row);
     .#{"row-" + $name + "-" + $row} {
@@ -80,9 +79,9 @@ export default {
     }
   }
 }
-@include setRow(w);
+@include setrow(w);
 @media (max-width: 739px) {
-  @include setRow(sm);
+  @include setrow(sm);
 }
 /* >= Tablet */
 @media (min-width: 740px) {
@@ -92,14 +91,14 @@ export default {
 }
 /* Tablet - PC low resolution */
 @media (min-width: 740px) and (max-width: 1023px) {
-  @include setRow(xs);
+  @include setrow(xs);
 }
 /* > PC low resolution */
 @media (min-width: 1024px) and (max-width: 1239px) {
-  @include setRow(xl);
+  @include setrow(xl);
 }
 /* PC height resolution */
 @media (min-width: 1240px) {
-  @include setRow(lg);
+  @include setrow(lg);
 }
 </style>
