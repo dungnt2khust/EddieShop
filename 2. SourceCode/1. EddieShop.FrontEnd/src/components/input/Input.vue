@@ -8,7 +8,8 @@
         :autofocus="autoFocus"
         :title="errMsg"
         :name="name"
-        :class="{ 'input--invalid': errMsg != '' }"
+        :class="{ 'input--invalid': errMsg != '', 'input--disabled': disabled}"
+        :readonly="disabled"
         v-on="inputListeners"
         v-validate="rules"
       />
@@ -33,7 +34,11 @@
 <script>
 export default {
   name: "Input",
-  inject: ["parentValidator"],
+  inject: {
+    parentValidator: {
+      default: null
+    }
+  },
   props: {
     width: {
       type: String,
@@ -66,6 +71,14 @@ export default {
     errMsg: {
       type: [Number, String],
       default: ""
+    },
+    duration: {
+      type: [Number, String],
+      default: 0
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -74,11 +87,12 @@ export default {
         width: this.width
       },
       showPassword: false,
-      typeTemp: this.type
+      typeTemp: this.type,
+      inputTimeout: null
     };
   },
   created() {
-    this.$validator = this.parentValidator;
+    if (this.parentValidator) this.$validator = this.parentValidator;
   },
   computed: {
     /**
@@ -87,8 +101,16 @@ export default {
     inputListeners() {
       return Object.assign({}, this.$listener, {
         input: event => {
-          if (this.type == "number") this.$emit("input", +event.target.value);
-          else this.$emit("input", event.target.value);
+          clearTimeout(this.inputTimeout);
+          if (this.duration)
+            this.inputTimeout = setTimeout(() => {
+              if (this.type == "number") this.$emit("input", +event.target.value);
+              else this.$emit("input", event.target.value);
+            }, this.duration);
+          else {
+            if (this.type == "number") this.$emit("input", +event.target.value);
+            else this.$emit("input", event.target.value);
+          }
         }
       });
     }

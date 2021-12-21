@@ -80,3 +80,6 @@ Vue.component('EdSearch', Search);
 
 const Pagination = () => import('@/components/pagination/Pagination.vue');
 Vue.component('EdPagination', Pagination);
+
+const NoContent = () => import('@/components/nocontent/NoContent.vue');
+Vue.component('NoContent', NoContent);

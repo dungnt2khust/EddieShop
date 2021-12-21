@@ -10,6 +10,7 @@
         <EdRow>
           <EdCol :colLg="4" :colXl="6" :colXs="12" :colSm="12">
             <div
+              @click="showImg"
               class="productdetail__img"
               :style="{
                 'background-image': `url(data:image/gif;base64,${
@@ -62,11 +63,19 @@
                   ? $t('i18nOrder.OrderNow')
                   : $t('i18nProduct.Status.ThisProductOutOfStock')
               "
-              :type="3"
+              :styleBtn="3"
               txtPos="center"
             />
           </EdCol>
         </EdRow>
+        <vue-easy-lightbox
+          :visible="showPreview"
+          :imgs="[{src: `data:image/gif;base64,${ProductDetailData.Image ? ProductDetailData.Image : ''}`, title: ProductDetailData.Title}]"
+          :index="0"
+          @hide="handleHide"
+          @on-prev-click="prevImage"
+          @on-next-click="nextImage"
+        ></vue-easy-lightbox>
       </div>
     </template>
   </base-content-area>
@@ -82,7 +91,8 @@ export default {
     return {
       ProductID: null,
       ProductDetailData: {},
-      ProductNum: 1
+      ProductNum: 1,
+      showPreview: false
     };
   },
   mounted() {
@@ -110,6 +120,18 @@ export default {
      */
     handleOrder() {
       alert("Order");
+    },
+    handleHide() {
+      this.showPreview = false;
+    },
+    showImg() {
+      this.showPreview = true;
+    }, 
+    prevImage(oldIdx, newIdx) {
+      alert(oldIdx + ':' + newIdx);
+    },
+    nextImage(oldIdx, newIdx) {
+      alert(oldIdx + ':' + newIdx);
     }
   }
 };

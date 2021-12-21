@@ -34,6 +34,7 @@
       top="100%"
       right="0"
       boxShadow="0px 4px 10px rgba(0,0,0, 0.2)"
+      :zIndex="50"
     >
       <template v-slot:content>
         <div class="list-notify default-scrollbar">
@@ -80,7 +81,7 @@ export default {
       this.showCart = false;
     },
     callDialog() {
-      this.$bus.$emit('showToastMessage', {duration: 1000, message: "Sai rồi bạn ơi"})
+      this.$toast.warn(" Chức năng đang phát triển");
     }
   }
 };

@@ -63,7 +63,7 @@ export default class BaseAPI {
 	 * @returns promise get từ call axios api
 	 * CreatedBy: NTDUNG (01/09/2021)
 	 */
-	async deleteMany(body) {
+	async deleteMulti(body) {
 		return await BaseAPIConfig.delete(this.controller + `?${this.getSession()}`, { data: body });
 	}
 	/**

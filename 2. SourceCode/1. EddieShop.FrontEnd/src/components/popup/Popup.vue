@@ -5,7 +5,7 @@
         :autoScroll="false"
         :height="height"
         :maxWidth="maxWidth"
-        class="m-t-20"
+        class="m-v-20"
       >
         <template v-slot:content>
           <div class="popup__header fx-s-between">

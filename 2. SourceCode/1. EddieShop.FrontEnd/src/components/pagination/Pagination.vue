@@ -1,28 +1,33 @@
 <template>
   <!-- eslint-disable  -->
   <div class="pagination">
+    <ed-select-box
+      :options="options"
+      v-model="currOption"
+      :up="true"
+      width="200px"
+    />
     <paginate
-      :page-count="20"
+      :page-count="totalPage"
       :page-range="1"
       :margin-pages="2"
       :click-handler="clickCallback"
-      :next-text="'>'"
       :container-class="'pagination'"
       :page-class="'page-item'"
       :active-class="'active-class'"
+      :next-class="'next-class'"
+      :prev-class="'prev-class'"
+      next-text=">"
+      prev-text="<"
+      first-button-text="<<"
+      last-button-text=">>"
       :first-last-button="true"
     >
-      <template v-slot:prevContent>
-        <div class="prevButton">PREV</div>
-      </template>
-      <template v-slot:nextContent>
-        <div class="nextButton">NEXT</div>
-      </template>
       <template v-slot:breakViewContent>
         <svg width="16" height="4" viewBox="0 0 16 4">
-          <circle fill="#999999" cx="2" cy="2" r="2" />
-          <circle fill="#999999" cx="8" cy="2" r="2" />
-          <circle fill="#999999" cx="14" cy="2" r="2" />
+          <circle fill="#000" cx="2" cy="1" r="1" />
+          <circle fill="#000" cx="8" cy="1" r="1" />
+          <circle fill="#000" cx="14" cy="1" r="1" />
         </svg>
       </template>
     </paginate>
@@ -36,68 +41,37 @@ export default {
   props: {
     value: {
       type: [String, Number],
-      default: 1,
+      default: 1
     },
+    options: {
+      type: Array,
+      default: () => [10, 20, 50, 100]
+    },
+    totalPage: {
+      type: [Number, String],
+      default: 0
+    }
+  },
+  data() {
+    return {
+      currOption: 0,
+      pageNum: 1
+    };
   },
   methods: {
     clickCallback(pageNum) {
-      this.$emit("changePage", pageNum);
-    },
+      this.pageNum = pageNum;
+      this.$emit("changePaging", pageNum, this.options[this.currOption]);
+    }
   },
+  watch: {
+    currOption: function(val) {
+      this.$emit("changePaging", this.pageNum, this.options[val]);
+    }
+  }
 };
 </script>
 
 <style lang="scss">
-.pagination {
-  height: 30px;
-  background-color: aqua;
-}
-.pagination {
-  display: flex;
-  list-style: none;
-  height: 30px;
-}
-.page-item {
-  padding: 0;
-  height: 100%;
-  display: block;
-  & > a {
-    padding: 4px 10px;
-    user-select: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    &:hover {
-      background-color: #ccc;
-      cursor: pointer;
-    }
-  }
-}
-.prevButton {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding: 0 4px;
-  user-select: none;
-}
-.disabled .prevButton,
-.disabled .nextButton {
-  opacity: 0.5;
-}
-.nextButton {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  padding: 0 4px;
-  user-select: none;
-}
-.active-class {
-  background-color: green;
-  color: #fff;
-}
+@import "@/assets/scss/components/pagination/pagination.scss";
 </style>

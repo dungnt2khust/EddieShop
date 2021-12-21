@@ -12,6 +12,7 @@ import VTooltip from 'v-tooltip'
 import ClickOutside from 'vue-click-outside'
 import VueEasyLightbox from 'vue-easy-lightbox'
 import Paginate from 'vuejs-paginate'
+import VueColumnsResizable from 'vue-columns-resizable'
 // Plugins
 import EventBus from '@/bus/eventbusGlobal.js'
 import VeeValidate from 'vee-validate'
@@ -22,6 +23,7 @@ Vue.use(FlagIcon);
 Vue.use(VTooltip);
 Vue.use(VueEasyLightbox);
 Vue.use(VeeValidate);
+Vue.use(VueColumnsResizable);
 
 
 Vue.prototype.$bus = EventBus;
@@ -35,7 +37,7 @@ Vue.prototype.$toast = Toast;
 Vue.prototype.$appInfo = {
     appName: "EddieShop"
 }
-
+// Directive
 Vue.directive("ClickOutside", ClickOutside);
 // Chart
 import VueApexCharts from 'vue-apexcharts'

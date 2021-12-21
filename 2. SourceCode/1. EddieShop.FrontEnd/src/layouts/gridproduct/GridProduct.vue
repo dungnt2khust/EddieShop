@@ -66,10 +66,10 @@
           <!-- Gía sản phẩm -->
           <div class="product-item__price">
             <span v-if="product.ShowDiscount" class="product-item__price-old">
-              {{ product.OldPrice }}</span
+              {{ formatMoney(product.OldPrice) }}</span
             >
             <span class="product-item__price-current"
-              >{{ product.Price }}đ
+              >{{ formatMoney(product.Price) }}
             </span>
           </div>
           <!-- Thông tin -->
@@ -95,7 +95,7 @@
               <i v-for="starEmpty in 5 - product.Star" class="fas fa-star"></i>
             </div>
             <!-- Đã bán -->
-            <span class="product-item__sold"
+            <span v-if="product.Sold" class="product-item__sold"
               >{{ $t("i18nProduct.Sold", { Quantity: product.Sold }) }}
             </span>
           </div>

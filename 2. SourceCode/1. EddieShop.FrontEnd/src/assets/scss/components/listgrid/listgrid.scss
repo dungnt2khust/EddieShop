@@ -1,19 +1,52 @@
 .listgrid {
-    .listgrid__header {}
+    .listgrid__header {
+        height: 40px;
+        .listgrid__controls {
+            height: 30px;
+            @mixin common {
+                padding: 0px 8px; 
+                cursor: pointer;
+                font-family: Notosans-Semibold;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 4px;
+                min-width: 80px;
+            }
+            .listgrid__checked { 
+                font-family: Notosans-Semibold;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                padding: 0 8px;
+            }
+            .listgrid__uncheck {
+                @include common;
+                border: 1px solid #008000;
+                color: #008000;
+            }
+            .listgrid__delete {
+                @include common;
+                border: 1px solid #E30A0D;
+                color: #E30A0D;
+            }
+        }
+    }
 
     .listgrid__content {
+        width: 100%;
         .listgrid__table {
             table-layout: auto;
             border-collapse: collapse;
             border-spacing: 0;
-            position: relative;
 
             .listgrid__table-header {
                 top: 0;
-                background-color: #eee;
+                background-color: #ddd;
                 position: sticky;
-                height: 51px;
-                z-index: 100;
+                z-index: 20;
+
                 th {
                     height: 50px;
                     border: 1px solid #ccc;
@@ -21,38 +54,49 @@
                     font-family: Notosans-Semibold;
                     white-space: nowrap;
                     border-top: 0;
+
                     &:first-child {
                         border-left: 0;
+                        position: sticky;
+                        background-color: #ddd;
+                        left: 0;
                     }
+
                     &:last-child {
                         border-right: 0;
+                        position: sticky;
+                        right: 0;
+                        background-color: #ddd;
                     }
                 }
             }
 
             .listgrid__table-body {
+                font-family: Notosans-Regular;
                 tr {
+                    display: table-row;
+                    &:hover td {
+                        background-color: #eee !important;
+                    }
+
                     td {
                         height: 40px;
                         padding: 0 10px;
                         border: 1px solid #ccc;
+                        background-color: #fff;
                         &:first-child {
                             border-left: none;
+                            position: sticky;
+                            left: 0;
                         }
+
                         &:last-child {
                             border-right: none;
+                            position: sticky;
+                            right: 0;
                         }
-                    }
-                    &:first-child {
-                        td {
-                            border-top: none;
-                        }
-                    }
-                    &:last-child {
-                        td {
-                            border-bottom: none;
-                        }
-                    }
+                    } 
+
                     // .listgrid__function {
                     //     display: none;
                     // }
@@ -65,11 +109,111 @@
                 }
             }
 
-            .listgrid__table-footer {
-            }
+            .listgrid__table-footer {}
         }
     }
+
     .listgrid__footer {
         border-top: 1px solid #ccc;
     }
 }
+
+// .listgrid {
+//     .listgrid__header {}
+
+//     .listgrid__content {
+//         width: 100%;
+
+//         .listgrid__table {
+//             table-layout: auto;
+//             border-collapse: collapse;
+//             border-spacing: 0;
+//             position: relative;
+
+//             .listgrid__table-header {
+//                 top: 0;
+//                 position: sticky;
+//                 z-index: 20;
+
+//                 .listgrid__table-th {
+//                     display: flex;
+//                     align-items: center;
+//                     background-color: #ddd;
+//                     height: 50px;
+//                     border: 0.5px solid #ccc;
+//                     padding: 0 10px;
+//                     font-family: Notosans-Semibold;
+//                     white-space: nowrap;
+//                     border-top: 0;
+
+//                     &:first-child {
+//                         border-left: 0;
+//                         position: sticky;
+//                         left: 0;
+//                     }
+
+//                     &:last-child {
+//                         border-right: 0;
+//                         position: sticky;
+//                         right: 0;
+//                     }
+//                 }
+//             }
+
+//             .listgrid__table-body {
+//                 .listgrid__table-tr {
+//                     &:hover {
+//                         background-color: #eee;
+//                     }
+
+//                     .listgrid__table-td {
+//                         display: flex;
+//                         align-items: center;
+//                         min-height: 40px;
+//                         padding: 0 10px;
+//                         border: 0.5px solid #ccc;
+//                         background-color: #fff;
+
+//                         &:first-child {
+//                             border-left: none;
+//                             position: sticky;
+//                             left: 0;
+//                         }
+
+//                         &:last-child {
+//                             border-right: none;
+//                             position: sticky;
+//                             right: 0;
+//                         }
+//                     }
+
+//                     // .listgrid__function {
+//                     //     display: none;
+//                     // }
+//                     &:hover {
+//                         cursor: pointer;
+//                         // .listgrid__function {
+//                         //     display: flex;
+//                         // }
+//                     }
+//                 }
+//             }
+
+//             .listgrid__table-footer {
+//                 position: -webkit-sticky;
+//                 position: sticky;
+//                 // transform: translateY(100%);
+//                 bottom: 0;
+//                 left: 0;
+//                 right: 0;
+//                 height: 100px;
+//                 z-index: 20;
+//                 background-color: aqua;
+//             }
+//         }
+//     }
+
+//     .listgrid__footer {
+//         border-top: 1px solid #ccc;
+//     }
+// }

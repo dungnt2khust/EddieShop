@@ -479,8 +479,8 @@ namespace EddieShop.Infrastructure.Repository
                 {
                     foreach (var field in totalFields)
                     {
-                        var totalInPage = 0;
-                        var totalAll = 0;
+                        decimal totalInPage = 0;
+                        decimal totalAll = 0;
                         var properties = entitiesFilter.ToList()[0].GetType().GetProperties();
                         var checkField = false;
                         // Kiểm tra có trường này không
@@ -499,13 +499,13 @@ namespace EddieShop.Infrastructure.Repository
                             {
                                 var value = entities.GetType().GetProperty(field).GetValue(entities);
                                 if (value != null)
-                                    totalInPage += (int)value;
+                                    totalInPage += Convert.ToDecimal(value);
                             };
                             foreach (var entities in entitiesFilter)
                             {
                                 var value = entities.GetType().GetProperty(field).GetValue(entities);
                                 if (value != null)
-                                    totalAll += (int)value;
+                                    totalAll += Convert.ToDecimal(value);
                             };
                             var totalData = new
                             {

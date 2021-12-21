@@ -99,7 +99,7 @@ export default {
         background-color: #5dce00;
         height: 100vh;
         width: 90%;
-        z-index: 10;
+        z-index: 200;
         animation: fadeInFromLeft 0.3s ease;
       }
       .navbar__menu-overlay {
@@ -109,6 +109,7 @@ export default {
         left: 0;
         bottom: 0;
         right: 0;
+        z-index: 200;
       }
     }
     .navbar__main {

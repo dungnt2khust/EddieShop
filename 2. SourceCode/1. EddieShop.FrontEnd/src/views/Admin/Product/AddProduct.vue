@@ -12,7 +12,7 @@
             <ed-label required value="Tên sản phẩm" />
             <ed-input
               name="ProductName"
-              :rules="{required: true}"
+              :rules="{ required: true }"
               :errMsg="
                 errors.has('ProductName') ? 'Trường không được để trống' : ''
               "
@@ -30,7 +30,7 @@
               v-model="productInfo.ProductCode"
             />
           </ed-col>
-          <ed-col :colLg="6" :colXl="6" :colXs="6" :colSm="12">
+          <ed-col :colLg="4" :colXl="4" :colXs="4" :colSm="12">
             <ed-label required value="Đơn giá" />
             <ed-input
               name="Price"
@@ -40,19 +40,31 @@
               v-model="productInfo.Price"
             />
           </ed-col>
-          <ed-col :colLg="6" :colXl="6" :colXs="6" :colSm="12">
+          <ed-col :colLg="2" :colXl="2" :colXs="2" :colSm="12">
             <ed-label required value="Số lượng" />
             <ed-input
               name="Quantity"
-              :rules="{ required: true, max: 20 }"
-              :errMsg="
-                errors.has('Quantity') ? 'Trường không được để trống' : ''
-              "
+              :rules="{ required: true, max: 3 }"
+              :errMsg="errors.first('Quantity')"
               type="number"
               v-model="productInfo.Quantity"
             />
           </ed-col>
-          <ed-col :colLg="3" :colXl="3" :colXs="4" :colSm="12">
+          <ed-col :colLg="6" :colXl="6" :colXs="6" :colSm="12">
+            <ed-label value="Tổng tiền" />
+            <ed-input
+              type="number"
+              disabled
+              :value="
+                Number(
+                  productInfo.Quantity * productInfo.Price
+                    ? productInfo.Quantity * productInfo.Price
+                    : 0
+                )
+              "
+            />
+          </ed-col>
+          <ed-col :colLg="3" :colXl="3" :colXs="3" :colSm="12">
             <ed-label required value="Hình ảnh" />
             <ed-input-file
               name="Image"
@@ -68,7 +80,7 @@
               :errMsg="
                 errors.has('Description') ? 'Trường không được để trống' : ''
               "
-              :rules="{ required: true, max: 20 }"
+              :rules="{ required: true }"
               v-model="productInfo.Description"
             />
           </ed-col>
@@ -155,11 +167,21 @@ export default {
     handleSubmit(e) {
       this.$validator.validate().then(valid => {
         if (valid) {
+          // Bind giá trị bổ sung trước khi submit
+          this.preSubmit();
           this.$emit("addProduct", this.productInfo);
         } else {
-          this.$toast.error("invalid form");
+          this.$toast.error("Thông tin không chính xác");
         }
       });
+    },
+    /**
+     * Tiền xử lý
+     * CreatedBy: NTDUNG (21/12/2021)
+     */
+    preSubmit() {
+      this.productInfo.TotalPrice =
+        this.productInfo.Quantity * this.productInfo.Price;
     }
   }
 };

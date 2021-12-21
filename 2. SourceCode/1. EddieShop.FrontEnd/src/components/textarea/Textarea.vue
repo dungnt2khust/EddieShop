@@ -8,7 +8,8 @@
       :style="customizeStyle(styleCustom)"
       v-on="textareaListeners"
       :value="value"
-      :class="{ 'input--invalid': errMsg != '' }"
+      :class="{ 'input--invalid': errMsg != '', 'input--disabled': disabled}"
+      :readonly="disabled"
       :title="errMsg"
       v-validate="rules"
     />
@@ -61,6 +62,10 @@ export default {
     errMsg: {
       type: [Number, String],
       default: ""
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

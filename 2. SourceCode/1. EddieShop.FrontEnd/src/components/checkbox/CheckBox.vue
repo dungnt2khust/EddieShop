@@ -23,6 +23,7 @@ export default {
          */
         toggleCheckbox() {
             this.$emit('input', !this.value);
+            this.$emit('changeState', !this.value);
         }
     }
 }

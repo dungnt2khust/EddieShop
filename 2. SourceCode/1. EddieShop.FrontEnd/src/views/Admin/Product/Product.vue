@@ -22,18 +22,21 @@
     <template v-slot:content>
       <EdFrame class="h-full fx-col" autoScroll>
         <EdListGridTable
-          class="flex-1"
-          itemID="ProductID"
+          class="flex-1 w-full"
           :listData="listProduct"
           :dblClick="productDetail"
-          :deleteItem="deleteProduct"
-          :editItem="editProduct"
           :listHeader="listHeader"
+          :pagingInfo="pagingInfo"
+          @edit="editProduct"
+          @delete="deleteProduct"
+          @deleteMulti="deleteMulti"
+          @changePagingFilter="changePagingFilter"
           v-model="listCheck"
-          query="ProductName"
+          itemID="ProductID"
         >
           <template v-slot:header>
             <ed-select-box
+              class="h-full"
               :options="options"
               v-model="currOption"
               width="200px"
@@ -41,6 +44,7 @@
             />
           </template>
         </EdListGridTable>
+
       </EdFrame>
       <AddProduct
         @addProduct="addProduct"
@@ -78,23 +82,72 @@ export default {
           title: "Mã sản phẩm",
           field: "ProductCode",
           type: "text",
-          width: '100px'
+          width: 130,
+          headerPos: "left",
+          dataPos: "left",
+          pin: true
         },
         {
           title: "Tên sản phẩm",
           field: "ProductName",
           type: "text",
-          width: '120px'
+          width: 150,
+          headerPos: "left",
+          dataPos: "left",
+          pin: true
         },
-        { title: " Hình ảnh", field: "Image", type: "image", width: '200px'},
+        {
+          title: " Hình ảnh",
+          field: "Image",
+          type: "image",
+          width: 300,
+          height: "100px",
+          pin: true
+        },
         {
           title: "Giá",
           field: "Price",
-          type: "number",
-          width: '100px'
+          type: "money",
+          width: 100,
+          headerPos: "right",
+          dataPos: "right"
         },
-        { title: "Số lượng", field: "Quantity", type: "number", width: 'auto' }
-      ]
+        {
+          title: "Số lượng",
+          field: "Quantity",
+          type: "number",
+          width: 100,
+          headerPos: "right",
+          dataPos: "right"
+        },
+        {
+          title: "Tổng tiền",
+          field: "TotalPrice",
+          type: "money",
+          width: 100,
+          headerPos: "right",
+          dataPos: "right"
+        },
+        {
+          title: "Mô tả",
+          field: "Description",
+          width: 500,
+          type: "text"
+        },
+        {
+          title: "Hot",
+          field: "Hot",
+          type: "text",
+          dataPos: "center",
+          width: 100
+        }
+      ],
+      pagingInfo: {
+        filterString: "",
+        pageNum: 1,
+        pageSize: 10,
+        filterData: {}
+      }
     };
   },
   mounted() {
@@ -112,11 +165,19 @@ export default {
      * Lấy dữ liệu danh sách sản phẩm
      * CreatedBy: NTDUNG (08/12/2021)
      */
-    getProducts(filterString, pageNum, pageSize, filterData) {
-      ProductAPI.getFilterPaging(filterString, pageNum, pageSize, filterData)
+    getProducts() {
+      ProductAPI.getFilterPaging(
+        this.pagingInfo.filterString,
+        this.pagingInfo.pageNum,
+        this.pagingInfo.pageSize,
+        this.pagingInfo.filterData
+      )
         .then(res => {
           if (res.data.Success) {
             this.listProduct = res.data.Data.Records;
+            this.pagingInfo.totalPage = res.data.Data.TotalPage;
+            this.pagingInfo.totalRecord = res.data.Data.TotalRecord;
+            this.listCheck = []
           }
         })
         .catch(err => {
@@ -129,13 +190,13 @@ export default {
     getProductsFilterPaging() {
       switch (this.currOption) {
         case 0:
-          var filterData = {
+          this.pagingInfo.filterData = {
             TotalFields: ["Price", "OldPrice"]
           };
-          this.getProducts("", 1, -1, filterData);
+          this.getProducts();
           break;
         case 1:
-          var filterData = {
+          this.pagingInfo.filterData = {
             TotalFields: ["Price", "OldPrice"],
             RangeDates: [
               {
@@ -145,19 +206,19 @@ export default {
               }
             ]
           };
-          this.getProducts("", 1, 10, filterData);
+          this.getProducts();
           break;
         case 2:
-          var filterData = {
+          this.pagingInfo.filterData = {
             TotalFields: ["Price", "OldPrice"]
           };
-          this.getProducts("", 1, 1, filterData);
+          this.getProducts();
           break;
         case 3:
-          var filterData = {
+          this.pagingInfo.filterData = {
             TotalFields: ["Price", "OldPrice"]
           };
-          this.getProducts("", 1, 2, filterData);
+          this.getProducts();
           break;
       }
     },
@@ -204,9 +265,38 @@ export default {
           this.getProductsFilterPaging();
         })
         .catch(err => {
-          console.log(err);
-          this.$toast.error("Thêm mới sản phẩm thất bại");
+          this.$toast.error(err.response.data.Msg);
         });
+    },
+    /**
+     * Paging filter thay đổi
+     * CreatedBy: NTDUNG (21/12/2021)
+     */
+    changePagingFilter(pageNum, pageSize, filterString) {
+      this.pagingInfo.pageNum = pageNum;
+      this.pagingInfo.pageSize = pageSize;
+      this.pagingInfo.filterString = filterString;
+      this.getProductsFilterPaging();
+    },
+    /**
+     * Xoá nhiều
+     * CreatedBy: NTDUNG (21/12/2021)
+     */
+    deleteMulti() {
+      this.$dialog.confirm("Bạn có muốn xoá tất cả những sản phẩm được chọn?", {
+        YES: () => {
+          ProductAPI.deleteMulti(this.listCheck)
+            .then(res => {
+              this.$toast.success("Xoá thành công");
+              this.getProductsFilterPaging();
+              console.log(res)
+            })
+            .catch(err => {
+              this.$toast.error("Xoá thất bại");
+              console.log(res);
+            }) 
+        }
+      });
     }
   },
   watch: {

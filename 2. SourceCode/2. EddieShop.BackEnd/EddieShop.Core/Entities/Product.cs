@@ -27,12 +27,12 @@ namespace EddieShop.Core.Entities
         /// <summary>
         /// Đơn giá
         /// </summary>
-        public int? Price { get; set; }
+        public decimal? Price { get; set; }
 
         /// <summary>
         /// Giá cũ
         /// </summary>
-        public int? OldPrice { get; set; }
+        public decimal? OldPrice { get; set; }
 
         /// <summary>
         /// Số lượng
@@ -42,7 +42,7 @@ namespace EddieShop.Core.Entities
         /// <summary>
         /// Tổng tiền
         /// </summary>
-        public int? TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
 
         /// <summary>
         /// Mô tả

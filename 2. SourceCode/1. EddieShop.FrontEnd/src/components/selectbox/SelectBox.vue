@@ -1,23 +1,36 @@
 <template lang="">
-  <div class="selectbox pos-relative" :style="customizeStyle(styleWrapperCustom)">
+  <div
+    class="selectbox pos-relative h-full"
+    :style="customizeStyle(styleWrapperCustom)"
+  >
     <div
       @click="toggleSelectBox"
-      v-click-outside="() => {selectBoxState = false}"
-      class="selectbox__curr p-h-16 p-v-8"
+      v-click-outside="
+        () => {
+          selectBoxState = false;
+        }
+      "
+      class="selectbox__curr p-h-8"
       :style="{ width: width }"
     >
       {{ query ? options[value][query] : options[value] }}
     </div>
     <ul
       v-if="selectBoxState"
-      class="selectbox__list pos-absolute m-t-4"
-      :style="customizeStyle(styleCustom)"
+      class="selectbox__list pos-absolute"
+      :style="[
+        customizeStyle(styleCustom),
+        {
+          top: up ? 'unset' : 'calc(100% + 4px)',
+          bottom: up ? 'calc(100% + 4px)' : 'unset'
+        }
+      ]"
     >
       <li
         v-for="(option, index) in options"
         @click="handleChooseOption(index)"
         class="selectbox__item p-h-16 p-v-8"
-        :class="{'selected': index == value}"
+        :class="{ selected: index == value }"
         :key="index"
       >
         {{ query ? option[query] : option }}
@@ -52,13 +65,17 @@ export default {
     bgColor: {
       type: String,
       default: "#fff"
+    },
+    up: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       styleCustom: {
         "list-style": this.listStyle,
-        "width": this.width,
+        width: this.width,
         "background-color": this.bgColor
       },
       styleWrapperCustom: {
@@ -80,8 +97,8 @@ export default {
      * CreatedBy: NTDUNG (08/12/2021)
      */
     handleChooseOption(index) {
-        this.$emit('input', index);
-        this.selectBoxState = false;
+      this.$emit("input", index);
+      this.selectBoxState = false;
     }
   }
 };

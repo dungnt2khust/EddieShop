@@ -10,6 +10,16 @@ export default {
                 return money.toLocaleString('vi', {style : 'currency', currency : 'VND'});
             else 
                 return null;
+        },
+        /**
+         * Định dạng số
+         * CreatedBy: NTDUNG (20/11/2021)
+         */
+        formatNumber(number) {
+            if (number && !Number.isNaN(+number))
+                return new Intl.NumberFormat().format(number);
+            else 
+                return null;
         }
     }
 }
