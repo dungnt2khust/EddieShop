@@ -1,0 +1,20 @@
+.list-cart {
+    .list-cart__unread {
+        color: #5DCE00;
+    }
+
+    .list-cart__item {
+        padding: 10px 0;
+        &:hover {
+            background-color:#eee;
+        }
+
+        .list-cart__title {
+            font-family: Notosans-Semibold;
+        }
+        .list-cart__content {
+            font-family: Notosans-Regular;
+        }
+    }
+
+}

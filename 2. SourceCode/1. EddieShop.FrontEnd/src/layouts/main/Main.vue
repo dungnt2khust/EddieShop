@@ -48,6 +48,7 @@ export default {
           })
           .catch(err => {
             console.log(err);
+            this.$toast.error("Có lỗi xảy ra");
             this.$loading.hideLoading();
           });
       } else {
@@ -99,6 +100,7 @@ export default {
         .catch(error => {
           // Kết nối thất bại
           console.log(error);
+          this.$toast.error("Có lỗi xảy ra");
           // Tắt loading
           this.$loading.hideLoading();
         });
@@ -170,6 +172,8 @@ export default {
         // Tách router
         var routeArr = to.path.split('/');
         this.$store.dispatch('setRoute', routeArr);
+        if (to.path.includes('detail'))
+          this.$store.dispatch('setPreviousRoute', from);
         // Đặt title
         document.title = this.$t(to.meta.Title);
         // Kiểm tra session

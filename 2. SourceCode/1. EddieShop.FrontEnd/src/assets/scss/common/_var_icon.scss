@@ -25,7 +25,7 @@ $svgSource1: url('~@/assets/svg/Sprites.6114dba8.svg');
 @include setIcon(mi-minus, $svgSource1, -129px, -415px, 13px, 2px);
 @include setIcon(mi-tick, $svgSource1, -899px, -316px, 11px, 8px);
 @include setIcon(mi-edit, $svgSource1, -416px, -312px, 16px, 16px);
-@include setIcon(mi-delete, $svgSource1, -464px, -313px, 15px, 15px);
+@include setIcon(mi-Delete, $svgSource1, -464px, -313px, 15px, 15px);
 @include setIcon(mi-cancel, $svgSource1, -1178px, -362px, 12px, 12px);
 @include setIcon(mi-image, $svgSource1, -1888px, -562px, 22px, 18px);
 @include setIcon(mi-error, $svgSource1, -752px, -462px, 36px, 36px);
@@ -33,6 +33,7 @@ $svgSource1: url('~@/assets/svg/Sprites.6114dba8.svg');
 @include setIcon(mi-warn, $svgSource1, -598px, -463px, 36px, 37px);
 @include setIcon(mi-question, $svgSource1, -832px, -462px, 36px, 36px);
 @include setIcon(mi-success, $svgSource1, -990px, -462px, 36px, 36px);
+@include setIcon(mi-back, $svgSource1, -1972px, -646px, 20px, 20px);
 
 
 $svgLoading: url('~@/assets/svg/loading.svg');

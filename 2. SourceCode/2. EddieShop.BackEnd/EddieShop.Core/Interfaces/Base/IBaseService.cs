@@ -141,5 +141,14 @@ namespace EddieShop.Core.Interfaces.Base
         /// <returns></returns>
         /// CreatedBy: NTDUNG (14/11/2021)
         ServiceResult UpdateColumns(TEntity entity, Guid entityId, List<string> columns, Guid? sessionID);
+
+        /// <summary>
+        /// Cập nhật nhiều
+        /// </summary>
+        /// <param name="listEntity"></param>
+        /// <param name="sessionID"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (23/12/2021)
+        ServiceResult UpdateMultiple(List<TEntity> listEntity, Guid? sessionID);
     }
 }

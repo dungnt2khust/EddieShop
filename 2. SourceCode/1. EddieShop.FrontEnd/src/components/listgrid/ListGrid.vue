@@ -35,7 +35,7 @@
             ></div>
             <div
               @click="deleteItem(item)"
-              class="mi-delete scale-1.3"
+              class="mi-Delete scale-1.3"
               v-on="tooltipListeners('Xoá')"
             ></div>
           </div>

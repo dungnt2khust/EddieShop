@@ -10,7 +10,7 @@ export default class BaseAPI {
 	 * Lấy ra sessionID
 	 * @returns {String}
 	 */
-	getSession() {
+	GetSession() {
 		var sessionID = localStorage.getItem('Session');
 		var sessionRoute = sessionID ? `sessionID=${sessionID}` : '';
 		return sessionRoute;
@@ -21,9 +21,9 @@ export default class BaseAPI {
 	 * @returns promise
 	 * CreatedBy: NTDUNG (01/09/2021)
 	 */
-	getAll(route) {	
+	GetAll(route) {	
 		route = route ? route : '';
-		return BaseAPIConfig.get(this.controller + route + `?${this.getSession()}`);
+		return BaseAPIConfig.get(this.controller + route + `?${this.GetSession()}`);
 	}
 
 	/**
@@ -32,8 +32,8 @@ export default class BaseAPI {
 	 * @returns promise
 	 * CreatedBy: NTDUNG (01/09/2021)
 	 */
-	getById(id) {
-		return BaseAPIConfig.get(this.controller + "/" + id + `?${this.getSession()}`);
+	GetByID(id) {
+		return BaseAPIConfig.get(this.controller + "/" + id + `?${this.GetSession()}`);
 	}
 
 	/**
@@ -43,7 +43,7 @@ export default class BaseAPI {
 	 * CreatedBy: NTDUNG (01/09/2021)
 	 */
 	async post(body) {
-		return await BaseAPIConfig.post(this.controller + `?${this.getSession()}`, body);
+		return await BaseAPIConfig.post(this.controller + `?${this.GetSession()}`, body);
 	}
 
 	/**
@@ -53,8 +53,8 @@ export default class BaseAPI {
 	 * @returns promise
 	 * CreatedBy: NTDUNG (01/09/2021)
 	 */
-	async put(id, body) {
-		return await BaseAPIConfig.put(this.controller + "/" + id + `?${this.getSession()}` , body);
+	async Update(id, body) {
+		return await BaseAPIConfig.put(this.controller + "/" + id + `?${this.GetSession()}` , body);
 	}
 
 	/**
@@ -63,8 +63,8 @@ export default class BaseAPI {
 	 * @returns promise get từ call axios api
 	 * CreatedBy: NTDUNG (01/09/2021)
 	 */
-	async deleteMulti(body) {
-		return await BaseAPIConfig.delete(this.controller + `?${this.getSession()}`, { data: body });
+	async DeleteMulti(body) {
+		return await BaseAPIConfig.delete(this.controller + `?${this.GetSession()}`, { data: body });
 	}
 	/**
 	 * Xóa theo id
@@ -72,8 +72,8 @@ export default class BaseAPI {
 	 * @returns promise
 	 * CreatedBy: NTDUNG (01/09/2021)
 	 */
-	delete(id) {
-		return BaseAPIConfig.delete(this.controller + "/" + id + `?${this.getSession()}`);
+	Delete(id) {
+		return BaseAPIConfig.delete(this.controller + "/" + id + `?${this.GetSession()}`);
 	}
 
 	/**
@@ -81,8 +81,8 @@ export default class BaseAPI {
 	 * @returns {Promise}
 	 * CreatedBy: NTDUNG (07/10/2021)
 	 */
-	getNewCode() {
-		return BaseAPIConfig.get(this.controller + "/NewCode" + `?${this.getSession()}`);
+	GetNewCode() {
+		return BaseAPIConfig.get(this.controller + "/NewCode" + `?${this.GetSession()}`);
 	}
 
     /**
@@ -95,8 +95,8 @@ export default class BaseAPI {
      * CreatedBy: NTDUNG(29/10/2021)
 	 * ModifiedBy: NTDUNG (10/12/2021)
      */
-    getFilterPaging(filterString, pageNumber, pageSize, filterData = {}) {
-        let api = this.controller + `/Paging?filterString=${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}` + `&&${this.getSession()}`;
+    GetFilterPaging(filterString, pageNumber, pageSize, filterData = {}) {
+        let api = this.controller + `/Paging?filterString=${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}` + `&&${this.GetSession()}`;
         return BaseAPIConfig.post(api, filterData);
     }
 
@@ -104,14 +104,22 @@ export default class BaseAPI {
 	 * Cập nhật thông tin theo cột
 	 * CreatedBy: NTDUNG (08/12/2021)
 	 */
-	updateColumns(id, newInfo) {
+	UpdateColumns(id, newInfo) {
 		var columns = [];
 		for (var i in newInfo) {
 			columns.push(i);
 		}
-		return BaseAPIConfig.put(`${this.controller}/UpdateColumns/${id}` + `?${this.getSession()}`, {
+		return BaseAPIConfig.put(`${this.controller}/UpdateColumns/${id}` + `?${this.GetSession()}`, {
 			Entity: newInfo,
 			Columns: columns
 		});
+	}
+
+	/**
+	 * Cập nhật nhiều
+	 * CreatedBy: NTDUNG(23/12/2021)
+	 */
+	UpdateMulti(listEntity) {
+		return BaseAPIConfig.put(`${this.controller}/UpdateMulti` + `?${this.GetSession()}`, listEntity);
 	}
 }

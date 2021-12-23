@@ -86,7 +86,7 @@ export default {
      * CreatedBy: NTDUNG (24/11/2021)
      */
     getListUsers() {
-      UserAPI.getAll()
+      UserAPI.GetAll()
         .then(res => {
           var users = res.data.Data;
           users = users.filter(user => {

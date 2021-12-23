@@ -2,15 +2,15 @@
   <div class="listgrid w-full fx-col">
     <div class="listgrid__header fx-row m-b-10">
       <EdSearch
-        v-show="value.length < 1"
+        v-show="listCheck.length < 1"
         class="h-full"
         style="width: 300px;"
         v-model="filterString"
       />
-      <div v-show="value.length >= 1" class="listgrid__controls fx-row">
-        <div class="listgrid__checked">Đã chọn {{ value.length }}</div>
+      <div v-show="listCheck.length >= 1" class="listgrid__controls fx-row">
+        <div class="listgrid__checked">Đã chọn {{ listCheck.length }}</div>
         <div @click="uncheckAll" class="listgrid__uncheck m-r-10">Bỏ chọn</div>
-        <div @click="$emit('deleteMulti')" class="listgrid__delete">Xoá</div>
+        <div @click="$emit('DeleteMulti')" class="listgrid__delete">Xoá</div>
       </div>
       <div class="flex-1 fx-row jus-c-fend">
         <slot name="header"></slot>
@@ -79,7 +79,7 @@
                 ></div>
                 <div
                   @click="deleteItem(row)"
-                  class="mi-delete scale-1.3"
+                  class="mi-Delete scale-1.3"
                   v-on="tooltipListeners('Xoá')"
                 ></div>
               </div>
@@ -90,7 +90,7 @@
       </div> -->
       <table
         class="listgrid__table"
-        :class="{ 'flex-1': listData.length == 0 }"
+        :class="{ 'flex-1': value.length == 0 }"
         v-columns-resizable
         style="min-width: 100%;"
       >
@@ -115,57 +115,122 @@
                 {
                   'text-align': header.headerPos,
                   'min-width': header.width + 'px'
-                },
+                }
               ]"
             >
-                <!-- header.pin ? headerStylePin(index) : '' -->
+              <!-- header.pin ? headerStylePin(index) : '' -->
               {{ header.title }}
             </th>
             <th
               :style="
                 `min-width: ${functionWidth}px; max-width: ${functionWidth}px`
               "
-            ></th>
+            >
+              <div
+                class="listgrid__edit fx-row jus-c-center aln-i-center cur-p"
+                v-on="tooltipListeners('Chỉnh sửa')"
+                v-if="editAll"
+              >
+                <div
+                  @click="editAllState = true"
+                  v-if="!editAllState"
+                  class="mi-edit scale-1.5"
+                ></div>
+                <ed-button
+                  :method="saveTable"
+                  v-else
+                  label="Lưu"
+                  :styleBtn="1"
+                  bgColor="#5DCE00"
+                />
+              </div>
+            </th>
           </tr>
         </thead>
         <tbody class="listgrid__table-body">
-          <tr v-for="(row, index) in listData" @dblclick="dblClick(row)">
+          <tr v-for="(row, index) in value" @dblclick="$emit('dblClick', row)">
             <td>
               <div class="fx-row jus-c-center aln-i-center">
                 <ed-check-box
-                  :value="value.findIndex(item => item == row[itemID]) != -1"
+                  :value="
+                    listCheck.findIndex(item => item == row[itemID]) != -1
+                  "
                   @changeState="checkItem($event, row[itemID])"
                 />
               </div>
             </td>
             <td
               v-for="(header, index) in listHeader"
-              :style="[{
-                'text-align': header.dataPos,
-                'white-space': header.wrap ? 'wrap' : 'nowrap'
-              }, 
+              :style="[
+                {
+                  'white-space': header.wrap ? 'wrap' : 'nowrap'
+                }
               ]"
-              v-html="tableData(row, header)"
-
-            ></td>
-              <!-- header.pin ? headerStylePin(index) : '' -->
+            >
+              <div class="fx-row" :style="posData(header.dataPos)">
+                <EdNumber
+                  v-if="header.type == 'number' && editAll && editAllState"
+                  :min="header.min"
+                  :max="header.max"
+                  v-model="row[header.field]"
+                />
+              </div>
+              <div
+                class="td-wrapper fx-row"
+                :style="posData(header.dataPos)"
+                v-html="tableData(row, header, index)"
+              ></div>
+            </td>
+            <!-- header.pin ? headerStylePin(index) : '' -->
             <td>
               <div class="listgrid__function fx-row">
                 <div
+                  v-show="editRow"
                   @click="$emit('edit', row)"
                   class="mi-edit scale-1.3 m-h-16"
                   v-on="tooltipListeners('Chỉnh sửa')"
                 ></div>
                 <div
-                  @click="$emit('delete', row)"
-                  class="mi-delete scale-1.3"
+                  v-show="deleteRow"
+                  @click="$emit('Delete', row)"
+                  class="mi-Delete scale-1.3"
                   v-on="tooltipListeners('Xoá')"
                 ></div>
               </div>
             </td>
           </tr>
         </tbody>
-        <tfoot class="listgrid__table-footer"></tfoot>
+        <tfoot class="listgrid__table-footer" v-if="haveFooter">
+          <tr>
+            <td>Tổng</td>
+            <td v-for="(header, index) in listHeader">
+              <div v-if="header.total">
+                <div class="m-v-4" :style="{ 'text-align': header.dataPos }">
+                  {{
+                    header.total && totalData[header.field]
+                      ? footerData(totalData[header.field].InPage, header)
+                      : ""
+                  }}
+                </div>
+                <div v-if="pagingInfo.totalPage > 1">
+                  <div
+                    class="line"
+                    style="width: 100%;height:1px;background-color:#888;"
+                  ></div>
+
+                  <div class="m-v-4" :style="{ 'text-align': header.dataPos }">
+                    {{
+                      header.total && totalData[header.field]
+                        ? footerData(totalData[header.field].All, header)
+                        : ""
+                    }}
+                  </div>
+                </div>
+              </div>
+            </td>
+            <td></td>
+          </tr>
+        </tfoot>
       </table>
     </div>
     <div class="listgrid__footer fx-row p-t-10">
@@ -185,19 +250,11 @@
 </template>
 <script>
 export default {
-  name: "ListGridTable",
+  name: "ListGridAdvance",
   props: {
-    listData: {
-      type: Array,
-      default: () => []
-    },
     itemID: {
       type: String,
       default: null
-    },
-    dblClick: {
-      type: Function,
-      default: () => {}
     },
     editItem: {
       type: Function,
@@ -218,6 +275,26 @@ export default {
     pagingInfo: {
       type: Object,
       default: () => {}
+    },
+    editRow: {
+      type: Boolean,
+      default: true
+    },
+    deleteRow: {
+      type: Boolean,
+      default: true
+    },
+    editAll: {
+      type: Boolean,
+      default: false
+    },
+    listCheck: {
+      type: Array,
+      default: () => []
+    },
+    totalData: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -225,7 +302,8 @@ export default {
       checkAll: false,
       filterString: "",
       checkboxWidth: 50,
-      functionWidth: 100
+      functionWidth: 100,
+      editAllState: false
     };
   },
   computed: {
@@ -236,9 +314,9 @@ export default {
     pagingRecordInfo() {
       return `${(this.pagingInfo.pageNum - 1) * this.pagingInfo.pageSize + 1}-
             ${
-              this.listData.length < this.pagingInfo.pageSize
+              this.value.length < this.pagingInfo.pageSize
                 ? (this.pagingInfo.pageNum - 1) * this.pagingInfo.pageSize +
-                  this.listData.length
+                  this.value.length
                 : this.pagingInfo.pageNum * this.pagingInfo.pageSize
             }/${this.pagingInfo.totalRecord}`;
     },
@@ -248,12 +326,21 @@ export default {
      */
     isCheckAll() {
       var checkAll = true;
-      if (this.listData.length == 0) checkAll = false;
+      if (this.value.length == 0) checkAll = false;
       else
-        this.listData.forEach(data => {
-          if (!this.value.find(id => data[this.itemID] == id)) checkAll = false;
+        this.value.forEach(data => {
+          if (!this.listCheck.find(id => data[this.itemID] == id))
+            checkAll = false;
         });
       return checkAll;
+    },
+    /**
+     * Có footer hay không
+     * CreatedBy: NTDUNG (23/12/2021)
+     */
+    haveFooter() {
+      var totalFields = this.listHeader.filter(header => header.total);
+      return totalFields.length;
     }
   },
   methods: {
@@ -261,17 +348,18 @@ export default {
      * Giá trị tại ô dữ liệu
      * CreatedBy: NTDUNG (20/12/2021)
      */
-    tableData(row, header) {
+    tableData(row, header, index) {
       var td;
       switch (header.type) {
         case "number":
-          td = this.formatNumber(row[header.field]);
+          if (!(this.editAll && this.editAllState))
+            td = this.formatNumber(row[header.field]);
           break;
         case "money":
           td = this.formatMoney(row[header.field]);
           break;
         case "image":
-          td = `<div class="fx-row jus-c-center aln-i-center">
+          td = `<div class="fx-row w-full jus-c-center aln-i-center no-select">
             <img style="max-height: ${header.height}; min-height: ${
             header.height
           }" src="data:image/gif;base64,${row[header.field]}" atl="Image" />
@@ -285,6 +373,25 @@ export default {
       return td;
     },
     /**
+     * Định dạng dữ liệu
+     * CreatedBy: NTDUNG(23/12/2021)
+     */
+    footerData(data, header) {
+      var tfoot;
+      switch (header.type) {
+        case "number":
+          tfoot = this.formatNumber(data);
+          break;
+        case "money":
+          tfoot = this.formatMoney(data);
+          break;
+        default:
+          tfoot = tata;
+          break;
+      }
+      return tfoot;
+    },
+    /**
      * Paging thay đổi
      * CreatedBy: NTDUNG (21/12/2021)
      */
@@ -296,7 +403,7 @@ export default {
      * CreatedBy: NTDUNG (21/12/2021)
      */
     checkItem(state, itemID) {
-      var tempArr = [...this.value];
+      var tempArr = [...this.listCheck];
       if (state) {
         tempArr.push(itemID);
       } else {
@@ -304,31 +411,29 @@ export default {
           return item != itemID;
         });
       }
-      this.$emit("input", tempArr);
+      this.$emit("changeListCheck", tempArr);
     },
     /**
      * Bỏ chọn tất cả
      * CreatedBy: NTDUNG (21/12/2021)
      */
     uncheckAll() {
-      this.$emit("input", []);
+      this.$emit("changeListCheck", []);
     },
     /**
      * Bật tắt checkall
      * CreatedBy: NTDUNG (21/12/2021)
      */
     toggleCheckAll(state) {
-      var newCheck = [...this.value];
+      var newCheck = [...this.listCheck];
       if (state) {
-        this.listData.forEach(item => {
-          if (!this.value.find(id => item[this.itemID] == id))
+        this.value.forEach(item => {
+          if (!this.listCheck.find(id => item[this.itemID] == id))
             newCheck.push(item[this.itemID]);
         });
       } else {
-        newCheck = this.value.filter(id => {
-          return !(
-            this.listData.findIndex(data => data[this.itemID] == id) != -1
-          );
+        newCheck = this.listCheck.filter(id => {
+          return !(this.value.findIndex(data => data[this.itemID] == id) != -1);
         });
       }
       this.$emit("input", newCheck);
@@ -349,6 +454,33 @@ export default {
         }
       }
       return { position: "sticky", left: leftPos + "px" };
+    },
+    /**
+     * Lưu bảng
+     * CreatedBy: NTDUNG (23/12/2021)
+     */
+    saveTable() {
+      this.$emit("saveTable");
+      this.editAllState = false;
+    },
+    /**
+     * Vị trí của bản ghi
+     * CreatedBy: NTDUNG (23/12/2021)
+     */
+    posData(pos) {
+      var style = {};
+      switch (pos) {
+        case "left":
+          style["justify-content"] = "flex-start";
+          break;
+        case "right":
+          style["justify-content"] = "flex-end";
+          break;
+        case "center":
+          style["justify-content"] = "center";
+          break;
+      }
+      return style;
     }
   },
   watch: {
@@ -364,5 +496,5 @@ export default {
 };
 </script>
 <style lang="scss">
-@import "@/assets/scss/components/listgrid/listgrid.scss";
+@import "@/assets/scss/components/listgrid/listgridadvance.scss";
 </style>

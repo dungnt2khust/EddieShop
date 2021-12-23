@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@aspnet/signalr": "^1.0.27",
+    "@nuxtjs/auth-next": "^5.0.0-1637745161.ea53f98",
     "apexcharts": "^3.32.0",
     "axios": "^0.24.0",
     "chart.js": "^2.9.4",

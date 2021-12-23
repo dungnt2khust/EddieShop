@@ -1,5 +1,5 @@
 <template lang="">
-  <div class="number fx-row aln-i-center" :class="{disable: disable}">
+  <div @dblclick="dblclick($event)" class="number fx-row aln-i-center" :class="{disable: disable}">
     <div
       class="number__minus fx-center"
       :class="{ 'number--disable': value == min }"
@@ -66,7 +66,7 @@ export default {
      */
     increaseNum() {
       if (!this.disable)
-        if (this.max !== undefined) {
+        if (this.max !== undefined && this.max !== null) {
           if (this.value < this.max) this.$emit("input", this.value + 1);
         } else {
           this.$emit("input", this.value + 1);
@@ -78,11 +78,14 @@ export default {
      */
     decreaseNum() {
       if (!this.disable)
-        if (this.min !== undefined) {
+        if (this.min !== undefined && this.min !== null) {
           if (this.value > this.min) this.$emit("input", this.value - 1);
         } else {
           this.$emit("input", this.value - 1);
         }
+    },
+    dblclick(e) {
+      e.stopPropagation();
     }
   }
 };

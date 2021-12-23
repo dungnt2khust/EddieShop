@@ -104,7 +104,7 @@ export default {
           case AccountType.GUEST:
             break;
           case AccountType.ADMIN:
-            AdminAPI.updateColumns(this._getLocalStorageNotParse("AccountID"), {Language: language})
+            AdminAPI.UpdateColumns(this._getLocalStorageNotParse("AccountID"), {Language: language})
               .then(res => {
                 console.log(res)
                 alert("Cập nhật ngôn ngữ thành công")
@@ -115,7 +115,7 @@ export default {
               })
             break;
           case AccountType.USER:
-            UserAPI.updateColumns(this._getLocalStorageNotParse("AccountID"), {Language: language})
+            UserAPI.UpdateColumns(this._getLocalStorageNotParse("AccountID"), {Language: language})
               .then(res => {
                 console.log(res)
                 alert("Cập nhật ngôn ngữ thành công")

@@ -10,6 +10,8 @@
         <ed-button
           :method="
             () => {
+              productInfo = {};
+              modePopup = false;
               showAddProduct = true;
             }
           "
@@ -21,17 +23,20 @@
     </template>
     <template v-slot:content>
       <EdFrame class="h-full fx-col" autoScroll>
-        <EdListGridTable
+        <EdListGridAdvance
           class="flex-1 w-full"
           :listData="listProduct"
-          :dblClick="productDetail"
           :listHeader="listHeader"
+          :listCheck="listCheck"
           :pagingInfo="pagingInfo"
-          @edit="editProduct"
-          @delete="deleteProduct"
-          @deleteMulti="deleteMulti"
+          :totalData="totalData"
+          @dblClick="productDetail"
+          @edit="showEditProduct"
+          @Delete="deleteProduct"
+          @DeleteMulti="DeleteMulti"
           @changePagingFilter="changePagingFilter"
-          v-model="listCheck"
+          @changeListCheck="changeListCheck($event)"
+          v-model="listProduct"
           itemID="ProductID"
         >
           <template v-slot:header>
@@ -43,12 +48,15 @@
               query="name"
             />
           </template>
-        </EdListGridTable>
+        </EdListGridAdvance>
 
       </EdFrame>
       <AddProduct
         @addProduct="addProduct"
+        @editProduct="editProduct"
         @close="showAddProduct = false"
+        :mode="modePopup"
+        v-model="productInfo"
         v-if="showAddProduct"
       />
     </template>
@@ -76,6 +84,7 @@ export default {
       currOption: 0,
       listProduct: [],
       showAddProduct: false,
+      modePopup: false,
       listCheck: [],
       listHeader: [
         {
@@ -118,7 +127,8 @@ export default {
           type: "number",
           width: 100,
           headerPos: "right",
-          dataPos: "right"
+          dataPos: "right",
+          total: true
         },
         {
           title: "Tổng tiền",
@@ -126,7 +136,8 @@ export default {
           type: "money",
           width: 100,
           headerPos: "right",
-          dataPos: "right"
+          dataPos: "right",
+          total: true
         },
         {
           title: "Mô tả",
@@ -147,7 +158,9 @@ export default {
         pageNum: 1,
         pageSize: 10,
         filterData: {}
-      }
+      },
+      productInfo: {}, 
+      totalData: {}
     };
   },
   mounted() {
@@ -166,7 +179,7 @@ export default {
      * CreatedBy: NTDUNG (08/12/2021)
      */
     getProducts() {
-      ProductAPI.getFilterPaging(
+      ProductAPI.GetFilterPaging(
         this.pagingInfo.filterString,
         this.pagingInfo.pageNum,
         this.pagingInfo.pageSize,
@@ -177,7 +190,8 @@ export default {
             this.listProduct = res.data.Data.Records;
             this.pagingInfo.totalPage = res.data.Data.TotalPage;
             this.pagingInfo.totalRecord = res.data.Data.TotalRecord;
-            this.listCheck = []
+            this.listCheck = [];
+            this.totalData = res.data.Data.TotalDatas;
           }
         })
         .catch(err => {
@@ -191,7 +205,7 @@ export default {
       switch (this.currOption) {
         case 0:
           this.pagingInfo.filterData = {
-            TotalFields: ["Price", "OldPrice"]
+            TotalFields: ["Quantity", "TotalPrice"]
           };
           this.getProducts();
           break;
@@ -231,7 +245,7 @@ export default {
         `Bạn có muốn xoá <<b>${product.ProductCode} - ${product.ProductName}</b>> không`,
         {
           YES: () => {
-            ProductAPI.delete(product.ProductID)
+            ProductAPI.Delete(product.ProductID)
               .then(res => {
                 console.log(res);
                 this.getProductsFilterPaging();
@@ -249,15 +263,26 @@ export default {
      * Chỉnh sửa sản phẩm
      * CreatedBy: NTDUNG (19/12/2021)
      */
-    editProduct(product) {
-      console.log(product);
+    showEditProduct(product) {
+      ProductAPI.GetByID(product.ProductID)
+        .then(res => {
+          if (res.data.Success) { 
+            this.productInfo = res.data.Data;
+            this.modePopup = true;
+            this.showAddProduct = true;
+          }
+        })
+        .catch(err => {
+          this.$toast.error("Có lỗi xảy ra");
+          console.log(err)
+        })
     },
     /**
      * Thêm sản phẩm
      * CreatedBy: NTDUNG (20/12/2021)
      */
-    addProduct(product) {
-      ProductAPI.post(product)
+    addProduct() {
+      ProductAPI.post(this.productInfo)
         .then(res => {
           console.log(res);
           this.$toast.success("Thêm mới sản phẩm thành công");
@@ -282,10 +307,10 @@ export default {
      * Xoá nhiều
      * CreatedBy: NTDUNG (21/12/2021)
      */
-    deleteMulti() {
+    DeleteMulti() {
       this.$dialog.confirm("Bạn có muốn xoá tất cả những sản phẩm được chọn?", {
         YES: () => {
-          ProductAPI.deleteMulti(this.listCheck)
+          ProductAPI.DeleteMulti(this.listCheck)
             .then(res => {
               this.$toast.success("Xoá thành công");
               this.getProductsFilterPaging();
@@ -297,6 +322,28 @@ export default {
             }) 
         }
       });
+    },
+    /**
+     * Chỉnh sửa sản phẩm
+     * CreatedBy: NTDUNG (23/12/2021)
+     */
+    editProduct() {
+      ProductAPI.Update(this.productInfo.ProductID, this.productInfo)
+        .then(res => {
+          this.$toast.success("Chỉnh sửa sản phẩm thành công");
+          this.showAddProduct = false;
+          this.getProductsFilterPaging();
+        })
+        .catch(err => {
+          this.$toast.error(err.response.data.Msg);
+        });
+    },
+    /**
+     * Thay đổi danh sách được check
+     * CreatedBy: NTDUNG (23/12/2021)
+     */
+    changeListCheck(newListCheck) {
+      this.listCheck = newListCheck;
     }
   },
   watch: {

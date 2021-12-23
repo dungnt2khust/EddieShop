@@ -57,7 +57,7 @@ export default {
     },
     name: {
       type: [Number, String],
-      default: ""
+      default: "DefaultTextArea"
     },
     errMsg: {
       type: [Number, String],

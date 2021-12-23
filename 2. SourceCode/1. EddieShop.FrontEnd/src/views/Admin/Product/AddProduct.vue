@@ -1,7 +1,7 @@
 <template lang="">
   <form @submit.prevent="handleSubmit">
     <EdPopup
-      title="Thêm sản phẩm"
+      :title="mode ? 'Chỉnh sửa sản phẩm' : 'Thêm sản phẩm'"
       @close="$emit('close')"
       :active="true"
       maxWidth="700px"
@@ -13,21 +13,18 @@
             <ed-input
               name="ProductName"
               :rules="{ required: true }"
-              :errMsg="
-                errors.has('ProductName') ? 'Trường không được để trống' : ''
-              "
-              v-model="productInfo.ProductName"
+              :errMsg="errors.first('ProductName')"
+              v-model="value.ProductName"
             />
           </ed-col>
           <ed-col :colLg="6" :colXl="6" :colXs="6" :colSm="12">
             <ed-label required value="Mã sản phẩm" />
             <ed-input
               name="ProductCode"
+              :disabled="mode"
               :rules="{ required: true, max: 20 }"
-              :errMsg="
-                errors.has('ProductCode') ? 'Trường không được để trống' : ''
-              "
-              v-model="productInfo.ProductCode"
+              :errMsg="errors.first('ProductCode')"
+              v-model="value.ProductCode"
             />
           </ed-col>
           <ed-col :colLg="4" :colXl="4" :colXs="4" :colSm="12">
@@ -35,9 +32,9 @@
             <ed-input
               name="Price"
               :rules="{ required: true, max: 20 }"
-              :errMsg="errors.has('Price') ? 'Trường không được để trống' : ''"
+              :errMsg="errors.first('Price')"
               type="number"
-              v-model="productInfo.Price"
+              v-model="value.Price"
             />
           </ed-col>
           <ed-col :colLg="2" :colXl="2" :colXs="2" :colSm="12">
@@ -47,7 +44,7 @@
               :rules="{ required: true, max: 3 }"
               :errMsg="errors.first('Quantity')"
               type="number"
-              v-model="productInfo.Quantity"
+              v-model="value.Quantity"
             />
           </ed-col>
           <ed-col :colLg="6" :colXl="6" :colXs="6" :colSm="12">
@@ -57,8 +54,8 @@
               disabled
               :value="
                 Number(
-                  productInfo.Quantity * productInfo.Price
-                    ? productInfo.Quantity * productInfo.Price
+                  value.Quantity * value.Price
+                    ? value.Quantity * value.Price
                     : 0
                 )
               "
@@ -68,20 +65,18 @@
             <ed-label required value="Hình ảnh" />
             <ed-input-file
               name="Image"
-              :rules="{ required: true }"
-              :errMsg="errors.has('Image') ? 'Trường không được để trống' : ''"
-              v-model="productInfo.Image"
+              :rules="{ required: true}"
+              :errMsg="errors.first('Image')"
+              v-model="value.Image"
             />
           </ed-col>
           <ed-col :colLg="9" :colXl="9" :colXs="8" :colSm="12">
             <ed-label required value="Mô tả" />
             <ed-textarea
               name="Description"
-              :errMsg="
-                errors.has('Description') ? 'Trường không được để trống' : ''
-              "
+              :errMsg="errors.first('Description')"
               :rules="{ required: true }"
-              v-model="productInfo.Description"
+              v-model="value.Description"
             />
           </ed-col>
         </EdFrame>
@@ -92,7 +87,7 @@
           <ed-button
             type="submit"
             class="m-l-10"
-            label="Thêm mới"
+            :label="mode ? 'Chỉnh sửa' : 'Thêm mới'"
             :styleBtn="1"
             bgColor="#5DCE00"
           />
@@ -112,15 +107,26 @@ export default {
       parentValidator: this.$validator
     };
   },
+  props: {
+    mode: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data() {
     return {
-      productInfo: {},
+      // productInfo: {},
       productInfoClone: {},
       gender: 1
     };
   },
   created() {
-    this.getNewProductCode();
+    if (!this.mode) this.getNewProductCode();
+    else this.productInfoClone = { ...this.value };
   },
   methods: {
     /**
@@ -128,11 +134,13 @@ export default {
      * CreatedBy: NTDUNG (15/12/2021)
      */
     getNewProductCode() {
-      ProductAPI.getNewCode()
+      ProductAPI.GetNewCode()
         .then(res => {
           if (res.data.Success) {
-            this.$set(this.productInfo, "ProductCode", res.data.Data);
-            this.productInfoClone = { ...this.productInfo };
+            var data = { ...this.value };
+            this.$set(data, "ProductCode", res.data.Data);
+            this.$emit("input", data);
+            this.productInfoClone = { ...data };
           }
         })
         .catch(err => {
@@ -144,7 +152,7 @@ export default {
      * CreatedBy: NTDUNG (15/12/2021)
      */
     handleClose() {
-      if (this.deepEqualObject(this.productInfo, this.productInfoClone)) {
+      if (this.deepEqualObject(this.value, this.productInfoClone)) {
         this.$emit("close");
       } else {
         this.$dialog.confirmCancel(
@@ -169,8 +177,15 @@ export default {
         if (valid) {
           // Bind giá trị bổ sung trước khi submit
           this.preSubmit();
-          this.$emit("addProduct", this.productInfo);
+          if (!this.mode)
+            if (!this.deepEqualObject(this.value, this.productInfoClone))
+              this.$emit("addProduct");
+            else this.$emit("close");
+          else if (!this.deepEqualObject(this.value, this.productInfoClone))
+            this.$emit("editProduct");
+          else this.$emit("close");
         } else {
+          console.log(this.errors);
           this.$toast.error("Thông tin không chính xác");
         }
       });
@@ -180,8 +195,9 @@ export default {
      * CreatedBy: NTDUNG (21/12/2021)
      */
     preSubmit() {
-      this.productInfo.TotalPrice =
-        this.productInfo.Quantity * this.productInfo.Price;
+      var data = { ...this.value };
+      data.TotalPrice = data.Price * data.Quantity;
+      this.$emit("input", data);
     }
   }
 };

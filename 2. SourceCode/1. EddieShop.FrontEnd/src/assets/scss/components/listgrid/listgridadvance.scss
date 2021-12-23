@@ -1,10 +1,12 @@
 .listgrid {
     .listgrid__header {
         height: 40px;
+
         .listgrid__controls {
             height: 30px;
+
             @mixin common {
-                padding: 0px 8px; 
+                padding: 0px 8px;
                 cursor: pointer;
                 font-family: Notosans-Semibold;
                 font-size: 14px;
@@ -14,18 +16,21 @@
                 border-radius: 4px;
                 min-width: 80px;
             }
-            .listgrid__checked { 
+
+            .listgrid__checked {
                 font-family: Notosans-Semibold;
                 font-size: 14px;
                 display: flex;
                 align-items: center;
                 padding: 0 8px;
             }
+
             .listgrid__uncheck {
                 @include common;
                 border: 1px solid #008000;
                 color: #008000;
             }
+
             .listgrid__delete {
                 @include common;
                 border: 1px solid #E30A0D;
@@ -36,9 +41,10 @@
 
     .listgrid__content {
         width: 100%;
+
         .listgrid__table {
             table-layout: auto;
-            border-collapse: collapse;
+            border-collapse: separate;
             border-spacing: 0;
 
             .listgrid__table-header {
@@ -73,8 +79,10 @@
 
             .listgrid__table-body {
                 font-family: Notosans-Regular;
+
                 tr {
                     display: table-row;
+
                     &:hover td {
                         background-color: #eee !important;
                     }
@@ -84,6 +92,7 @@
                         padding: 0 10px;
                         border: 1px solid #ccc;
                         background-color: #fff;
+
                         &:first-child {
                             border-left: none;
                             position: sticky;
@@ -95,11 +104,12 @@
                             position: sticky;
                             right: 0;
                         }
-                    }  
+                    }
 
                     .listgrid__function {
                         justify-content: center;
                     }
+
                     &:hover {
                         cursor: pointer;
                         // .listgrid__function {
@@ -109,7 +119,39 @@
                 }
             }
 
-            .listgrid__table-footer {}
+            .listgrid__table-footer {
+                height: 40px;
+                border-top: 1px solid #ccc;
+                position: sticky;
+                bottom: 0;
+                // top: 100%;
+                // transform: translateY(-100%);
+
+                tr {
+                    td {
+                        background-color: #ddd;
+                        border: 1px solid #ccc;
+                        padding: 0 10px;
+                        font-size: 16px;
+                        font-family: Notosans-Semibold;
+                        &:first-child {
+                            border-left: none;
+                            position: sticky;
+                            left: 0;
+                            z-index: 50;
+                        }
+
+                        &:last-child {
+                            border-right: none;
+                            position: sticky;
+                            right: 0;
+
+                            z-index: 50;
+                        }
+                    }
+                }
+
+            }
         }
     }
 

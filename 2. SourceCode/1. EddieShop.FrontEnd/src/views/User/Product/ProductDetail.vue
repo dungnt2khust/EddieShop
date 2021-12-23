@@ -39,10 +39,11 @@
               <ed-number
                 v-model="ProductNum"
                 :min="0"
-                :max="10"
+                :max="ProductDetailData.Quantity"
                 :disable="ProductDetailData.Quantity <= 0"
               />
               <div
+                @click="addToCart"
                 v-tooltip="'Thêm vào giỏ hàng'"
                 class="txt-b-2 txt-s-30 cur-p hov-act-d m-l-16"
               >
@@ -83,6 +84,7 @@
 <script>
 // Plugins
 import ProductAPI from "@/api/components/Product/ProductAPI.js";
+import CartAPI from "@/api/components/Cart/CartAPI.js";
 import {AccountType} from "@/models/enum/AccountType.js"
 
 export default {
@@ -105,7 +107,7 @@ export default {
      * CreatedBy: NTDUNG (01/12/2021)
      */
     getProductDetail() {
-      ProductAPI.getById(this.ProductID)
+      ProductAPI.GetByID(this.ProductID)
         .then(res => {
           this.ProductDetailData = res.data.Data;
         })
@@ -115,11 +117,28 @@ export default {
         });
     },
     /**
+     * Thêm vào giỏ hàng
+     * CreatedBy: NTDUNG (23/12/2021)
+     */
+    addToCart() {
+      this.ProductDetailData['UserID'] = this._getLocalStorageNotParse("AccountID");
+      this.ProductDetailData['CartQuantity'] = this.ProductNum;
+      CartAPI.post(this.ProductDetailData)
+       .then(res => {
+         console.log(res);
+         this.$toast.success("Thêm vào giỏ hàng thành công");
+       })
+       .catch(err => {
+         console.log(err);
+         this.$toast.error("Thêm vào giỏ hàng thất bại");
+       })
+    },
+    /**
      * Xử lý đặt hàng
      * CreatedBy: NTDUNG (01/12/2021)
      */
     handleOrder() {
-      alert("Order");
+      this.$toast.warn(" Chức năng đang phát triển");
     },
     handleHide() {
       this.showPreview = false;

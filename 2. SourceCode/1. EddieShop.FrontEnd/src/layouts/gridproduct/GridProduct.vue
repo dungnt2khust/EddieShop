@@ -142,7 +142,7 @@ export default {
      * CreatedBy: NTDUNG (01/12/2021)
      */
     handleProductDetail(ProductID) {
-      this.$router.push("/product-detail/" + ProductID);
+      this.$router.push("/product/product-detail/" + ProductID);
     }
   }
 };

@@ -10,7 +10,8 @@ const store = new Vuex.Store({
   state: { 
       navBar: Guest,
       Language: 'vi', 
-      Route: ""
+      Route: "", 
+      PreviousRoute: null
   },
   mutations: {
     SET_LANG (state, payload) {
@@ -24,7 +25,10 @@ const store = new Vuex.Store({
       } 
       payload.shift();
       this.Route = payload;
-    } 
+    },
+    SET_PREVIOUS_ROUTE(state, payload) {
+      this.PreviousRoute = payload;
+    }
   },
   actions: {
     setLang({commit}, payload) {
@@ -32,6 +36,9 @@ const store = new Vuex.Store({
     },
     setRoute({commit}, payload) {
       commit('SET_ROUTE', payload);
+    },
+    setPreviousRoute({commit}, payload) {
+      commit('SET_PREVIOUS_ROUTE', payload)
     }
   }
 });

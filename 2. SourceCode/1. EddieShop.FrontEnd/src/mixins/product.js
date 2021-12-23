@@ -7,7 +7,7 @@ export default {
      * CreatedBy: NTDUNG (02/11/2021)
      */
     getListProduct(pageNum = 1, pageSize = 10, filterString = "", width = "100px", height = "100px") {
-      return ProductAPI.getFilterPaging(filterString, pageNum, pageSize)
+      return ProductAPI.GetFilterPaging(filterString, pageNum, pageSize)
         .then(res => {
           if (res && res.data && res.data.Success) {
             this.products = res.data.Data.Records;

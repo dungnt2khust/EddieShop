@@ -1,5 +1,17 @@
+import App from "@/main.js"
+
 export default {
     methods: {
+		/**
+		 * Chuyển router
+		 * CreatedBy: NTDUNG (23/12/2021)
+		 */
+		redirect(route, param) {
+			if (route != App.$route.path)
+				App.$router.push(route);
+			else 
+				App.$router.go(0);
+		},
         /**
          * Tuỳ chỉnh style
          * @param {Object} attributes

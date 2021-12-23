@@ -1,6 +1,5 @@
 <template lang="">
   <div class="header pos-relative">
-    <div class="header__min"></div>
     <div class="header__main">
       <Logo />
     </div> 

@@ -43,7 +43,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <returns></returns>  
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
-        public IEnumerable<TEntity> GetAllEntities(Guid? sessionID)
+        public virtual IEnumerable<TEntity> GetAllEntities(Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -85,7 +85,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/11/2021)
-        public TEntity GetEntityByProperties(object columnsGet, Guid? sessionID)
+        public virtual TEntity GetEntityByProperties(object columnsGet, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             { 
@@ -115,7 +115,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/11/2021)
-        public List<TEntity> GetByValueColumns(TEntity columnsGet, Guid? sessionID)
+        public virtual List<TEntity> GetByValueColumns(TEntity columnsGet, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -148,7 +148,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG (24/11/2021)
-        public List<TEntity> GetByIds(List<Guid> ids, Guid? sessionID)
+        public virtual List<TEntity> GetByIds(List<Guid> ids, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -169,7 +169,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <returns>số bản ghi được thêm</returns>
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
-        public int Insert(TEntity entity)
+        public virtual int Insert(TEntity entity)
         {
             MySqlConnection mySqlConnection = null;
             IDbTransaction transaction = null;
@@ -238,7 +238,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <returns>số bản ghi được sửa</returns>
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
-        public int Update(TEntity entity, Guid entityId, Guid? sessionID)
+        public virtual int Update(TEntity entity, Guid entityId, Guid? sessionID)
         {
             MySqlConnection mySqlConnection = null;
             IDbTransaction transaction = null;
@@ -305,7 +305,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <returns>Số bản ghi được xóa</returns>
         /// CreatedBy: NTDUNG(27/8/2021)
         /// ModifiedBy: NTDUNG(27/8/2021)
-        public int Delete(Guid entityId, Guid? sessionID)
+        public virtual int Delete(Guid entityId, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -329,7 +329,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <returns></returns>
         /// CreatedBy: NTDUNG(19/8/2021)
         /// ModifiedBy: NTDUNG(19/8/2021)
-        public int DeleteMultiple(List<Guid> entityIds, Guid? sessionID)
+        public virtual int DeleteMultiple(List<Guid> entityIds, Guid? sessionID)
         {
             MySqlConnection mySqlConnection = null;
             IDbTransaction transaction = null;
@@ -384,7 +384,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="mode"></param>
         /// <param name="sessionID"></param>
         /// <returns></returns>
-        public bool CheckDuplicate(TEntity entity, string fieldName, string mode, Guid? sessionID)
+        public virtual bool CheckDuplicate(TEntity entity, string fieldName, string mode, Guid? sessionID)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -419,7 +419,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(07/10/2021)
-        public string GetNewCode(Guid? sessionID)
+        public virtual string GetNewCode(Guid? sessionID)
         {
 
             using (_dbConnection = new MySqlConnection(_connectionString))
@@ -441,7 +441,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(27/10/2021)
-        public Object GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID)
+        public virtual Object GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID)
         {
             var totalFields = filterData.TotalFields != null ? filterData.TotalFields : new List<string>();
             var rangeDates = filterData.RangeDates != null ? filterData.RangeDates : new List<RangeDate>();
@@ -604,7 +604,7 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG (14/11/2021) 
-        public int UpdateColumns(TEntity entity, Guid entityId, List<string> columns, Guid? sessionID)
+        public virtual int UpdateColumns(TEntity entity, Guid entityId, List<string> columns, Guid? sessionID)
         {
             MySqlConnection mySqlConnection = null;
             IDbTransaction transaction = null;
@@ -665,8 +665,81 @@ namespace EddieShop.Infrastructure.Repository
                 if (mySqlConnection != null) mySqlConnection.Close();
             }
             return rowEffects;
-        } 
-        #endregion 
+        }
+        #endregion
+
+        #region UpdateMultiple
+        /// <summary>
+        /// Cập nhật nhiều
+        /// </summary>
+        /// <param name="listEntity"></param>
+        /// <param name="sessionID"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (23/12/2021)
+        public virtual int UpdateMultiple(List<TEntity> listEntity, Guid? sessionID) {
+            MySqlConnection mySqlConnection = null;
+            IDbTransaction transaction = null;
+            var rowEffects = -1;
+            var sqlCommand = "";
+
+            try
+            {
+                mySqlConnection = new MySqlConnection(_connectionString);
+                mySqlConnection.Open();
+                transaction = mySqlConnection.BeginTransaction();
+
+                var queryLine = new List<string>();
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                foreach(var (entity, index) in listEntity.Select((entity, index) => (entity, index)))
+                {
+                    var properties = entity.GetType().GetProperties();
+                    Guid? entityId = null;
+                    foreach (var property in properties)
+                    {
+                        if (property.IsDefined(typeof(EddieNotMap), false)) continue;
+                        var propName = property.Name;
+                        var propValue = property.GetValue(entity);
+
+                        // Bổ sung ngày chỉnh sửa
+                        if (propName == "ModifiedDate")
+                        {
+                            propValue = DateTime.Now;
+                        }
+                        if (propName.Equals($"{_className}ID") && property.PropertyType == typeof(Guid))
+                        {
+                            entityId = (Guid?)propValue;
+                        }
+                        else
+                        { 
+                            queryLine.Add($"{propName} = @{propName}{index}");
+                            dynamicParameters.Add($"@{propName}{index}", propValue);
+                        }
+                    }
+
+                    dynamicParameters.Add($"@oldEntityId{index}", entityId);
+                    sqlCommand += $"UPDATE {_className} SET {String.Join(", ", queryLine.ToArray())} " +
+                                    $"WHERE {_className}Id = @oldEntityId{index};";
+
+                }
+                rowEffects = mySqlConnection.Execute(sqlCommand, param: dynamicParameters, transaction: transaction);
+                
+                transaction.Commit();
+            }
+            catch (Exception)
+            {
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                }
+                throw;
+            }
+            finally
+            {
+                if (mySqlConnection != null) mySqlConnection.Close();
+            }
+            return rowEffects;
+        }
+        #endregion
         #endregion
     }
 }

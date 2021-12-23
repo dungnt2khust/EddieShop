@@ -1,19 +1,31 @@
 <template lang="">
-  <ed-popup :title="$t('i18nMenu.Authen.NoPermission')">
-    <template v-slot:header>
-      <ed-logo txtColor="#fff" txtSize="24px" bgColor="#12007B" />
-    </template>
-    <template v-slot:content>
-      <ed-row class="m-t-20">
-        <span>
-            {{$t('i18nNotify.NoPermission')}}
-        </span>
-      </ed-row>
-      <ed-row class="m-t-20">
-        <ed-button :label="$t('i18nNotify.BackToHome')" @click.native="back" :type="2" />
-      </ed-row>
-    </template>
-  </ed-popup>
+  <FullScreen class="jus-c-center aln-i-center">
+    <BaseContentFrame
+      :title="$t('i18nMenu.Authen.NoPermission')"
+      width="70%"
+      height="fit-content"
+    >
+      <template v-slot:header>
+        <div class="fx-row jus-c-fend">
+          <ed-logo txtColor="#fff" txtSize="24px" bgColor="#12007B" />
+        </div>
+      </template>
+      <template v-slot:content>
+        <ed-row class="m-t-20">
+          <span>
+            {{ $t("i18nNotify.NoPermission") }}
+          </span>
+        </ed-row>
+        <ed-row class="m-t-20">
+          <ed-button
+            :label="$t('i18nNotify.BackToHome')"
+            @click.native="back"
+            :styleBtn="2"
+          />
+        </ed-row>
+      </template>
+    </BaseContentFrame>
+  </FullScreen>
 </template>
 <script>
 // Plugins

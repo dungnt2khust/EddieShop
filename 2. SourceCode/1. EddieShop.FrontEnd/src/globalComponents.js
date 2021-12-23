@@ -57,8 +57,8 @@ Vue.component('EdSelectBox', SelectBox);
 const ListGrid = () => import('@/components/listgrid/ListGrid.vue');
 Vue.component('EdListGrid', ListGrid);
 
-const ListGridTable = () => import('@/components/listgrid/ListGridTable.vue');
-Vue.component('EdListGridTable', ListGridTable);
+const ListGridAdvance = () => import('@/components/listgrid/ListGridAdvance.vue');
+Vue.component('EdListGridAdvance', ListGridAdvance);
 
 const CheckBox = () => import('@/components/checkbox/CheckBox.vue');
 Vue.component('EdCheckBox', CheckBox);

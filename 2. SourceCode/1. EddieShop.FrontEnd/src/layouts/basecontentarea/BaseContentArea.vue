@@ -5,6 +5,9 @@
   >
     <div class="fx-col w-full h-full " :style="customizeStyle(styleCustom)">
       <div v-if="title" class="area-header">
+        <div v-if="$store.PreviousRoute" @click="goToPreviousRoute" class="area-header__back fx-row aln-i-center m-r-10 cur-p">
+          <div class="mi-back"></div>
+        </div>
         <div class="area-header__title">
           {{ title }}
         </div>
@@ -137,6 +140,16 @@ export default {
         "margin-top": this.mTop ? this.mTop : this.mVer
       }
     };
+  },
+  methods: {
+    /**
+     * Back
+     * CreatedBy: NTDUNG (23/12/2021)
+     */
+    goToPreviousRoute() {
+      this.$router.push(this.$store.PreviousRoute.path);
+      this.$store.dispatch("setPreviousRoute", null);
+    }
   }
 };
 </script>

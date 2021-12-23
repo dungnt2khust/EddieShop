@@ -77,7 +77,7 @@ export default {
      * CreatedBy: NTDUNG (01/12/2021)
      */
     getProductDetail() {
-      ProductAPI.getById(this.ProductID)
+      ProductAPI.GetByID(this.ProductID)
         .then(res => {
           this.ProductDetailData = res.data.Data;
         })

@@ -66,7 +66,7 @@ export default {
     },
     name: {
       type: [Number, String],
-      default: ""
+      default: "DefaultInput"
     },
     errMsg: {
       type: [Number, String],

@@ -508,3 +508,8 @@
 }
 
 @include setScale;
+
+// User select
+.no-select {
+    user-select: none;
+}

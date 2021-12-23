@@ -4,7 +4,7 @@
     :type="type"
     :title="tooltip"
     @click="handleButtonClick"
-    :class="[`button--${styleBtn}`, { 'button--disable': disable }]"
+    :class="[`button--${styleBtn}`, { 'button--disable': disabled }]"
     :style="customizeStyle(styleCustom)"
   >
     <div class="button__label">
@@ -51,7 +51,7 @@ export default {
       type: Function,
       default: () => {}
     },
-    disable: {
+    disabled: {
       type: Boolean,
       default: false
     },
