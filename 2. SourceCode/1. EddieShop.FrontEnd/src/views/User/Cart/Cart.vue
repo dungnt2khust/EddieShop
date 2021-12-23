@@ -7,7 +7,11 @@
   >
     <template v-slot:header>
       <div class="fx-row jus-c-fend">
-        <ed-button label="Thanh toán" :styleBtn="1" :disabled="listCheck.length <= 0" />
+        <ed-button
+          label="Thanh toán"
+          :styleBtn="1"
+          :disabled="listCheck.length <= 0"
+        />
       </div>
     </template>
     <template v-slot:content>
@@ -98,7 +102,7 @@ export default {
           min: 1,
           headerPos: "right",
           dataPos: "right",
-          editable: true, 
+          editable: true,
           total: true
         },
         {
@@ -115,7 +119,9 @@ export default {
         filterString: "",
         pageNum: 1,
         pageSize: 10,
-        filterData: {}
+        filterData: {
+          TotalFields: ["CartTotalPrice", "CartQuantity"]
+        }
       },
       cartInfo: {},
       totalData: {}
@@ -147,7 +153,7 @@ export default {
         .then(res => {
           if (res.data.Success) {
             this.listCart = res.data.Data.Records;
-            this.listCartClone =  JSON.parse(JSON.stringify(this.listCart));
+            this.listCartClone = JSON.parse(JSON.stringify(this.listCart));
             this.pagingInfo.totalPage = res.data.Data.TotalPage;
             this.pagingInfo.totalRecord = res.data.Data.TotalRecord;
             this.listCheck = [];
@@ -164,34 +170,23 @@ export default {
     getCartsFilterPaging() {
       switch (this.currOption) {
         case 0:
-          this.pagingInfo.filterData = {
-            TotalFields: ["CartTotalPrice", "CartQuantity"]
-          };
+          this.pagingInfo.filterData.RangeDates = [];
           this.getCarts();
           break;
         case 1:
-          this.pagingInfo.filterData = {
-            TotalFields: ["Price", "OldPrice"],
-            RangeDates: [
-              {
-                FieldName: "ModifiedDate",
-                FromDate: new Date(2021, 11, 22),
-                ToDate: new Date(2021, 11, 24)
-              }
-            ]
-          };
+          this.pagingInfo.filterData.RangeDates = [
+            {
+              FieldName: "ModifiedDate",
+              FromDate: new Date(2021, 11, 22),
+              ToDate: new Date(2021, 11, 24)
+            }
+          ];
           this.getCarts();
           break;
         case 2:
-          this.pagingInfo.filterData = {
-            TotalFields: ["Price", "OldPrice"]
-          };
           this.getCarts();
           break;
         case 3:
-          this.pagingInfo.filterData = {
-            TotalFields: ["Price", "OldPrice"]
-          };
           this.getCarts();
           break;
       }
@@ -268,20 +263,23 @@ export default {
      * CreatedBy: NTDUNG (21/12/2021)
      */
     DeleteMulti() {
-      this.$dialog.confirm("Bạn có muốn xoá tất cả những sản phẩm được chọn khỏi giỏ hàng ?", {
-        YES: () => {
-          CartAPI.DeleteMulti(this.listCheck)
-            .then(res => {
-              this.$toast.success("Xoá thành công");
-              this.getCartsFilterPaging();
-              console.log(res);
-            })
-            .catch(err => {
-              this.$toast.error("Xoá thất bại");
-              console.log(res);
-            });
+      this.$dialog.confirm(
+        "Bạn có muốn xoá tất cả những sản phẩm được chọn khỏi giỏ hàng ?",
+        {
+          YES: () => {
+            CartAPI.DeleteMulti(this.listCheck)
+              .then(res => {
+                this.$toast.success("Xoá thành công");
+                this.getCartsFilterPaging();
+                console.log(res);
+              })
+              .catch(err => {
+                this.$toast.error("Xoá thất bại");
+                console.log(res);
+              });
+          }
         }
-      });
+      );
     },
     /**
      * Chỉnh sửa sản phẩm
@@ -310,19 +308,19 @@ export default {
      * CreatedBy: NTDUNG (23/12/2021)
      */
     saveTable() {
-        var listChange = this.listCart.filter((cart, index) => {
-            return !this.deepEqualObject(cart, this.listCartClone[index]);
+      var listChange = this.listCart.filter((cart, index) => {
+        return !this.deepEqualObject(cart, this.listCartClone[index]);
+      });
+      CartAPI.UpdateMulti(listChange)
+        .then(res => {
+          console.log(res);
+          this.$toast.success("Cập nhật thành công");
+          this.getCartsFilterPaging();
+        })
+        .catch(err => {
+          console.log(err);
+          this.$toast.error("Cập nhật thất bại");
         });
-        CartAPI.UpdateMulti(listChange)
-            .then(res => {
-                console.log(res);
-                this.$toast.success("Cập nhật thành công");
-                this.getCartsFilterPaging();
-            })
-            .catch(err => {
-                console.log(err);
-                this.$toast.error("Cập nhật thất bại");
-            })
     }
   },
   watch: {

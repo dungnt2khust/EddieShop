@@ -49,7 +49,6 @@
             />
           </template>
         </EdListGridAdvance>
-
       </EdFrame>
       <AddProduct
         @addProduct="addProduct"
@@ -157,9 +156,12 @@ export default {
         filterString: "",
         pageNum: 1,
         pageSize: 10,
-        filterData: {}
+        filterData: {
+          TotalFields: ["Quantity", "TotalPrice"],
+          Sorts: [{ Field: "Price", Desc: true }, {Field: "ProductCode", Desc: false}]
+        }
       },
-      productInfo: {}, 
+      productInfo: {},
       totalData: {}
     };
   },
@@ -204,34 +206,22 @@ export default {
     getProductsFilterPaging() {
       switch (this.currOption) {
         case 0:
-          this.pagingInfo.filterData = {
-            TotalFields: ["Quantity", "TotalPrice"]
-          };
           this.getProducts();
           break;
         case 1:
-          this.pagingInfo.filterData = {
-            TotalFields: ["Price", "OldPrice"],
-            RangeDates: [
-              {
-                FieldName: "ModifiedDate",
-                FromDate: new Date(2021, 11, 22),
-                ToDate: new Date(2021, 11, 24)
-              }
-            ]
-          };
+          this.pagingInfo.filterData.RangeDates = [
+            {
+              FieldName: "ModifiedDate",
+              FromDate: new Date(2021, 11, 22),
+              ToDate: new Date(2021, 11, 24)
+            }
+          ];
           this.getProducts();
           break;
         case 2:
-          this.pagingInfo.filterData = {
-            TotalFields: ["Price", "OldPrice"]
-          };
           this.getProducts();
           break;
         case 3:
-          this.pagingInfo.filterData = {
-            TotalFields: ["Price", "OldPrice"]
-          };
           this.getProducts();
           break;
       }
@@ -266,7 +256,7 @@ export default {
     showEditProduct(product) {
       ProductAPI.GetByID(product.ProductID)
         .then(res => {
-          if (res.data.Success) { 
+          if (res.data.Success) {
             this.productInfo = res.data.Data;
             this.modePopup = true;
             this.showAddProduct = true;
@@ -274,8 +264,8 @@ export default {
         })
         .catch(err => {
           this.$toast.error("Có lỗi xảy ra");
-          console.log(err)
-        })
+          console.log(err);
+        });
     },
     /**
      * Thêm sản phẩm
@@ -314,12 +304,12 @@ export default {
             .then(res => {
               this.$toast.success("Xoá thành công");
               this.getProductsFilterPaging();
-              console.log(res)
+              console.log(res);
             })
             .catch(err => {
               this.$toast.error("Xoá thất bại");
               console.log(res);
-            }) 
+            });
         }
       });
     },

@@ -445,6 +445,7 @@ namespace EddieShop.Infrastructure.Repository
         {
             var totalFields = filterData.TotalFields != null ? filterData.TotalFields : new List<string>();
             var rangeDates = filterData.RangeDates != null ? filterData.RangeDates : new List<RangeDate>();
+            var sorts = filterData.Sorts != null ? filterData.Sorts : new List<Sort>();
 
             using(_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -463,6 +464,10 @@ namespace EddieShop.Infrastructure.Repository
                 var entitiesFilterPaging = _dbConnection.Query<TEntity>(proceduceFilterPaging, param: dynamicParameters, commandType: CommandType.StoredProcedure);
                 var entitiesFilter = _dbConnection.Query<TEntity>(proceduceFilter, param: dynamicParameters, commandType: CommandType.StoredProcedure);
 
+                // Sắp xếp
+                entitiesFilterPaging = SortData(entitiesFilterPaging.ToList(), sorts);
+
+                // Truy vấn trong khoảng thời gian
                 if (rangeDates.Count() > 0) { 
                     entitiesFilterPaging = FilterInRange(entitiesFilterPaging.ToList(), rangeDates);
                     entitiesFilter = FilterInRange(entitiesFilter.ToList(), rangeDates);
@@ -525,11 +530,293 @@ namespace EddieShop.Infrastructure.Repository
                     TotalDatas = totalDatas,
                     Records = pageSize == -1 ? entitiesFilter : entitiesFilterPaging
                 };
-    
+
                 return filterResult;
             }    
         }
-      
+        #region SortData
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="listEntity"></param>
+        /// <param name="sorts"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (23/12/2021)
+        public List<TEntity> SortData(List<TEntity> listEntity, List<Sort> sorts)
+        {
+            var result = listEntity;
+
+            switch (sorts.Count())
+            {
+                case 0:
+                    result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty("CreatedDate").GetValue(t)).ToList();
+                    break;
+                case 1:
+                    result = Sort1(result, sorts);
+                    break;
+                case 2:
+                    result = Sort2(result, sorts);
+                    break;
+                case 3:
+                    result = Sort3(result, sorts);
+                    break;
+                case 4:
+                    result = Sort4(result, sorts);
+                    break;
+                default:
+                    result = new List<TEntity>();
+                    result[0] = listEntity[0];
+                    result[1] = listEntity[1];
+                    result[2] = listEntity[2];
+                    result[3] = listEntity[3];
+                    result = Sort4(result, sorts);
+                    break;
+            }
+            
+            return result;
+        }
+        /// <summary>
+        /// Sắp xếp 1 trường
+        /// </summary>
+        /// <param name="listEntity"></param>
+        /// <param name="sorts"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (23/12/2021)
+        public List<TEntity> Sort1(List<TEntity> listEntity, List<Sort> sorts)
+        {
+            var result = listEntity;
+            if (sorts.ElementAt(0).Desc)
+                result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(sorts.ElementAt(0).Field).GetValue(t)).ToList();
+            else 
+                result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(sorts.ElementAt(0).Field).GetValue(t)).ToList();
+            return result;
+        }
+        /// <summary>
+        /// Sắp xếp 2 trường
+        /// </summary>
+        /// <param name="listEntity"></param>
+        /// <param name="sorts"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (23/12/2021)
+        public List<TEntity> Sort2(List<TEntity> listEntity, List<Sort> sorts)
+        {
+            var result = listEntity;
+            var field0 = sorts.ElementAt(0);
+            var field1 = sorts.ElementAt(1);
+                
+            if (field0.Desc && field1.Desc)
+                result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                    .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t)).ToList();
+            else if (field0.Desc && !field1.Desc) 
+                result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                    .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t)).ToList();
+            else if (!field0.Desc && field1.Desc)
+                result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                    .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t)).ToList();
+            else
+                result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                    .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t)).ToList();
+
+            return result;
+        }
+        /// <summary>
+        /// Sắp xếp 3 trường
+        /// </summary>
+        /// <param name="listEntity"></param>
+        /// <param name="sorts"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (23/12/2021)
+        public List<TEntity> Sort3(List<TEntity> listEntity, List<Sort> sorts)
+        {
+            var result = listEntity;
+            var field0 = sorts.ElementAt(0);
+            var field1 = sorts.ElementAt(1);
+            var field2 = sorts.ElementAt(2);
+
+            if (field0.Desc && field1.Desc)
+            {
+                if (field2.Desc)
+                    result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                        .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                        .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t)).ToList();
+                else
+                    result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                        .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                        .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t)).ToList();
+            }
+            else if (field0.Desc && !field1.Desc)
+            {
+                if (field2.Desc)
+                    result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                        .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                        .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t)).ToList();
+                else
+                    result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                        .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                        .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t)).ToList();
+            }
+            else if (!field0.Desc && field1.Desc)
+            {
+                if (field2.Desc)
+                    result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                        .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                        .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t)).ToList();
+                else
+                    result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                        .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                        .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t)).ToList();
+            }
+            else
+            {
+                if (field2.Desc)
+                    result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                        .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                        .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t)).ToList();
+                else
+                    result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                        .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                        .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t)).ToList();
+            }
+
+            return result;
+
+        }
+        /// <summary>
+        /// Sắp xếp 4 trường
+        /// </summary>
+        /// <param name="listEntity"></param>
+        /// <param name="sorts"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (23/12/2021)
+        public List<TEntity> Sort4(List<TEntity> listEntity, List<Sort> sorts)
+        {
+            var result = listEntity;
+            var field0 = sorts.ElementAt(0);
+            var field1 = sorts.ElementAt(1);
+            var field2 = sorts.ElementAt(2);
+            var field3 = sorts.ElementAt(3);
+
+            if (field0.Desc && field1.Desc)
+            {
+                if (field2.Desc)
+                {
+                    if (field3.Desc) 
+                        result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                    else
+                        result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                } else
+                {
+                    if (field3.Desc)
+                        result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                    else
+                        result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                }                 
+            }
+            else if (field0.Desc && !field1.Desc)
+            {
+                if (field2.Desc)
+                {
+                    if (field3.Desc)
+                        result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                    else
+                        result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                }
+                else
+                {
+                    if (field3.Desc)
+                        result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                    else
+                        result = (List<TEntity>)result.OrderByDescending(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                }
+            }
+            else if (!field0.Desc && field1.Desc)
+            {
+                if (field2.Desc)
+                {
+                    if (field3.Desc)
+                        result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                    else
+                        result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                }
+                else
+                {
+                    if (field3.Desc)
+                        result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                    else
+                        result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                }
+            }
+            else
+            {
+                if (field2.Desc)
+                {
+                    if (field3.Desc)
+                        result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                    else
+                        result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                }
+                else
+                {
+                    if (field3.Desc)
+                        result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenByDescending(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                    else
+                        result = (List<TEntity>)result.OrderBy(t => t.GetType().GetProperty(field0.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field1.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field2.Field).GetValue(t))
+                            .ThenBy(t => t.GetType().GetProperty(field3.Field).GetValue(t)).ToList();
+                }
+            }
+
+            return result;
+        }
+       #endregion
+
+        #region FilterInRange
         /// <summary>
         /// Lọc 
         /// </summary>
@@ -583,6 +870,9 @@ namespace EddieShop.Infrastructure.Repository
             }
             return result;
         }
+        #endregion
+
+        #region AddProperty
         public static void AddProperty(ExpandoObject expando, string propertyName, object propertyValue, Guid? sessionID)
         {
             // ExpandoObject supports IDictionary so we can extend it like this
@@ -592,6 +882,7 @@ namespace EddieShop.Infrastructure.Repository
             else
                 expandoDict.Add(propertyName, propertyValue);
         }
+        #endregion
         #endregion
 
         #region UpdateColumns

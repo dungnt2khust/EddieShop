@@ -15,5 +15,10 @@ namespace EddieShop.Core.Entities.Common
         /// Những thuộc tính cần lấy trong một khoảng ngày tháng
         /// </summary>
         public List<RangeDate>? RangeDates { get; set; }
+
+        /// <summary>
+        /// Những thuộc tính muốn sắp xếp 
+        /// </summary>
+        public List<Sort>? Sorts { get; set; }
     }
 }
