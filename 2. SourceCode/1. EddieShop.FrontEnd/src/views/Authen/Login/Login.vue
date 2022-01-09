@@ -85,6 +85,7 @@ export default {
           if (res.data.Data.AccountType) {
             var data = res.data.Data.Data;
             delete data.PassWord;
+            this.$store.dispatch("setAccountData", data);
             this._setLocalStorage("AccountData", data);
             this._setLocalStorage("AccountType", res.data.Data.AccountType);
             this._setLocalStorageNotStringify(
@@ -99,15 +100,17 @@ export default {
 
               switch (_accountType) {
                 case AccountType.ADMIN:
+                  this.$toast.success("Xin chào admin " + this._getLocalStorage("AccountData").DisplayName)
                   this.$router.push("/admin/dashboard");
                   break;
                 case AccountType.USER:
+                  this.$toast.success("Xin chào " + this._getLocalStorage("AccountData").DisplayName)
                   this.$router.push("/home");
                   break;
               }
             }
           } else {
-            alert("Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại.");
+            this.$toast.error("Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại.");
           }
         })
         .catch(res => {

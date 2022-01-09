@@ -12,6 +12,8 @@
         z-index: 1000;
         list-style: none;
         border: 1px solid #ccc;
+        border-collapse: collapse;
+        border-spacing: none;
         .selectbox__item {
             cursor: pointer;
             font-family: Notosans-Regular;

@@ -35,3 +35,4 @@ F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieSh
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Debug\netcoreapp3.0\EddieShop.Controller.API.dll
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Debug\netcoreapp3.0\EddieShop.Controller.API.pdb
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Debug\netcoreapp3.0\EddieShop.Controller.API.genruntimeconfig.cache
+F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll

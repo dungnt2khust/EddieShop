@@ -14,6 +14,14 @@ import Authen from "@/router/route/Authen";
 
 export default {
   name: "Main",
+  created() {
+    window.addEventListener('resize', () => {
+      this.$bus.$emit('hideOnGlobalEvent');
+    })
+    window.addEventListener('scroll', () => {
+      this.$bus.$emit('hideOnGlobalEvent');
+    })
+  },
   methods: { 
     /**
      * Kiểm tra phiên đăng nhập
@@ -28,6 +36,7 @@ export default {
           .then(res => {
             if (res.data.Data.AccountType) {
               // Gán thông tin tài khoản
+              this.$store.dispatch('setAccountData', res.data.Data.Data);
               this._setLocalStorage("AccountData", res.data.Data.Data);
               this._setLocalStorage("AccountType", res.data.Data.AccountType);
               // Kết nối với serrver

@@ -1,5 +1,6 @@
 <template lang="">
   <button
+    :id="id"
     class="button"
     :type="type"
     :title="tooltip"
@@ -62,6 +63,10 @@ export default {
     type: {
       type: String,
       default: 'button'
+    },
+    id: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -79,7 +84,7 @@ export default {
      * CreatedBy: NTDUNG (01/12/2021)
      */
     handleButtonClick() {
-      if (!this.disable) this.method();
+      if (!this.disabled) this.method();
     }
   }
 };

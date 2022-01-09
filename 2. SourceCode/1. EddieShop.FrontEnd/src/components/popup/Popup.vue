@@ -5,6 +5,9 @@
         :autoScroll="false"
         :height="height"
         :maxWidth="maxWidth"
+        :maxHeight="maxHeight"
+        :minWidth="minWidth"
+        :minHeight="minHeight"
         class="m-v-20"
       >
         <template v-slot:content>
@@ -38,10 +41,6 @@ export default {
       type: String,
       default: ""
     },
-    // autoScroll: {
-    //   type: Boolean,
-    //   default: true
-    // },
     height: {
       type: String,
       default: "fit-content"
@@ -53,6 +52,22 @@ export default {
     maxWidth: {
       type: [Number, String],
       default: null
+    },
+    maxHeight: {
+      type: [Number, String],
+      default: null
+    },
+    minWidth: {
+      type: [Number, String],
+      default: null
+    },
+    minHeight: {
+      type: [Number, String],
+      default: null
+    },
+    contentFix: {
+      type: Boolean,
+      default: false
     }
   }
 };

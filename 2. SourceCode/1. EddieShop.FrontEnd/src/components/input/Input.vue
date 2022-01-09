@@ -1,14 +1,16 @@
 <template lang="">
-  <div class="input" :style="customizeStyle(styleCustom)">
+  <div class="input" :class="{'just-error': justError}" :style="customizeStyle(styleCustom)">
     <div class="w-full">
       <input
-        :type="typeTemp"
-        :value="value"
+        :autocomplete="autoComplete ? 'on' : 'off'"
+        :id="rules && Object.getOwnPropertyNames(rules).length ? name : ''"
+        :type="typeTemp == 'number' ? 'text' : typeTemp"
+        :value="inputValue"
         :placeholder="placeholder"
         :autofocus="autoFocus"
         :title="errMsg"
-        :name="name"
-        :class="{ 'input--invalid': errMsg != '', 'input--disabled': disabled}"
+        :name="rules && Object.getOwnPropertyNames(rules).length ? name : 'DefaultInput'"
+        :class="{ 'input--invalid': errMsg != '', 'input--disabled': disabled }"
         :readonly="disabled"
         v-on="inputListeners"
         v-validate="rules"
@@ -66,7 +68,7 @@ export default {
     },
     name: {
       type: [Number, String],
-      default: "DefaultInput"
+      default: ""
     },
     errMsg: {
       type: [Number, String],
@@ -77,6 +79,18 @@ export default {
       default: 0
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    justError: {
+      type: Boolean,
+      default: false
+    },
+    label: {
+      type: String,
+      default: null
+    },
+    autoComplete: {
       type: Boolean,
       default: false
     }
@@ -94,7 +108,35 @@ export default {
   created() {
     if (this.parentValidator) this.$validator = this.parentValidator;
   },
+  mounted() {
+    if (this.parentValidator) {
+      var error = {
+        custom: {
+          [this.name]: {}
+        }
+      };
+      if (this.rules && this.rules.required) {
+        error.custom[this.name].required = () => this.$t('i18nValidate.Required', {Field: this.label || this.name})
+      }
+      if (this.rules && this.rules.max) {
+        error.custom[this.name].max = (...rest) => this.$t('i18nValidate.Max', {Field: this.label || this.name, Max: rest[1]})
+      }
+      this.$validator.localize(this.$store.state.Language, error);
+    }
+  },
   computed: {
+    /**
+     * Format input
+     * CreatedBy: NTDUNG (24/12/2021)
+     */
+    inputValue() {
+      switch (this.type) {
+        case "number":
+          return this.formatNumberDot(this.value);
+        default:
+          return this.value;
+      }
+    },
     /**
      * Lắng nghe sự kiện trên input
      */
@@ -104,12 +146,19 @@ export default {
           clearTimeout(this.inputTimeout);
           if (this.duration)
             this.inputTimeout = setTimeout(() => {
-              if (this.type == "number") this.$emit("input", +event.target.value);
-              else this.$emit("input", event.target.value);
+              if (this.type == "number") {
+                var value = event.target.value.replaceAll(".", "");
+                value.replace(/[^0-9.]/g, "").replace(/(\..*?)\..*/g, "$1");
+                this.$emit("input", +value);
+              } else this.$emit("input", event.target.value);
             }, this.duration);
           else {
-            if (this.type == "number") this.$emit("input", +event.target.value);
-            else this.$emit("input", event.target.value);
+            if (this.type == "number") {
+              var value = event.target.value.replaceAll(".", "");
+              value.replace(/[^0-9.]/g, "").replace(/(\..*?)\..*/g, "$1");
+              this.$emit("input", +value);
+              // this.$emit("input", +event.target.value);
+            } else this.$emit("input", event.target.value);
           }
         }
       });

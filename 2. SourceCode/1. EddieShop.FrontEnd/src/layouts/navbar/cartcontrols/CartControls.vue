@@ -9,7 +9,7 @@
         ><i class="fas fa-shopping-cart"></i
       ></span>
       <ed-icon
-        v-if="listCart.filter(cart => cart.Active).length"
+        v-if="listCart.length"
         style="z-index: 0"
         class="pos-absolute"
         bgColor="red"
@@ -21,7 +21,7 @@
         txtColor="#fff"
         :size="18"
       >
-        {{ listCart.filter(cart => cart.Active).length }}
+        {{ listCart.length }}
       </ed-icon>
     </ed-icon>
     <BaseContentFrame
@@ -54,12 +54,7 @@
         </div>
       </template>
       <template v-slot:footer>
-        <ed-row class="fx-row jus-c-sbtn m-t-20">
-          <ed-button
-            :label="$t('i18nCart.Checkout')"
-            :method="callDialog"
-            :styleBtn="3"
-          />
+        <ed-row class="fx-row jus-c-fend m-t-20">
           <ed-button
             :method="goToCart"
             :label="$t('i18nCart.Cart')"

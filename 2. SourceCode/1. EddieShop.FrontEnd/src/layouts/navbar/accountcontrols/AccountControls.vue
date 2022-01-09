@@ -1,6 +1,13 @@
 <template lang="">
-  <div class="accountcontrols pos-relative" @click="showAccountControls = !showAccountControls" v-click-outside="hideAccount">
-    <div class="accountcontrols__icon fx-center cur-p" v-on="tooltipListeners($t('i18nAccount.Account'))">
+  <div
+    class="accountcontrols pos-relative"
+    @click="showAccountControls = !showAccountControls"
+    v-click-outside="hideAccount"
+  >
+    <div
+      class="accountcontrols__icon fx-center cur-p"
+      v-on="tooltipListeners($t('i18nAccount.Account'))"
+    >
       <i class="fas fa-user-circle"></i>
     </div>
     <BaseContentFrame
@@ -22,16 +29,20 @@
         </ed-row>
         <ed-row class="fx-center">
           <div class="accountcontrols__name">
-            <span>{{ _getLocalStorage("AccountData").DisplayName }}</span>
+            <span>{{ $store.getters.DisplayName }}</span>
           </div>
         </ed-row>
-        <ed-row>
-          <ed-button
-            class="m-t-20"
-            :method="$store.Language == 'vi' ? () => changeLanguage('en') : () => changeLanguage('vi')"
-            :label="
-              $store.Language == 'vi' ? 'Chuyển sang tiếng anh' : 'Change to VN'
-            "
+        <ed-row class="m-t-20">
+          <ed-label value="Ngôn ngữ" class="m-v-10" />
+          <ed-select-box
+            class="w-full"
+            width="100%"
+            height="30px"
+            v-model="language"
+            @changeOption="changeLanguage($event)"
+            :default="languages.findIndex(lan => lan.Data == $store.state.Language)"
+            :options="languages"
+            :listField="languageFields"
           />
         </ed-row>
         <ed-row class="m-t-30 fx-center">
@@ -68,7 +79,20 @@ export default {
   name: "Account",
   data() {
     return {
-      showAccountControls: false
+      showAccountControls: false,
+      languages: [
+        { LanguageName: "Tiếng việt", Icon: "vn", Data: "vi" },
+        {
+          LanguageName: "English",
+          Icon: "vg",
+          Data: "en"
+        }
+      ],
+      languageFields: [
+        { field: "LanguageName", type: "text" },
+        { field: "Icon", type: "flag", pos: "center", scale: "1.2" }
+      ],
+      language: 0
     };
   },
   methods: {
@@ -96,36 +120,41 @@ export default {
       this.showAccountControls = false;
       this.$router.push("/register");
     },
-    changeLanguage(language) {
-        this.$store.dispatch("setLang", language);
-        this._setLocalStorage("Language", language);
+    changeLanguage(index) {
+      var language = this.languages[index].Data;
+      this.$store.dispatch("setLang", language);
+      this._setLocalStorage("Language", language);
 
-        switch(this._getLocalStorage("AccountType")) {
-          case AccountType.GUEST:
-            break;
-          case AccountType.ADMIN:
-            AdminAPI.UpdateColumns(this._getLocalStorageNotParse("AccountID"), {Language: language})
-              .then(res => {
-                console.log(res)
-                alert("Cập nhật ngôn ngữ thành công")
-              })
-              .catch(err => {
-                console.log(err)
-                alert("Cập nhật ngôn ngữ thất bại")
-              })
-            break;
-          case AccountType.USER:
-            UserAPI.UpdateColumns(this._getLocalStorageNotParse("AccountID"), {Language: language})
-              .then(res => {
-                console.log(res)
-                alert("Cập nhật ngôn ngữ thành công")
-              })
-              .catch(err => {
-                console.log(err)
-                alert("Cập nhật ngôn ngữ thất bại")
-              })
-            break;
-        }
+      switch (this._getLocalStorage("AccountType")) {
+        case AccountType.GUEST:
+          break;
+        case AccountType.ADMIN:
+          AdminAPI.UpdateColumns(this._getLocalStorageNotParse("AccountID"), {
+            Language: language
+          })
+            .then(res => {
+              console.log(res);
+              this.$toast.success("Cập nhật ngôn ngữ thành công");
+            })
+            .catch(err => {
+              console.log(err);
+              this.$toast.warn("Cập nhật ngôn ngữ thất bại");
+            });
+          break;
+        case AccountType.USER:
+          UserAPI.UpdateColumns(this._getLocalStorageNotParse("AccountID"), {
+            Language: language
+          })
+            .then(res => {
+              console.log(res);
+              this.$toast.success("Cập nhật ngôn ngữ thành công");
+            })
+            .catch(err => {
+              console.log(err);
+              this.$toast.warn("Cập nhật ngôn ngữ thất bại");
+            });
+          break;
+      }
     },
     hideAccount() {
       this.showAccountControls = false;

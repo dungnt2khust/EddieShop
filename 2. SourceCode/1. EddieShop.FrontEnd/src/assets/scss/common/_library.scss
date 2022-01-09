@@ -114,6 +114,9 @@
 .pos-absolute {
     position: absolute;
 }
+.pos-fixed {
+    position: fixed;
+}
 
 // Text
 @mixin setText($name, $family) {

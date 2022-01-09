@@ -3,6 +3,11 @@
 .input {
     width: 100%;
     position: relative;
+    &.just-error {
+        input {
+            display: none;
+        }
+    }
     input {
         border: 1px solid #999;
         border-radius: 4px;

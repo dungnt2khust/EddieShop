@@ -1,8 +1,5 @@
 <template lang="">
-  <div
-    class="selectbox pos-relative h-full"
-    :style="customizeStyle(styleWrapperCustom)"
-  >
+  <div class="selectbox h-full" :style="customizeStyle(styleWrapperCustom)">
     <div
       @click="toggleSelectBox"
       v-click-outside="
@@ -10,32 +7,64 @@
           selectBoxState = false;
         }
       "
-      class="selectbox__curr p-h-8"
-      :style="{ width: width }"
+      class="selectbox__curr p-h-8 w-full"
+      ref="selectbox"
+      :style="{ width: width, height: height }"
     >
-      {{ query ? options[value][query] : options[value] }}
+      <table class="w-full">
+        <tbody>
+          <tr>
+            <td v-for="(field, idx) in listField" :key="idx">
+              <div
+                v-if="field.type != 'flag'"
+                class="fx-row"
+                v-html="itemData(options[value], field)"
+                :style="posData(field.pos)"
+              ></div>
+              <div v-else class="fx-row">
+                <flag
+                  :iso="options[value][field.field]"
+                  :class="`scale-${field.scale}`"
+                />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <ul
+    <table
       v-if="selectBoxState"
-      class="selectbox__list pos-absolute"
+      class="selectbox__list pos-fixed"
       :style="[
         customizeStyle(styleCustom),
-        {
-          top: up ? 'unset' : 'calc(100% + 4px)',
-          bottom: up ? 'calc(100% + 4px)' : 'unset'
-        }
+        positionSelectBox($refs.selectbox.getBoundingClientRect())
       ]"
     >
-      <li
-        v-for="(option, index) in options"
-        @click="handleChooseOption(index)"
-        class="selectbox__item p-h-16 p-v-8"
-        :class="{ selected: index == value }"
-        :key="index"
-      >
-        {{ query ? option[query] : option }}
-      </li>
-    </ul>
+      <tbody>
+        <tr
+          v-for="(option, index) in options"
+          @click="handleChooseOption(index)"
+          class="selectbox__item"
+          :class="{ selected: index == value }"
+          :key="index"
+        >
+          <td v-for="(field, idx) in listField" class="p-h-8 p-v-4" :key="idx">
+            <div
+              v-if="field.type != 'flag'"
+              class="fx-row"
+              v-html="itemData(option, field)"
+              :style="posData(field.pos)"
+            ></div>
+            <div v-else class="fx-row">
+              <flag
+                :iso="option[field.field]"
+                :class="`scale-${field.scale}`"
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 <script>
@@ -54,10 +83,6 @@ export default {
       type: String,
       default: null
     },
-    query: {
-      type: String,
-      default: ""
-    },
     width: {
       type: String,
       default: null
@@ -69,6 +94,18 @@ export default {
     up: {
       type: Boolean,
       default: false
+    },
+    height: {
+      type: String,
+      default: null
+    },
+    listField: {
+      type: Array,
+      default: () => []
+    },
+    default: {
+      type: [Number, String],
+      default: null
     }
   },
   data() {
@@ -81,10 +118,53 @@ export default {
       styleWrapperCustom: {
         "background-color": this.bgColor
       },
-      selectBoxState: false
+      selectBoxState: false,
+      distance: 4
     };
   },
+  created() {
+    this.$bus.$on("hideOnGlobalEvent", () => {
+      this.selectBoxState = false;
+    });
+  },
   methods: {
+    itemData(option, field) {
+      var item;
+      switch (field.type) {
+        case "text":
+          item = option[field.field];
+          break;
+        case "icon":
+          item = `<div class="${option[field.field]} scale-${
+            field.scale
+          }"></div>`;
+          break;
+        default:
+          item = option[field.field];
+          break;
+      }
+      return item;
+    },
+    /**
+     * Thông tin toạ độ, kích thước
+     * CreatedBy: NTDUNG (24/12/2021)
+     */
+    positionSelectBox(boundingClientRect) {
+      var style = {};
+      if (this.up) {
+        style.transform = "translateY(-100%)";
+        style.top = `${boundingClientRect.bottom -
+          boundingClientRect.height -
+          this.distance}px`;
+      } else {
+        style.top = `${boundingClientRect.bottom + this.distance}px`;
+      }
+
+      style.bottom = "unset";
+      style.left = boundingClientRect.left + "px";
+      style.width = boundingClientRect.width + "px";
+      return style;
+    },
     /**
      * Bật tắt selectbox
      * CreatedBy: NTDUNG (08/12/2021)
@@ -97,8 +177,42 @@ export default {
      * CreatedBy: NTDUNG (08/12/2021)
      */
     handleChooseOption(index) {
-      this.$emit("input", index);
+      if (this.value != index) {
+        this.$emit("input", index);
+        this.$emit("changeOption", index);
+      }
       this.selectBoxState = false;
+    },
+    /**
+     * Vị trí của bản ghi
+     * CreatedBy: NTDUNG (23/12/2021)
+     */
+    posData(pos) {
+      var style = {};
+      switch (pos) {
+        case "left":
+          style["justify-content"] = "flex-start";
+          break;
+        case "right":
+          style["justify-content"] = "flex-end";
+          break;
+        case "center":
+          style["justify-content"] = "center";
+          break;
+      }
+      return style;
+    }
+  },
+  destroyed() {
+    this.$bus.$off("hideOnGlobalEvent");
+  },
+  watch: {
+    default: {
+      immediate: true,
+      handler(val) {
+        if (val !== undefined && val !== null)
+          this.$emit('input', val);
+      }
     }
   }
 };

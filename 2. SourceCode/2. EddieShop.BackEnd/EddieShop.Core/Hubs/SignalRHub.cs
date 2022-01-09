@@ -1,5 +1,6 @@
 ﻿using EddieShop.Core.Entities;
 using EddieShop.Core.Entities.Common;
+using EddieShop.Core.Hubs.Interfaces;
 using EddieShop.Core.Interfaces.Base;
 using EddieShop.Core.Services;
 using Microsoft.AspNetCore.SignalR;
@@ -9,27 +10,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using static EddieShop.Core.Enums.EddieShopEnum;
 
-namespace EddieShop.Controller.API.Hubs
+namespace EddieShop.Core.Hubs
 {
-    public class SignalRHub : Hub
+    public class SignalRHub : Hub, ISignalRHub
     {
         #region Declare
         IBaseService<User> _userService;
         IBaseRepository<User> _userRepository;
+        IBaseRepository<Admin> _adminRepository;
         IBaseService<Admin> _adminService;
+        IHubContext<SignalRHub> _hubContext;
         #endregion
 
         #region Contructor
-        public SignalRHub(IBaseService<User> userService, IBaseService<Admin> adminService, IBaseRepository<User> userRepository)
+        public SignalRHub(IHubContext<SignalRHub> hubContext, IBaseService<User> userService, IBaseService<Admin> adminService, IBaseRepository<User> userRepository, IBaseRepository<Admin> adminRepository)
         {
             _userService = userService;
             _userRepository = userRepository;
             _adminService = adminService;
+            _adminRepository = adminRepository;
+            _hubContext = hubContext;
         }
         #endregion
 
         #region Method
-       
+
         #region UpdateConnectionID
         /// <summary>
         /// Cập nhật connectionID mới cho tài khoản
@@ -125,7 +130,25 @@ namespace EddieShop.Controller.API.Hubs
             IReadOnlyList<string> connectionIDs;
             List<User> userReceives = _userRepository.GetByIds(userReceiveIDs, userSent.SessionID);
             connectionIDs = userReceives.Select(user => user.ConnectionID).ToList().AsReadOnly();
-            await Clients.Clients(connectionIDs).SendAsync("ReceiveNotify", userSent, notify);
+            await this._hubContext.Clients.Clients(connectionIDs).SendAsync("ReceiveNotify", userSent, notify);
+        }
+        #endregion
+
+        #region SendNotifyToAdmins
+        /// <summary>
+        /// Gửi thông báo đến quản trị viên
+        /// </summary>
+        /// <param name="userSent"></param>
+        /// <param name="usersReceive"></param>
+        /// <param name="notify"></param>
+        /// <returns></returns>
+        /// CreatedBy: NTDUNG (24/11/2021)
+        public async Task SendNotifyToAdmins(User userSent, List<Guid> adminReceiveIDs, object notify)
+        {
+            IReadOnlyList<string> connectionIDs;
+            List<Admin> adminReceives = _adminRepository.GetByIds(adminReceiveIDs, userSent.SessionID);
+            connectionIDs = adminReceives.Select(admin => admin.ConnectionID).ToList().AsReadOnly();
+            await this._hubContext.Clients.Clients(connectionIDs).SendAsync("ReceiveNotify", userSent, notify);
         }
         #endregion
 

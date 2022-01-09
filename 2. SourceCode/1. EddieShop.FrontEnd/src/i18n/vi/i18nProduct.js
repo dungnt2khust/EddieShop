@@ -1,5 +1,10 @@
 export default {
     ProductName: 'Tên sản phẩm',
+    ProductCode: 'Mã sản phẩm',
+    Price: "Đơn giá",
+    Quantity: "Số lượng",
+    Image: "Hình ảnh",
+    Description: "Mô tả",
     Sold: '{Quantity} đã bán',
     Favourite: "Yêu thích",
     SaleOff: "Giảm",

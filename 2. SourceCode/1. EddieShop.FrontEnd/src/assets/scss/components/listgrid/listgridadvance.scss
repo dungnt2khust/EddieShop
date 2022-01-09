@@ -1,6 +1,11 @@
+$success: green;
+$error: red;
+$warn: rgb(182, 182, 0);
+$active: rgb(230, 230, 18);
+
 .listgrid {
     .listgrid__header {
-        height: 40px;
+        // height: 40px;
 
         .listgrid__controls {
             height: 30px;
@@ -43,7 +48,7 @@
         width: 100%;
 
         .listgrid__table {
-            table-layout: auto;
+            table-layout: fixed;
             border-collapse: separate;
             border-spacing: 0;
 
@@ -60,12 +65,13 @@
                     font-family: Notosans-Semibold;
                     white-space: nowrap;
                     border-top: 0;
+                    background-color: #ddd;
 
                     &:first-child {
                         border-left: 0;
                         position: sticky;
-                        background-color: #ddd;
                         left: 0;
+                        padding: 0;
                     }
 
                     &:last-child {
@@ -79,6 +85,48 @@
 
             .listgrid__table-body {
                 font-family: Notosans-Regular;
+                .status-table {
+                    display: flex;
+                    align-items: center;
+                    &.status-table--success {
+                        .status-table__icon {
+                            background-color: $success;
+                        }
+                        .status-table__msg {
+                            color: $success;
+                        }
+                    }
+                    &.status-table--active {
+                        .status-table__icon {
+                            background-color: $active;
+                        }
+                        .status-table__msg {
+                            color: $active;
+                        }
+                    }
+                    &.status-table--warn {
+                        .status-table__icon {
+                            background-color: $warn;
+                        }
+                        .status-table__msg {
+                            color: $warn;
+                        }
+                    }
+                    &.status-table--error {
+                        .status-table__icon {
+                            background-color: $error;
+                        }
+                        .status-table__msg {
+                            color: $error;
+                        }
+                    }
+                    .status-table__icon {
+                        border-radius: 50%;
+                    } 
+                    // .status-table--success {
+
+                    // }
+                }
 
                 tr {
                     display: table-row;

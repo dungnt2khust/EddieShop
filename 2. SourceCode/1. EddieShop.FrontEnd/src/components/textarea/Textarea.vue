@@ -1,14 +1,15 @@
 <template lang="">
   <div class="textarea">
     <textarea
-      class="w-full"
+      class="w-full default-scrollbar"
       :rows="row"
       :cols="col"
-      :name="name"
+      :id="rules && Object.getOwnPropertyNames(rules).length ? name : ''"
+      :name="rules && Object.getOwnPropertyNames(rules).length ? name : 'DefaultTextarea'"
       :style="customizeStyle(styleCustom)"
       v-on="textareaListeners"
       :value="value"
-      :class="{ 'input--invalid': errMsg != '', 'input--disabled': disabled}"
+      :class="{ 'input--invalid': errMsg != '', 'input--disabled': disabled }"
       :readonly="disabled"
       :title="errMsg"
       v-validate="rules"
@@ -25,7 +26,11 @@
 <script>
 export default {
   name: "Textarea",
-  inject: ['parentValidator'],
+  inject: {
+    parentValidator: {
+      default: null
+    }
+  },
   props: {
     col: {
       type: Number,
@@ -66,6 +71,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    label: {
+      type: String,
+      default: null
     }
   },
   data() {
@@ -79,6 +88,22 @@ export default {
   },
   created() {
     this.$validator = this.parentValidator;
+  },
+  mounted() {
+    if (this.parentValidator) {
+      var error = {
+        custom: {
+          [this.name]: {}
+        }
+      };
+      if (this.rules && "required" in this.rules) {
+        error.custom[this.name].required = () => this.$t('i18nValidate.Required', {Field: this.label || this.name})
+      }
+      if (this.rules && this.rules.max) {
+        error.custom[this.name].max = (...rest) => this.$t('i18nValidate.Max', {Field: this.label || this.name, Max: rest[1]})
+      }
+      this.$validator.localize(this.$store.state.Language, error);
+    }
   },
   computed: {
     /**

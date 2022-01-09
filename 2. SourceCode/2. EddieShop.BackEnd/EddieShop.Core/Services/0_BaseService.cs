@@ -61,12 +61,12 @@ namespace EddieShop.Core.Services
         /// <returns></returns>
         /// CreatedBy: NTDUNG(27/8/2021)
         /// ModifiedBy: NTDUNG(27/8/2021)
-        public virtual ServiceResult GetEntityById(Guid entityId, Guid? sessionID)
+        public virtual ServiceResult GetEntityById(Guid entityId, Guid? sessionID, bool? mode)
         {
             try
             {
                 var serviceResult = new ServiceResult();
-                serviceResult.Data = _baseRepository.GetEntityById(entityId, sessionID);
+                serviceResult.Data = _baseRepository.GetEntityById(entityId, sessionID, mode);
                 return serviceResult;
             }
             catch (Exception)
@@ -169,6 +169,8 @@ namespace EddieShop.Core.Services
                 {
                     return serviceResult;
                 }
+                // Gán Id mới
+                entity.GetType().GetProperty($"{_className}ID").SetValue(entity, Guid.NewGuid());
                 //Thêm dữ liệu
                 var rowEffects = _baseRepository.Insert(entity);
                 if (rowEffects > 0)

@@ -29,7 +29,6 @@
           :listHeader="listHeader"
           :listCheck="listCheck"
           :pagingInfo="pagingInfo"
-          :totalData="totalData"
           @dblClick="productDetail"
           @edit="showEditProduct"
           @Delete="deleteProduct"
@@ -102,6 +101,7 @@ export default {
           width: 150,
           headerPos: "left",
           dataPos: "left",
+          wrap: true,
           pin: true
         },
         {
@@ -109,8 +109,7 @@ export default {
           field: "Image",
           type: "image",
           width: 300,
-          height: "100px",
-          pin: true
+          height: "100px"
         },
         {
           title: "Giá",
@@ -121,9 +120,36 @@ export default {
           dataPos: "right"
         },
         {
-          title: "Số lượng",
+          title: "Số lượng khả dụng",
           field: "Quantity",
           type: "number",
+          width: 100,
+          headerPos: "right",
+          dataPos: "right",
+          total: true
+        },
+        {
+          title: "Đã bán",
+          field: "Sold",
+          type: "number",
+          width: 100,
+          headerPos: "right",
+          dataPos: "right",
+          total: true
+        },
+        {
+          title: "Tổng số lượng",
+          field: "Quantity",
+          type: "number",
+          width: 100,
+          headerPos: "right",
+          dataPos: "right",
+          total: true
+        }, 
+        {
+          title: "Tổng tiền đã bán",
+          field: "SoldTotalPrice",
+          type: "money",
           width: 100,
           headerPos: "right",
           dataPos: "right",
@@ -157,16 +183,15 @@ export default {
         pageNum: 1,
         pageSize: 10,
         filterData: {
-          TotalFields: ["Quantity", "TotalPrice"],
-          Sorts: [{ Field: "Price", Desc: true }, {Field: "ProductCode", Desc: false}]
+          TotalFields: ["Quantity", "TotalPrice", "Sold", "SoldTotalPrice"],
+          Sorts: [{Field: "ProductCode", Desc: true}]
         }
       },
       productInfo: {},
-      totalData: {}
     };
   },
   mounted() {
-    this.getProductsFilterPaging(this.currOption);
+    this.getProductsFilterPaging();
   },
   methods: {
     /**
@@ -191,9 +216,8 @@ export default {
           if (res.data.Success) {
             this.listProduct = res.data.Data.Records;
             this.pagingInfo.totalPage = res.data.Data.TotalPage;
-            this.pagingInfo.totalRecord = res.data.Data.TotalRecord;
-            this.listCheck = [];
-            this.totalData = res.data.Data.TotalDatas;
+            this.pagingInfo.totalRecord = res.data.Data.TotalRecord; 
+            this.pagingInfo.totalData = res.data.Data.TotalDatas;
           }
         })
         .catch(err => {
@@ -238,6 +262,7 @@ export default {
             ProductAPI.Delete(product.ProductID)
               .then(res => {
                 console.log(res);
+                this.listCheck = [];
                 this.getProductsFilterPaging();
                 this.$toast.success("Xoá thành công");
               })
@@ -272,11 +297,13 @@ export default {
      * CreatedBy: NTDUNG (20/12/2021)
      */
     addProduct() {
+      this.productInfo.Sold = 0;
       ProductAPI.post(this.productInfo)
         .then(res => {
           console.log(res);
           this.$toast.success("Thêm mới sản phẩm thành công");
           this.showAddProduct = false;
+          this.listCheck = [];
           this.getProductsFilterPaging();
         })
         .catch(err => {
@@ -303,6 +330,7 @@ export default {
           ProductAPI.DeleteMulti(this.listCheck)
             .then(res => {
               this.$toast.success("Xoá thành công");
+              this.listCheck = [];
               this.getProductsFilterPaging();
               console.log(res);
             })
@@ -322,6 +350,7 @@ export default {
         .then(res => {
           this.$toast.success("Chỉnh sửa sản phẩm thành công");
           this.showAddProduct = false;
+          this.listCheck = [];
           this.getProductsFilterPaging();
         })
         .catch(err => {

@@ -1,5 +1,10 @@
 export default {
     ProductName: 'ProductName',
+    ProductCode: 'Product code',
+    Price: "Price",
+    Quantity: "Quantity",
+    Image: "Image",
+    Description: "Description",
     Sold: '{Quantity} sold',
     Favourite: "Favourite",
     SaleOff: "Sale off",

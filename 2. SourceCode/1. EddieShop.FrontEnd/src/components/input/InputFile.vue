@@ -9,13 +9,7 @@
         v-validate="realRules"
         class="inputfile__main d-none"
       />
-      <input
-        type="text"
-        v-validate="{ required: 'required' in rules }"
-        :name="name"
-        :value="value"
-        style="display: none"
-      />
+
       <div v-if="value" class="inputfile__preview flex-1 p-v-15">
         <img
           @click="showPreview = true"
@@ -27,9 +21,17 @@
         />
       </div>
       <ed-button
+        :id="rules && Object.getOwnPropertyNames(rules).length ? name : ''"
         :method="chooseFile"
         :label="value ? 'Đổi ảnh' : 'Chọn ảnh'"
         :styleBtn="0"
+      />
+      <ed-input
+        :justError="true"
+        :rules="{ required: 'required' in rules }"
+        :value="value"
+        :name="name"
+        :errMsg="errMsg"
       />
       <vue-easy-lightbox
         :visible="showPreview"
@@ -44,19 +46,16 @@
         @hide="handleHide"
       ></vue-easy-lightbox>
     </div>
-    <div
-      v-if="errMsg"
-      class="input__error txt-reg-1 txt-s-12 m-t-10"
-      style="color: red;"
-    >
-      {{ errMsg}}
-    </div>
   </div>
 </template>
 <script>
 export default {
   name: "InputFile",
-  inject: ["parentValidator"],
+  inject: {
+    parentValidator: {
+      default: null
+    }
+  },
   props: {
     rules: {
       type: [Object, String],
@@ -88,7 +87,7 @@ export default {
   },
   computed: {
     realRules() {
-      var rules = {...this.rules};
+      var rules = { ...this.rules };
       delete rules.required;
       return rules;
     },

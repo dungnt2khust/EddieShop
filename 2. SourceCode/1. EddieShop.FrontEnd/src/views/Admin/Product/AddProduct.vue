@@ -12,6 +12,7 @@
             <ed-label required value="Tên sản phẩm" />
             <ed-input
               name="ProductName"
+              label="Tên sản phẩm"
               :rules="{ required: true }"
               :errMsg="errors.first('ProductName')"
               v-model="value.ProductName"
@@ -31,7 +32,7 @@
             <ed-label required value="Đơn giá" />
             <ed-input
               name="Price"
-              :rules="{ required: true, max: 20 }"
+              :rules="{ required: true, max: 10 }"
               :errMsg="errors.first('Price')"
               type="number"
               v-model="value.Price"
@@ -65,7 +66,7 @@
             <ed-label required value="Hình ảnh" />
             <ed-input-file
               name="Image"
-              :rules="{ required: true}"
+              :rules="{ required: true }"
               :errMsg="errors.first('Image')"
               v-model="value.Image"
             />
@@ -99,7 +100,6 @@
 <script>
 // Plugins
 import ProductAPI from "@/api/components/Product/ProductAPI.js";
-
 export default {
   name: "AddProduct",
   provide() {
@@ -121,7 +121,7 @@ export default {
     return {
       // productInfo: {},
       productInfoClone: {},
-      gender: 1
+      gender: 1    
     };
   },
   created() {
@@ -185,8 +185,8 @@ export default {
             this.$emit("editProduct");
           else this.$emit("close");
         } else {
-          console.log(this.errors);
-          this.$toast.error("Thông tin không chính xác");
+          this.$toast.error(this.errors.items[0].msg);
+          document.querySelector(`#${this.errors.items[0].field}`).focus();
         }
       });
     },

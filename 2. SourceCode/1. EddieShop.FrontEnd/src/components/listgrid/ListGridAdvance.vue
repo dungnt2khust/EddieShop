@@ -1,8 +1,8 @@
 <template lang="">
-  <div class="listgrid w-full fx-col">
+  <div class="listgrid w-full fx-col" :style="customizeStyle(styleCustom)">
     <div class="listgrid__header fx-row m-b-10">
       <EdSearch
-        v-show="listCheck.length < 1"
+        v-show="listCheck.length < 1 && showSearch"
         class="h-full"
         style="width: 300px;"
         v-model="filterString"
@@ -17,6 +17,7 @@
       </div>
     </div>
     <div
+      ref="listgridContent"
       class="listgrid__content flex-1 fx-col w-full default-scrollbar pos-relative"
     >
       <!-- <div class="listgrid__table fx-col h-full default-scrollbar">
@@ -92,16 +93,19 @@
         class="listgrid__table"
         :class="{ 'flex-1': value.length == 0 }"
         v-columns-resizable
-        style="min-width: 100%;"
+        ref="listgridTable"
+        style="min-width: 100%"
       >
-        <thead class="listgrid__table-header">
+        <!-- style="min-width: 100%;max-width: 100%" -->
+        <thead class="listgrid__table-header" ref="thead">
           <tr>
             <th
+              :width="checkboxWidth"
               :style="
-                `min-width: ${checkboxWidth}px; max-width: ${checkboxWidth}px`
+                `min-width: ${checkboxWidth}px !important;max-width: ${checkboxWidth}px !important`
               "
             >
-              <div class="listgrid__checkbox fx-row jus-c-center aln-i-center">
+              <div v-show="showCheck" class="listgrid__checkbox fx-row jus-c-center aln-i-center">
                 <ed-check-box
                   :value="isCheckAll"
                   @changeState="toggleCheckAll"
@@ -115,10 +119,11 @@
                 {
                   'text-align': header.headerPos,
                   'min-width': header.width + 'px'
-                }
+                },
+                { 'max-width': header.pin ? header.width + 'px' : '' },
+                header.pin ? pin(index) : {}
               ]"
             >
-              <!-- header.pin ? headerStylePin(index) : '' -->
               {{ header.title }}
             </th>
             <th
@@ -150,7 +155,7 @@
         <tbody class="listgrid__table-body">
           <tr v-for="(row, index) in value" @dblclick="$emit('dblClick', row)">
             <td>
-              <div class="fx-row jus-c-center aln-i-center">
+              <div v-show="showCheck" class="fx-row jus-c-center aln-i-center">
                 <ed-check-box
                   :value="
                     listCheck.findIndex(item => item == row[itemID]) != -1
@@ -163,8 +168,12 @@
               v-for="(header, index) in listHeader"
               :style="[
                 {
-                  'white-space': header.wrap ? 'wrap' : 'nowrap'
-                }
+                  'white-space': header.wrap || header.pin ? 'wrap' : 'nowrap',
+                  'min-width': header.width + 'px',
+                  'max-width': header.pin ? header.width + 'px' : ''
+                },
+                { padding: header.type == 'image' ? 0 : '' },
+                header.pin ? pin(index) : {}
               ]"
             >
               <div class="fx-row" :style="posData(header.dataPos)">
@@ -178,8 +187,10 @@
               <div
                 class="td-wrapper fx-row"
                 :style="posData(header.dataPos)"
+                v-if="header.type != 'custom'"
                 v-html="tableData(row, header, index)"
               ></div>
+              <slot v-else :name="header.field" v-bind="{ row }"></slot>
             </td>
             <!-- header.pin ? headerStylePin(index) : '' -->
             <td>
@@ -202,16 +213,20 @@
         </tbody>
         <tfoot class="listgrid__table-footer" v-if="haveFooter">
           <tr>
-            <td>Tổng</td>
-            <td v-for="(header, index) in listHeader">
+            <td></td>
+            <td
+              v-for="(header, index) in listHeader"
+              :style="header.pin ? pin(index) : {}"
+            >
+              <div v-if="index == 0" class="w-full">Tổng</div> 
               <div v-if="header.total">
                 <div class="m-v-4" :style="{ 'text-align': header.dataPos }">
                   {{
-                    header.total && totalData[header.field]
-                      ? footerData(totalData[header.field].InPage, header)
-                      : ""
+                    header.total &&
+                      totalInPage(header)
                   }}
                 </div>
+
                 <div v-if="pagingInfo.totalPage > 1">
                   <div
                     class="line"
@@ -220,8 +235,9 @@
 
                   <div class="m-v-4" :style="{ 'text-align': header.dataPos }">
                     {{
-                      header.total && totalData[header.field]
-                        ? footerData(totalData[header.field].All, header)
+                      header.total &&
+                      pagingInfo.totalData && pagingInfo.totalData[header.field]
+                        ? footerData(pagingInfo.totalData[header.field].All, header)
                         : ""
                     }}
                   </div>
@@ -233,7 +249,7 @@
         </tfoot>
       </table>
     </div>
-    <div class="listgrid__footer fx-row p-t-10">
+    <div v-show="showPaging" class="listgrid__footer fx-row p-t-10">
       <div class="flex-1">
         <span class="txt-smb-1 txt-s-14">
           Tổng số bản ghi: {{ pagingRecordInfo }}
@@ -242,6 +258,7 @@
       </div>
       <EdPagination
         @changePaging="changePaging"
+        :currPage="pagingInfo.pageNum"
         :totalPage="pagingInfo.totalPage"
         :totalRecord="pagingInfo.totalRecord"
       />
@@ -252,6 +269,30 @@
 export default {
   name: "ListGridAdvance",
   props: {
+    height: {
+      type: String,
+      default: null
+    },
+    width: {
+      type: String,
+      default: null
+    },
+    minHeight: {
+      type: String,
+      default: null
+    },
+    minWidth: {
+      type: String,
+      default: null
+    },
+    maxHeight: {
+      type: String,
+      default: null
+    },
+    maxWidth: {
+      type: String,
+      default: null
+    },
     itemID: {
       type: String,
       default: null
@@ -262,7 +303,7 @@ export default {
     },
     deleteItem: {
       type: Function,
-      default: () => {}
+      default: () => ({})
     },
     value: {
       type: Array,
@@ -274,7 +315,7 @@ export default {
     },
     pagingInfo: {
       type: Object,
-      default: () => {}
+      default: () => ({})
     },
     editRow: {
       type: Boolean,
@@ -292,20 +333,50 @@ export default {
       type: Array,
       default: () => []
     },
-    totalData: {
-      type: Object,
-      default: () => {}
+    totalOnSelect: {
+      type: Boolean,
+      default: false
+    },
+    showCheck: {
+      type: Boolean,
+      default: true
+    },
+    showSearch: {
+      type: Boolean,
+      default: true
+    },
+    showHeader: {
+      type: Boolean,
+      default: true
+    },
+    showPaging: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
     return {
       checkAll: false,
       filterString: "",
-      checkboxWidth: 50,
+      checkboxWidth: 60,
       functionWidth: 100,
-      editAllState: false
+      editAllState: false,
+      styleCustom: {
+        "height": this.height,
+        "width": this.width,
+        "min-height": this.minHeight,
+        "min-width": this.minWidth,
+        "max-height": this.maxHeight,
+        "max-width": this.minWidth
+      }
     };
   },
+  // created() {
+  //   window.addEventListener('resize', this.handleResize);
+  // },
+  // destroyed() {
+  //   window.removeEventListener('resize', this.handleResize, true)
+  // },
   computed: {
     /**
      * Thông tin bản ghi của danh sách
@@ -345,6 +416,36 @@ export default {
   },
   methods: {
     /**
+     * Tổng trong trang
+     * CreatedBy: NTDUNG (28/12/2021)
+     */
+    totalInPage(header) {
+      if (!this.totalOnSelect) {
+        var sum = 0
+        this.value.forEach(row => {
+          sum += row[header.field];
+        });
+        return this.footerData(sum, header);
+      } else {
+        if (this.listCheck.length == 0) {
+          var sum = 0
+          this.value.forEach(row => {
+            sum += row[header.field];
+          });
+          return this.footerData(sum, header);
+        } else {
+          var checkedRow = this.value.filter(
+            row => this.listCheck.findIndex(id => id == row[this.itemID]) != -1
+          );
+          var sum = 0;
+          checkedRow.forEach(row => {
+            sum += row[header.field];
+          });
+          return this.footerData(sum, header);
+        }
+      }
+    },
+    /**
      * Giá trị tại ô dữ liệu
      * CreatedBy: NTDUNG (20/12/2021)
      */
@@ -359,7 +460,7 @@ export default {
           td = this.formatMoney(row[header.field]);
           break;
         case "image":
-          td = `<div class="fx-row w-full jus-c-center aln-i-center no-select">
+          td = `<div class="fx-row jus-c-center aln-i-center no-select" style="overflow: hidden; max-width: 100%">
             <img style="max-height: ${header.height}; min-height: ${
             header.height
           }" src="data:image/gif;base64,${row[header.field]}" atl="Image" />
@@ -386,7 +487,7 @@ export default {
           tfoot = this.formatMoney(data);
           break;
         default:
-          tfoot = tata;
+          tfoot = data;
           break;
       }
       return tfoot;
@@ -436,21 +537,17 @@ export default {
           return !(this.value.findIndex(data => data[this.itemID] == id) != -1);
         });
       }
-      this.$emit("input", newCheck);
+      this.$emit("changeListCheck", newCheck);
     },
     /**
-     * Pin header
+     * Pin
      * CreatedBy: NTDUNG (21/12/2021)
      */
-    headerStylePin(index) {
+    pin(index) {
       var leftPos = this.checkboxWidth;
       for (var i = 0; i < index; i++) {
-        if (
-          this.listHeader[index].width &&
-          !Number.isNaN(this.listHeader[index].width)
-        ) {
-          leftPos += Number(this.listHeader[index].width);
-          console.log(this.listHeader[index].width);
+        if (this.listHeader[i] && this.listHeader[i].width) {
+          leftPos += this.listHeader[i].width;
         }
       }
       return { position: "sticky", left: leftPos + "px" };
@@ -481,6 +578,15 @@ export default {
           break;
       }
       return style;
+    },
+    /**
+     * Xử lý khi thay đổi màn hình
+     * CreatedBy: NTDUNG (25/12/2021)
+     */
+    handleResize(e) {
+      this.$refs.listgridTable.style.width = `${this.$refs.listgridContent.offsetWidth}px`;
+      this.$refs.listgridTable.style.minWidth = `${this.$refs.listgridContent.offsetWidth}px`;
+      this.$refs.listgridTable.style.maxWidth = `${this.$refs.listgridContent.offsetWidth}px`;
     }
   },
   watch: {
@@ -491,6 +597,14 @@ export default {
         this.pagingInfo.pageSize,
         this.filterString
       );
+    },
+    "value.length": function(val) {
+      if (!val && this.pagingInfo.pageNum > 1) {
+        this.changePaging(
+          this.pagingInfo.pageNum - 1,
+          this.pagingInfo.pageSize
+        );
+      }
     }
   }
 };

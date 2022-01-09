@@ -19,7 +19,13 @@
               }"
             ></div>
           </EdCol>
-          <EdCol :colLg="8" :colXl="6" :colXs="12" :colSm="12" class="fx-col jus-c-sbtn">
+          <EdCol
+            :colLg="8"
+            :colXl="6"
+            :colXs="12"
+            :colSm="12"
+            class="fx-col jus-c-sbtn"
+          >
             <div class="productdetail__price">
               {{ formatMoney(ProductDetailData.Price) }}
             </div>
@@ -71,7 +77,14 @@
         </EdRow>
         <vue-easy-lightbox
           :visible="showPreview"
-          :imgs="[{src: `data:image/gif;base64,${ProductDetailData.Image ? ProductDetailData.Image : ''}`, title: ProductDetailData.Title}]"
+          :imgs="[
+            {
+              src: `data:image/gif;base64,${
+                ProductDetailData.Image ? ProductDetailData.Image : ''
+              }`,
+              title: ProductDetailData.Title
+            }
+          ]"
           :index="0"
           @hide="handleHide"
           @on-prev-click="prevImage"
@@ -85,7 +98,7 @@
 // Plugins
 import ProductAPI from "@/api/components/Product/ProductAPI.js";
 import CartAPI from "@/api/components/Cart/CartAPI.js";
-import {AccountType} from "@/models/enum/AccountType.js"
+import { AccountType } from "@/models/enum/AccountType.js";
 
 export default {
   name: "ProductDetail",
@@ -94,7 +107,8 @@ export default {
       ProductID: null,
       ProductDetailData: {},
       ProductNum: 1,
-      showPreview: false
+      showPreview: false,
+      inCart: false
     };
   },
   mounted() {
@@ -107,13 +121,13 @@ export default {
      * CreatedBy: NTDUNG (01/12/2021)
      */
     getProductDetail() {
-      ProductAPI.GetByID(this.ProductID)
+      ProductAPI.GetByID(this.ProductID, true)
         .then(res => {
           this.ProductDetailData = res.data.Data;
+          this.inCart = this.ProductDetailData["InCart"];
         })
         .catch(err => {
           console.log(err);
-          
         });
     },
     /**
@@ -121,17 +135,25 @@ export default {
      * CreatedBy: NTDUNG (23/12/2021)
      */
     addToCart() {
-      this.ProductDetailData['UserID'] = this._getLocalStorageNotParse("AccountID");
-      this.ProductDetailData['CartQuantity'] = this.ProductNum;
-      CartAPI.post(this.ProductDetailData)
-       .then(res => {
-         console.log(res);
-         this.$toast.success("Thêm vào giỏ hàng thành công");
-       })
-       .catch(err => {
-         console.log(err);
-         this.$toast.error("Thêm vào giỏ hàng thất bại");
-       })
+      if (this.inCart) {
+        this.$toast.warn(" Sản phẩm đã tồn tại trong giỏ hàng");
+      } else {
+        this.ProductDetailData["UserID"] = this._getLocalStorageNotParse(
+          "AccountID"
+        );
+        this.ProductDetailData["CartQuantity"] = this.ProductNum;
+        this.ProductDetailData["Active"] = 0;
+        CartAPI.post(this.ProductDetailData)
+          .then(res => {
+            console.log(res);
+            this.$toast.success("Thêm vào giỏ hàng thành công");
+            this.inCart = true;
+          })
+          .catch(err => {
+            console.log(err);
+            this.$toast.error("Thêm vào giỏ hàng thất bại");
+          });
+      }
     },
     /**
      * Xử lý đặt hàng
@@ -145,12 +167,12 @@ export default {
     },
     showImg() {
       this.showPreview = true;
-    }, 
+    },
     prevImage(oldIdx, newIdx) {
-      alert(oldIdx + ':' + newIdx);
+      alert(oldIdx + ":" + newIdx);
     },
     nextImage(oldIdx, newIdx) {
-      alert(oldIdx + ':' + newIdx);
+      alert(oldIdx + ":" + newIdx);
     }
   }
 };

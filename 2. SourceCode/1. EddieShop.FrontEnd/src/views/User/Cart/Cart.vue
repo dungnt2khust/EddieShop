@@ -8,7 +8,8 @@
     <template v-slot:header>
       <div class="fx-row jus-c-fend">
         <ed-button
-          label="Thanh toán"
+          :method="order"
+          label="Đặt hàng"
           :styleBtn="1"
           :disabled="listCheck.length <= 0"
         />
@@ -24,7 +25,7 @@
           :editRow="false"
           :editAll="true"
           :editAllState="true"
-          :totalData="totalData"
+          :totalOnSelect="true"
           @saveTable="saveTable"
           @dblClick="productDetail"
           @Delete="deleteCart"
@@ -43,7 +44,37 @@
               query="name"
             />
           </template>
+          <template v-slot:Status="{ row }">
+            <div
+              class="status-table"
+              :class="{
+                'status-table--success': row.Status == 2,
+                'status-table--error': row.Status == 0 || row.Status == 3,
+                'status-table--warn': row.Status == 1
+              }"
+            >
+              <div class="status-table__icon m-r-10 mi-14"></div>
+              <div v-if="row.Status == 0" class="status-table__msg">
+                Hết hàng
+              </div>
+              <div v-if="row.Status == 1" class="status-table__msg">
+                Hàng vừa đủ, hãy mua ngay
+              </div>
+              <div v-if="row.Status == 2" class="status-table__msg">
+                Hàng đang còn
+              </div>
+              <div v-if="row.Status == 3" class="status-table__msg">
+                Hàng không đủ
+              </div>
+            </div>
+          </template>
         </EdListGridAdvance>
+        <AddOrder
+          v-if="showAddOrder"
+          @close="closeAddOrder"
+          @deleteItem="deleteCartFromOrder"
+          :products="listCart.filter(cart => listCheck.includes(cart.CartID))"
+        />
       </EdFrame>
     </template>
   </base-content-area>
@@ -51,9 +82,14 @@
 <script>
 // Plugins
 import CartAPI from "@/api/components/Cart/CartAPI.js";
+// Components
+import AddOrder from "@/views/User/Order/AddOrder.vue";
 
 export default {
   name: "Cart",
+  components: {
+    AddOrder
+  },
   data() {
     return {
       options: [
@@ -82,17 +118,19 @@ export default {
           title: " Hình ảnh",
           field: "Image",
           type: "image",
-          width: 300,
+          width: 100,
           height: "100px",
+          dataPos: "center",
           pin: true
         },
         {
           title: "Giá",
           field: "Price",
           type: "money",
-          width: 100,
+          width: 120,
           headerPos: "right",
-          dataPos: "right"
+          dataPos: "right",
+          pin: true
         },
         {
           title: "Số lượng",
@@ -109,10 +147,19 @@ export default {
           title: "Tổng tiền",
           field: "CartTotalPrice",
           type: "money",
-          width: 100,
+          width: 120,
           headerPos: "right",
           dataPos: "right",
           total: true
+        },
+        {
+          // 0 - Hết hàng, 1 - Vửa xinh, 2 - Hàng khả dụng có thể chọn thêm, 3 - Không đủ hàng
+          title: "Trạng thái",
+          field: "Status",
+          type: "custom",
+          width: 150,
+          headerPos: "left",
+          dataPos: "left"
         }
       ],
       pagingInfo: {
@@ -120,15 +167,18 @@ export default {
         pageNum: 1,
         pageSize: 10,
         filterData: {
-          TotalFields: ["CartTotalPrice", "CartQuantity"]
+          TotalFields: ["CartTotalPrice", "CartQuantity"],
+          Sorts: [
+            { Field: "CreatedDate", Desc: true }
+          ]
         }
       },
       cartInfo: {},
-      totalData: {}
+      showAddOrder: false
     };
   },
   mounted() {
-    this.getCartsFilterPaging(this.currOption);
+    this.getCartsFilterPaging();
   },
   methods: {
     /**
@@ -156,8 +206,8 @@ export default {
             this.listCartClone = JSON.parse(JSON.stringify(this.listCart));
             this.pagingInfo.totalPage = res.data.Data.TotalPage;
             this.pagingInfo.totalRecord = res.data.Data.TotalRecord;
+            this.pagingInfo.totalData = res.data.Data.TotalDatas;
             this.listCheck = [];
-            this.totalData = res.data.Data.TotalDatas;
           }
         })
         .catch(err => {
@@ -311,16 +361,41 @@ export default {
       var listChange = this.listCart.filter((cart, index) => {
         return !this.deepEqualObject(cart, this.listCartClone[index]);
       });
-      CartAPI.UpdateMulti(listChange)
-        .then(res => {
-          console.log(res);
-          this.$toast.success("Cập nhật thành công");
-          this.getCartsFilterPaging();
-        })
-        .catch(err => {
-          console.log(err);
-          this.$toast.error("Cập nhật thất bại");
-        });
+      if (listChange.length)
+        CartAPI.UpdateMulti(listChange)
+          .then(res => {
+            console.log(res);
+            this.$toast.success("Cập nhật thành công");
+            this.getCartsFilterPaging();
+          })
+          .catch(err => {
+            console.log(err);
+            this.$toast.error("Cập nhật thất bại");
+          });
+    },
+    /**
+     * Đặt Hàng
+     * CreatedBy: NTDUNG (24/12/2021)
+     */
+    order() {
+      this.showAddOrder = true;
+    },
+    /**
+     * Xoá một sản phẩm khỏi đơn Hàng
+     * CreatedBy: NTDUNG (04/01/2022)
+     */
+    deleteCartFromOrder(cartID) {
+      console.log(cartID)
+      this.listCheck = this.listCheck.filter(id => id != cartID)
+    },
+    /**
+     * Đóng form đặt hàng 
+     * CreatedBy: NTDUNG (07/01/2022)
+     */
+    closeAddOrder() {
+      this.showAddOrder = false;
+      this.listCheck = [];
+      this.getCartsFilterPaging();
     }
   },
   watch: {

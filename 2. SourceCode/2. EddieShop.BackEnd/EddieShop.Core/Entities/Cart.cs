@@ -28,9 +28,11 @@ namespace EddieShop.Core.Entities
         public int CartQuantity { get; set; }
 
         /// <summary>
-        /// Chưa đọc
+        /// Trạng thái 
+        /// 0 - Hết hàng, 1 - Vửa xinh, 2 - Hàng khả dụng có thể chọn thêm, 3 - Không đủ hàng
         /// </summary>
-        public int? Active { get; set; }
+        [EddieNotMap]
+        public int? Status { get; set; }
         /// <summary>
         /// Tổng tiền
         /// </summary>
@@ -66,5 +68,16 @@ namespace EddieShop.Core.Entities
         /// </summary>
         [EddieNotMap]
         public int Quantity { get; set; }
+
+        /// <summary>
+        /// Id đơn hàng
+        /// </summary>
+        [EddieNotMap]
+        public Guid? OrderID { get; set; }
+
+        /// <summary>
+        /// Trạng thái
+        /// </summary>
+        public int? Active { get; set; }
     }
 }

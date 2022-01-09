@@ -32,8 +32,9 @@ export default class BaseAPI {
 	 * @returns promise
 	 * CreatedBy: NTDUNG (01/09/2021)
 	 */
-	GetByID(id) {
-		return BaseAPIConfig.get(this.controller + "/" + id + `?${this.GetSession()}`);
+	GetByID(id, mode) {
+		var append = mode ? `&&mode=${mode}` : '';
+		return BaseAPIConfig.get(this.controller + "/" + id + `?${this.GetSession()}${append}`);
 	}
 
 	/**
@@ -96,6 +97,9 @@ export default class BaseAPI {
 	 * ModifiedBy: NTDUNG (10/12/2021)
      */
     GetFilterPaging(filterString, pageNumber, pageSize, filterData = {}) {
+		filterData.TotalFields = filterData.TotalFields ? filterData.TotalFields : [];
+		filterData.Sorts = filterData.Sorts ? filterData.Sorts : [];
+		filterData.RangeDates = filterData.RangeDates ? filterData.RangeDates : [];
         let api = this.controller + `/Paging?filterString=${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}` + `&&${this.GetSession()}`;
         return BaseAPIConfig.post(api, filterData);
     }

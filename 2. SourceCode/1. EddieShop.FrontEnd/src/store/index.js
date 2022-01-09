@@ -11,23 +11,33 @@ const store = new Vuex.Store({
       navBar: Guest,
       Language: 'vi', 
       Route: "", 
-      PreviousRoute: null
+      PreviousRoute: null,
+      AccountData: {}
+  },
+  getters: {
+    DisplayName(state) {
+      return state.AccountData.DisplayName;
+    }
   },
   mutations: {
     SET_LANG (state, payload) {
       app.$i18n.locale = payload;
       document.title = app.$t(app.$route.meta.Title);
-      this.Language = payload;
+      state.Language = payload;
+      // this.Language = payload;
     }, 
     SET_ROUTE (state, payload) {
       if (localStorage.getItem("AccountType") == AccountType.ADMIN) {
         payload.shift();
       } 
       payload.shift();
-      this.Route = payload;
+      state.Route = payload;
     },
     SET_PREVIOUS_ROUTE(state, payload) {
-      this.PreviousRoute = payload;
+      state.PreviousRoute = payload;
+    },
+    SET_ACCOUNT_DATA(state, payload) {
+      state.AccountData = payload;
     }
   },
   actions: {
@@ -39,6 +49,9 @@ const store = new Vuex.Store({
     },
     setPreviousRoute({commit}, payload) {
       commit('SET_PREVIOUS_ROUTE', payload)
+    },
+    setAccountData({commit}, payload) {
+      commit('SET_ACCOUNT_DATA', payload)
     }
   }
 });

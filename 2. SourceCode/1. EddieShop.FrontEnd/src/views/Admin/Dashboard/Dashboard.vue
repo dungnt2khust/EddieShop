@@ -4,7 +4,7 @@
       <EdFrame :gutH="12" :gutV="12" height="fit-content">
         <EdCol :orderLg="1" :colLg="4" :colXl="6" :colXs="12" :colSm="12">
           <BaseContentFrame
-            title=" Nhịp tim 7 ngày gần đây"
+            title="Doanh thu 7 ngày gần đây"
             bgColor="#fff"
             height="100%"
             :autoScroll="false"
@@ -14,7 +14,7 @@
           >
             <template v-slot:content>
               <ed-bar-chart
-                name="Nhịp tim"
+                name="Doanh thu"
                 :data="heartBeatData"
                 :categories="heartBeatDate"
               />
@@ -35,24 +35,24 @@
                 <template v-slot:content>
                   <ed-button
                     class="m-t-20 w-full"
-                    label="Nhịp tim cao nhất"
+                    label="Doanh thu cao nhất"
                     :styleBtn="1"
                     txtPos="center"
                     bgColor="#5DCE00"
                   />
-                  <div class="txt-smb-1 txt-s-30 txt-align-center">90</div>
+                  <div class="txt-smb-1 txt-s-24 txt-align-center">190 triệu</div>
                   <ed-button
                     class="m-t-20 w-full"
-                    label="Nhịp tim thấp nhất"
+                    label="Doanh thu thấp nhất"
                     :styleBtn="2"
                     txtPos="center"
                     bgColor="#A2E44C"
                   />
-                  <div class="txt-smb-1 txt-s-30 txt-align-center">77</div>
+                  <div class="txt-smb-1 txt-s-24 txt-align-center">77 triệu</div>
                 </template>
               </base-content-frame>
             </EdCol>
-            <EdCol :colLg="12" :colXl="12" :colXs="6" :colSm="12">
+            <!-- <EdCol :colLg="12" :colXl="12" :colXs="6" :colSm="12">
               <base-content-frame
                 title="Thông tin cho bạn"
                 bgColor="#fff"
@@ -77,7 +77,7 @@
                   />
                 </template>
               </base-content-frame>
-            </EdCol>
+            </EdCol> -->
           </div>
         </EdCol>
         <EdCol :orderLg="2" :colLg="4" :colXl="12" :colXs="12" :colSm="12">

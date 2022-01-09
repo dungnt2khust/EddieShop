@@ -3,11 +3,13 @@
   <div class="pagination">
     <ed-select-box
       :options="options"
+      :listField="pageFields"
       v-model="currOption"
       :up="true"
       width="200px"
     />
     <paginate
+      v-model="pageNum"
       :page-count="totalPage"
       :page-range="1"
       :margin-pages="2"
@@ -45,28 +47,41 @@ export default {
     },
     options: {
       type: Array,
-      default: () => [10, 20, 50, 100]
+      default: () => [
+        { PageNum: 10 },
+        { PageNum: 20 },
+        { PageNum: 50 },
+        { PageNum: 100 }
+      ]
     },
     totalPage: {
       type: [Number, String],
       default: 0
+    },
+    currPage: {
+      type: [Number, String],
+      default: 1
     }
   },
   data() {
     return {
       currOption: 0,
+      pageFields: [{field: 'PageNum'}],
       pageNum: 1
     };
   },
   methods: {
     clickCallback(pageNum) {
       this.pageNum = pageNum;
-      this.$emit("changePaging", pageNum, this.options[this.currOption]);
+      this.$emit("changePaging", pageNum, this.options[this.currOption].PageNum);
     }
   },
   watch: {
     currOption: function(val) {
-      this.$emit("changePaging", this.pageNum, this.options[val]);
+      this.$emit("changePaging", this.pageNum, this.options[val].PageNum);
+    },
+    currPage: function(val) {
+      this.pageNum = val;
     }
   }
 };

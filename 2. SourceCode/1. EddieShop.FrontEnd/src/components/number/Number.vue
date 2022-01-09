@@ -58,7 +58,7 @@ export default {
       var value = e.target.value;
       if (this.max !== undefined && +value > this.max) value = this.max;
       if (this.min !== undefined && +value < this.min) value = this.min
-      this.$emit("input", value);
+      this.$emit("input", +value);
     },
     /**
      * Tăng

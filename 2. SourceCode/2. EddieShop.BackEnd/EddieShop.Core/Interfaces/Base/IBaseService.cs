@@ -25,7 +25,7 @@ namespace EddieShop.Core.Interfaces.Base
         /// <returns></returns>
         /// CreatedBy: NTDUNG(27/8/2021)
         /// ModifiedBy: NTDUNG(27/8/2021)
-        ServiceResult GetEntityById(Guid entityId, Guid? sessionID);
+        ServiceResult GetEntityById(Guid entityId, Guid? sessionID, bool? mode);
 
         /// <summary>
         /// Thêm mới

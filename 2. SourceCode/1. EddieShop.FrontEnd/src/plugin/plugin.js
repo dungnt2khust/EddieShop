@@ -25,7 +25,6 @@ Vue.use(VueEasyLightbox);
 Vue.use(VeeValidate);
 Vue.use(VueColumnsResizable);
 
-
 Vue.prototype.$bus = EventBus;
 Vue.prototype.$popup = Popup;
 Vue.prototype.$tooltip = Tooltip;

@@ -40,9 +40,21 @@ namespace EddieShop.Core.Entities
         public int? Quantity { get; set; }
 
         /// <summary>
+        /// Số lượng khả dụng trong kho hàng
+        /// </summary>
+        [EddieNotMap]
+        public int? AvaiableQuantity { get; set; }
+
+        /// <summary>
         /// Tổng tiền
         /// </summary>
         public decimal? TotalPrice { get; set; }
+
+        /// <summary>
+        /// Tổng tiền đã bán
+        /// </summary>
+        [EddieNotMap]
+        public decimal? SoldTotalPrice { get; set; }
 
         /// <summary>
         /// Mô tả
@@ -84,6 +96,12 @@ namespace EddieShop.Core.Entities
         /// </summary>
         [EddieNotMap]
         public int? Like { get; set; }
+
+        /// <summary>
+        /// Đã có trong giỏ hàng
+        /// </summary>
+        [EddieNotMap]
+        public int? InCart { get; set; }
         #endregion
     }
 }

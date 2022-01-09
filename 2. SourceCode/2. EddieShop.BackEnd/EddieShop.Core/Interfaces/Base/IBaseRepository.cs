@@ -23,8 +23,7 @@ namespace EddieShop.Core.Interfaces.Base
         /// <returns></returns>
         /// CreatedBy: NTDUNG(27/8/2021)
         /// ModifiedBy: NTDUNG(27/8/2021)
-        TEntity GetEntityById(Guid entityId, Guid? sessionID);
-
+        TEntity GetEntityById(Guid entityId, Guid? sessionID, bool? mode);
 
 
         /// <summary>

@@ -21,7 +21,8 @@ export default {
          * Chuyển trạng thái checkbox
          * CreatedBy: NTDUNG (08/12/2021)
          */
-        toggleCheckbox() {
+        toggleCheckbox(e) {
+            e.stopPropagation();
             this.$emit('input', !this.value);
             this.$emit('changeState', !this.value);
         }

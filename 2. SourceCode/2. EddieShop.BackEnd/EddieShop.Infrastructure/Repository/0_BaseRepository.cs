@@ -65,15 +65,21 @@ namespace EddieShop.Infrastructure.Repository
         /// <returns></returns>
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021) 
-        public virtual TEntity GetEntityById(Guid entityId, Guid? sessionID)
+        public virtual TEntity GetEntityById(Guid entityId, Guid? sessionID, bool? mode)
         {
             using (_dbConnection = new MySqlConnection(_connectionString))
             {
-                var sqlCommand = $"SELECT * from {_className} WHERE {_className}ID = @{_className}ID";
                 DynamicParameters dynamicParameters = new DynamicParameters();
                 dynamicParameters.Add($"@{_className}ID", entityId);
-                var entity = _dbConnection.QueryFirstOrDefault<TEntity>(sqlCommand, param: dynamicParameters);
-                return entity;
+                if (mode == null || (bool)!mode)
+                {
+                    var sqlCommand = $"SELECT * from {_className} WHERE {_className}ID = @{_className}ID";
+                    return _dbConnection.QueryFirstOrDefault<TEntity>(sqlCommand, param: dynamicParameters);
+                } else
+                {
+                    var procedure = $"Proc_Get{_className}ById";
+                    return _dbConnection.QueryFirstOrDefault<TEntity>(procedure, param: dynamicParameters, commandType: CommandType.StoredProcedure);
+                }
             }
         }
         #endregion
@@ -190,11 +196,7 @@ namespace EddieShop.Infrastructure.Repository
                     if (property.IsDefined(typeof(EddieNotMap), false)) continue;
                     var propName = property.Name;
                     var propValue = property.GetValue(entity);
-                    // Gán Id mới
-                    if (propName.Equals($"{_className}ID") && (property.PropertyType == typeof(Guid) || property.PropertyType == typeof(Guid?)))
-                    {
-                        propValue = Guid.NewGuid();
-                    }
+
                     // Bổ sung ngày tạo mới
                     if (propName == "CreatedDate")
                     {
@@ -443,9 +445,9 @@ namespace EddieShop.Infrastructure.Repository
         /// CreatedBy: NTDUNG(27/10/2021)
         public virtual Object GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID)
         {
-            var totalFields = filterData.TotalFields != null ? filterData.TotalFields : new List<string>();
-            var rangeDates = filterData.RangeDates != null ? filterData.RangeDates : new List<RangeDate>();
-            var sorts = filterData.Sorts != null ? filterData.Sorts : new List<Sort>();
+            var totalFields = filterData.TotalFields;
+            var rangeDates = filterData.RangeDates;
+            var sorts = filterData.Sorts;
 
             using(_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -912,9 +914,6 @@ namespace EddieShop.Infrastructure.Repository
                 var properties = entity.GetType().GetProperties();
                 foreach (var property in properties)
                 {
-                    // Nếu thuộc tính không cần thêm vào thì bỏ qua
-                    if (property.IsDefined(typeof(EddieNotMap), false)) continue;
-
                     var propName = property.Name;
                     // Kiểm tra có thuộc colums gửi lên không
                     var checkColumn = columns.Contains(propName);

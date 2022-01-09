@@ -38,7 +38,7 @@ namespace EddieShop.Controller.API.Controllers
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
         [HttpGet]
-        public IActionResult GetAllEntities(Guid? sessionID)
+        public virtual  IActionResult GetAllEntities(Guid? sessionID)
         {
             try
             {
@@ -79,11 +79,11 @@ namespace EddieShop.Controller.API.Controllers
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
         [HttpGet("{entityId}")]
-        public IActionResult GetEntityById(Guid entityId, Guid? sessionID)
+        public virtual  IActionResult GetEntityById(Guid entityId, Guid? sessionID, bool? mode)
         {
             try
             {
-                var serviceResult = _baseService.GetEntityById(entityId, sessionID);
+                var serviceResult = _baseService.GetEntityById(entityId, sessionID, mode);
                 if (serviceResult.Data != null)
                 {
                     return StatusCode(200, serviceResult);
@@ -116,7 +116,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/11/2021)
         [HttpPost("GetByProperties")]
-        public IActionResult GetByProperties(TEntity columnsGet, Guid? sessionID)
+        public virtual  IActionResult GetByProperties(TEntity columnsGet, Guid? sessionID)
         {
             try
             {
@@ -153,7 +153,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/11/2021)
         [HttpPost("GetByValueColumns")]
-        public IActionResult GetByValueColumns(TEntity columnsGet, Guid? sessionID)
+        public virtual  IActionResult GetByValueColumns(TEntity columnsGet, Guid? sessionID)
         {
             try
             {
@@ -189,7 +189,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG (24/11/2021)
         [HttpPost("GetByIds")]
-        public IActionResult GetByIds(List<Guid> ids, Guid? sessionID)
+        public virtual  IActionResult GetByIds(List<Guid> ids, Guid? sessionID)
         {
             try
             {
@@ -226,7 +226,7 @@ namespace EddieShop.Controller.API.Controllers
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
         [HttpPost]
-        public IActionResult Insert(TEntity entity, Guid? sessionID)
+        public virtual IActionResult Insert(TEntity entity, Guid? sessionID)
         {
             try
             {
@@ -269,7 +269,7 @@ namespace EddieShop.Controller.API.Controllers
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
         [HttpPut("{entityId}")]
-        public IActionResult Update(Guid entityId, TEntity entity, Guid? sessionID)
+        public virtual  IActionResult Update(Guid entityId, TEntity entity, Guid? sessionID)
         {
             try
             {
@@ -311,7 +311,7 @@ namespace EddieShop.Controller.API.Controllers
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
         [HttpDelete("{entityId}")]
-        public IActionResult Delete(Guid entityId, Guid? sessionID)
+        public virtual  IActionResult Delete(Guid entityId, Guid? sessionID)
         {
             try
             {
@@ -344,7 +344,7 @@ namespace EddieShop.Controller.API.Controllers
         /// CreatedBy: NTDUNG(17/8/2021)
         /// ModifiedBy: NTDUNG(17/8/2021)
         [HttpDelete]
-        public IActionResult DeleteMultiple([FromBody] List<Guid> entityIds, Guid? sessionID)
+        public virtual  IActionResult DeleteMultiple([FromBody] List<Guid> entityIds, Guid? sessionID)
         {
             try
             {
@@ -375,7 +375,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG(07/10/2021)
         [HttpGet("NewCode")]
-        public IActionResult GetNewCode(Guid? sessionID)
+        public virtual  IActionResult GetNewCode(Guid? sessionID)
         {
             try
             {
@@ -410,7 +410,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG(28/10/2021)
         [HttpPost("Paging")]
-        public IActionResult GetFilterPaging(string filterString, int pageNumber, int pageSize, [FromBody] FilterData filterData, Guid? sessionID)
+        public virtual  IActionResult GetFilterPaging(string filterString, int pageNumber, int pageSize, [FromBody] FilterData filterData, Guid? sessionID)
         {
             try
             {
@@ -451,7 +451,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG(17/8/2021)
         [HttpPut("UpdateColumns/{entityId}")]
-        public IActionResult UpdateColumns(Guid entityId, UpdateColumns<TEntity> updateColumns, Guid? sessionID)
+        public virtual  IActionResult UpdateColumns(Guid entityId, UpdateColumns<TEntity> updateColumns, Guid? sessionID)
         {
             try
             {
@@ -493,7 +493,7 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG(23/12/2021)
         [HttpPut("UpdateMulti")]
-        public IActionResult UpdateMultiple(List<TEntity> listEntity, Guid? sessionID)
+        public virtual  IActionResult UpdateMultiple(List<TEntity> listEntity, Guid? sessionID)
         {
             try
             {
