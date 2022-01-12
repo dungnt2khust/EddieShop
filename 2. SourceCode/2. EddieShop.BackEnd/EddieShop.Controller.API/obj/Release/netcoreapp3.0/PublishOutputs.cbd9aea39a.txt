@@ -10,6 +10,7 @@ F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieSh
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\Microsoft.Extensions.Primitives.dll
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\Microsoft.OpenApi.dll
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\MySqlConnector.dll
+F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\Newtonsoft.Json.dll
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\Npgsql.dll
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll

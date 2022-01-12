@@ -197,7 +197,10 @@ export default {
             this._getLocalStorage("AccountType") !== AccountType.GUEST
           )
             this.checkSession(from);
-          else this.updateNavbar();
+          else {
+            this._setLocalStorage("AccountType", AccountType.GUEST);
+            this.updateNavbar();
+          }
         } else {
           this.checkPermission();
         }

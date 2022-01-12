@@ -41,7 +41,7 @@ namespace EddieShop.Controller.API
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
                 // Access cors gọi api bình thường
-                builder.WithOrigins("https://eddieshop.netlify.app/")
+                builder.WithOrigins("https://eddieshop.netlify.app")
                        .AllowAnyMethod()
                        .AllowAnyHeader()
                        .AllowCredentials()

@@ -86,7 +86,7 @@ namespace EddieShop.Core.Services
                     adminIDs.Add((Guid)admin.AdminID);
                 }
                 var userSent = _userRepository.GetEntityById(entity.UserID, sessionID, false);
-                _signalRHub.SendNotifyToAdmins(userSent, adminIDs, new { message = entity.OrderCode });
+                _signalRHub.SendNotifyToAdmins(userSent, adminIDs, new { Code = entity});
             }
             return serviceResult;
         }
