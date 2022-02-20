@@ -9,7 +9,7 @@ Bắt đầu thi công: 27/10/2021
 * Clone project hoặc download file zip  
 ### 2.1. Database
 * Cơ sở dữ liệu được config trong source code backend được chạy online trên một máy chủ nên không cần config gì  
-* Nếu muốn chạy trên local hãy vào ('/SourceCode/Database) để lấy file backup vào hệ quản trị cơ sở dữ liệu của bạn và đổi cấu hình trong Backend trong file appsetting giống với cấu hình cơ sở dữ liệu của bạn  
+* Nếu muốn chạy trên local hãy vào ('/SourceCode/Database) để lấy file backup vào hệ quản trị cơ sở dữ liệu của bạn và đổi cấu hình trong Backend trong file **appsetting.json** giống với cấu hình cơ sở dữ liệu của bạn  
 ### 2.2. Backend  
 * Chạy project back-end và qua dịch vụ iis để chạy Swagger API (Khuyến khích sử dụng Visual Studio: Ctrl + F5, hãy kiểm tra bạn đã cài đặt các thư việc C# hỗ trợ bật project lên chưa)  
 ### 2.3. Frontent  
