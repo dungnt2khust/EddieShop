@@ -5,18 +5,16 @@
         ref="inputFile"
         type="file"
         :name="name"
-        @change="changeFile($event)"
+        @change="changeFileCDN($event)"
         v-validate="realRules"
         class="inputfile__main d-none"
       />
 
-      <div v-if="value" class="inputfile__preview flex-1 p-v-15">
+      <div v-if="srcPreview || value" class="inputfile__preview flex-1 p-v-15">
         <img
           @click="showPreview = true"
           class="w-full h-full cur-p"
-          :src="
-            typeof value == 'string' ? 'data:image/gif;base64,' + value : ''
-          "
+          :src="srcPreview || value"
           :alt="fileName"
         />
       </div>
@@ -37,8 +35,7 @@
         :visible="showPreview"
         :imgs="[
           {
-            src:
-              typeof value == 'string' ? 'data:image/gif;base64,' + value : '',
+            src: srcPreview || value,
             title: fileName
           }
         ]"
@@ -79,7 +76,8 @@ export default {
       files: [],
       fileName: "",
       reader: null,
-      showPreview: false
+      showPreview: false,
+      srcPreview: ""
     };
   },
   created() {
@@ -125,23 +123,62 @@ export default {
     }
   },
   methods: {
+    /**
+     * Bắt su kien thay doi file
+     * created by ntdung 12.12.2021
+     */
     changeFile(e) {
       this.files = e.target.files;
       this.fileName = this.files[0].name;
 
-      // // Tạo đường dẫn preview
-      // this.srcPreview = URL.createObjectURL(this.files[0]);
-      // // Timeout xoá đường dẫn
-      // setTimeout(() => {
-      //   URL.revokeObjectURL(this.srcPreview);
-      // }, 100);
+      // Tạo đường dẫn preview
+      this.srcPreview = URL.createObjectURL(this.files[0]);
+      // Timeout xoá đường dẫn
+      setTimeout(() => {
+        URL.revokeObjectURL(this.srcPreview);
+      }, 100);
 
       // Convert sang bytearray và truyền ra
-      this.reader = new FileReader();
-      this.reader.onload = () => {
-        this.readerImage();
-      };
-      this.reader.readAsArrayBuffer(this.files[0]);
+      // this.reader = new FileReader();
+      // this.reader.onload = () => {
+      //   this.readerImage();
+      // };
+      // this.reader.readAsArrayBuffer(this.files[0]);
+      console.log(this.$refs.inputFile.value)
+      const fs = require('fs');
+      const FormData = require('form-data');
+      var image = fs.createReadStream(this.$refs.inputFile.value)
+      var data = new FormData();
+      data.append("file", image)
+      console.log(data)
+    },
+    /**
+     * Bat su kien thay doi va cho anh len CDN
+     * created by ntdung 20.02.2022
+     */
+    changeFileCDN(e) {
+      this.files = e.target.files;
+      this.fileName = this.files[0].name;
+
+      // Tạo đường dẫn preview
+      this.srcPreview = URL.createObjectURL(this.files[0])
+      this.UploadImage(this.files[0], this.fileName, ["Product"], "Product")
+      .then(res => {
+        this.deleteURL();
+        this.srcPreview = "";
+        this.$emit('input', res.data.url);
+      })
+      .catch(err => {
+        console.log(err);
+      })
+    },
+    /**
+     * Xoa duong dan tam
+     * created by ntdung 20.02.2022
+     */
+    deleteURL() {
+      // Timeout xoá đường dẫn
+      URL.revokeObjectURL(this.srcPreview);
     },
     /**
      * Chuyển sang mảng ký tự

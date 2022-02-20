@@ -2,6 +2,8 @@ $success: green;
 $error: red;
 $warn: rgb(182, 182, 0);
 $active: rgb(230, 230, 18);
+$grey: #ccc;
+$blue: blue;
 
 .listgrid {
     .listgrid__header {
@@ -110,6 +112,22 @@ $active: rgb(230, 230, 18);
                         }
                         .status-table__msg {
                             color: $warn;
+                        }
+                    }
+                    &.status-table--grey {
+                        .status-table__icon {
+                            background-color: $grey;
+                        }
+                        .status-table__msg {
+                            color: $grey;
+                        }
+                    }
+                    &.status-table--blue {
+                        .status-table__icon {
+                            background-color: $blue;
+                        }
+                        .status-table__msg {
+                            color: $blue;
                         }
                     }
                     &.status-table--error {

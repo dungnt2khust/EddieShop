@@ -28,15 +28,18 @@ namespace EddieShop.Core.Entities
         public string Description { get; set; }
 
         /// <summary>
+        /// Trạng thái đơn hàng (0 - Đơn hàng mới tạo đang chờ duyệt, 1 - Đơn hàng đã duyệt, 2 - Đơn hàng đã đóng gói và vận chuyển, 3 - Đơn hàng đã được giao thành công)
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
         /// Số lượng sản phẩm
         /// </summary>
-        [EddieNotMap]
         public int Quantity { get; set; }
 
         /// <summary>
         /// Tổng tiền
         /// </summary>
-        [EddieNotMap]
         public decimal TotalPrice { get; set; }
         /// <summary>
         /// Id giỏ hàng 

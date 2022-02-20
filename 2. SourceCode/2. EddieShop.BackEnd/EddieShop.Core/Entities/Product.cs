@@ -64,7 +64,7 @@ namespace EddieShop.Core.Entities
         /// <summary>
         /// Ảnh chính
         /// </summary>
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
 
         /// <summary>
         /// Hiển thị giảm giá
@@ -95,13 +95,19 @@ namespace EddieShop.Core.Entities
         /// Yêu thích
         /// </summary>
         [EddieNotMap]
-        public int? Like { get; set; }
+        public int? _Like { get; set; }
 
         /// <summary>
         /// Đã có trong giỏ hàng
         /// </summary>
         [EddieNotMap]
         public int? InCart { get; set; }
+
+        /// <summary>
+        /// Comment tại sản phẩm
+        /// </summary>
+        [EddieNotMap]
+        public string Comment { get; set; }
         #endregion
     }
 }

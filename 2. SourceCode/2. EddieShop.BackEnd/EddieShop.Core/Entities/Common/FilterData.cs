@@ -20,5 +20,10 @@ namespace EddieShop.Core.Entities.Common
         /// Những thuộc tính muốn sắp xếp 
         /// </summary>
         public List<Sort>? Sorts { get; set; }
+
+        /// <summary>
+        /// Điều kiện
+        /// </summary>
+        public List<Condition>? Conditions { get; set; }
     }
 }

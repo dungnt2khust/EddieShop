@@ -109,7 +109,8 @@ export default {
           field: "Image",
           type: "image",
           width: 300,
-          height: "100px"
+          height: "100px",
+          dataPos: "center"
         },
         {
           title: "Giá",

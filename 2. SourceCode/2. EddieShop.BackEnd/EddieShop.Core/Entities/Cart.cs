@@ -61,7 +61,7 @@ namespace EddieShop.Core.Entities
         /// Hình ảnh
         /// </summary>
         [EddieNotMap]
-        public Byte[] Image { get; set; }
+        public string Image { get; set; }
 
         /// <summary>
         /// Số lượng sản phẩm

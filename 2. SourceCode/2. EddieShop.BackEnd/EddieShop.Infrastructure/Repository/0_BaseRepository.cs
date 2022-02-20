@@ -443,11 +443,12 @@ namespace EddieShop.Infrastructure.Repository
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(27/10/2021)
-        public virtual Object GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID)
+        public virtual Object GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID, string storeCustom)
         {
             var totalFields = filterData.TotalFields;
             var rangeDates = filterData.RangeDates;
             var sorts = filterData.Sorts;
+            var conditions = filterData.Conditions;
 
             using(_dbConnection = new MySqlConnection(_connectionString))
             {
@@ -463,8 +464,48 @@ namespace EddieShop.Infrastructure.Repository
 
                 var proceduceFilterPaging = $"Proc_Get{_className}FilterPaging";
                 var proceduceFilter = $"Proc_Get{_className}Filter";
+                if (storeCustom != "" && storeCustom != null)
+                {
+                    proceduceFilter = storeCustom;
+                    proceduceFilterPaging = storeCustom;
+                }
                 var entitiesFilterPaging = _dbConnection.Query<TEntity>(proceduceFilterPaging, param: dynamicParameters, commandType: CommandType.StoredProcedure);
                 var entitiesFilter = _dbConnection.Query<TEntity>(proceduceFilter, param: dynamicParameters, commandType: CommandType.StoredProcedure);
+                
+                // Lọc theo điều kiện
+                if (conditions.Count() > 0)
+                {
+                    var tempEntities = new List<TEntity>();
+                    foreach (var record in entitiesFilterPaging)
+                    {
+                        foreach (var (condition, i) in conditions.Select((condition, i) => (condition, i)))
+                        {
+                            var valid = true;
+                            switch (condition.Type)
+                            {
+                                case "Guid":
+                                    if (condition.Method == "Equal")
+                                    {
+                                        if (record.GetType().GetProperty(condition.FieldName).GetValue(record).ToString() == condition.Value)
+                                        {
+                                            if (i == conditions.Count() - 1)
+                                                tempEntities.Add(record);
+                                        } else
+                                        {
+                                            valid = false;
+                                        }
+                                    } 
+                                    break;
+                                default:
+                                    tempEntities.Add(record);
+                                    break;
+                            }
+
+                            if (!valid) break;
+                        } 
+                    }
+                    entitiesFilterPaging = tempEntities;
+                }
 
                 // Sắp xếp
                 entitiesFilterPaging = SortData(entitiesFilterPaging.ToList(), sorts);
@@ -1008,7 +1049,7 @@ namespace EddieShop.Infrastructure.Repository
 
                     dynamicParameters.Add($"@oldEntityId{index}", entityId);
                     sqlCommand += $"UPDATE {_className} SET {String.Join(", ", queryLine.ToArray())} " +
-                                    $"WHERE {_className}Id = @oldEntityId{index};";
+                                    $"WHERE {_className}ID = @oldEntityId{index};";
 
                 }
                 rowEffects = mySqlConnection.Execute(sqlCommand, param: dynamicParameters, transaction: transaction);

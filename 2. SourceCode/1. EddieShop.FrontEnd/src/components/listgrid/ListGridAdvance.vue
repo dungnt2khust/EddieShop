@@ -153,6 +153,11 @@
           </tr>
         </thead>
         <tbody class="listgrid__table-body">
+          <tr v-if="!value.length">
+            <div class="fx-row jus-c-center aln-i-center">
+              Không có dữ liệu
+            </div> 
+          </tr>
           <tr v-for="(row, index) in value" @dblclick="$emit('dblClick', row)">
             <td>
               <div v-show="showCheck" class="fx-row jus-c-center aln-i-center">
@@ -459,11 +464,17 @@ export default {
         case "money":
           td = this.formatMoney(row[header.field]);
           break;
+        case "date":
+          td = this.formatDate(row[header.field]);
+          break;
+        case "datetime":
+          td = this.formatDateTime(row[header.field]);
+          break;
         case "image":
           td = `<div class="fx-row jus-c-center aln-i-center no-select" style="overflow: hidden; max-width: 100%">
             <img style="max-height: ${header.height}; min-height: ${
             header.height
-          }" src="data:image/gif;base64,${row[header.field]}" atl="Image" />
+          }" src="${row[header.field]}" atl="Image" />
             </div>
             `;
           break;

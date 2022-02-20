@@ -400,12 +400,12 @@ namespace EddieShop.Core.Services
         /// <param name="sessionID"></param>
         /// <returns></returns>
         /// CreatedBy: NTDUNG(28/10/2021)
-        public virtual ServiceResult GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID)
+        public virtual ServiceResult GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID, string storeCustom)
         {
             try
             {
                 var serviceResult = new ServiceResult();
-                serviceResult.Data = _baseRepository.GetFilterPaging(filterString, pageNumber, pageSize, filterData, sessionID);
+                serviceResult.Data = _baseRepository.GetFilterPaging(filterString, pageNumber, pageSize, filterData, sessionID, storeCustom);
                 return serviceResult;
             }
             catch (Exception)

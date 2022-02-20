@@ -410,11 +410,11 @@ namespace EddieShop.Controller.API.Controllers
         /// <returns></returns>
         /// CreatedBy: NTDUNG(28/10/2021)
         [HttpPost("Paging")]
-        public virtual  IActionResult GetFilterPaging(string filterString, int pageNumber, int pageSize, [FromBody] FilterData filterData, Guid? sessionID)
+        public virtual  IActionResult GetFilterPaging(string filterString, int pageNumber, int pageSize, [FromBody] FilterData filterData, Guid? sessionID, string storeCustom = "") 
         {
             try
             {
-                var serviceResult = _baseService.GetFilterPaging(filterString, pageNumber, pageSize, filterData, sessionID);
+                var serviceResult = _baseService.GetFilterPaging(filterString, pageNumber, pageSize, filterData, sessionID, storeCustom);
                 //4.Trả về kết quả cho client
                 if (serviceResult.Data != null)
                 {

@@ -39,9 +39,10 @@
             v-for="(notify, index) in listNotify.slice().reverse()"
             class="list-notify__item m-r-10 p-l-10"
             :key="index"
+            @click="clickToNotify"
           >
             <div class="list-notify__title m-r-10">{{ notify.Title }}</div>
-            <div class="list-notify__content">{{ notify.Content }}</div>
+            <div class="list-notify__content m-t-10">{{ notify.Content }}</div>
           </div>
           <div v-if="!listNotify.length">
             Không có thông báo
@@ -71,16 +72,30 @@ export default {
      */
     receiveNotify() {
       this.$SignalR.on("ReceiveNotify", (user, notify) => {
-        console.log(user, notify);
-        this.listNotify.push({
-          User: user,
-          Title: notify.Title,
-          Content: notify.Content
-        });
+        if (notify.Code == "NEWORDER")
+          this.listNotify.push({
+            User: user,
+            Title: `Đơn hàng mới từ ${user.DisplayName} - ${user.Code}`,
+            Content: `Mã đơn hàng: ${notify.Data.OrderCode}` 
+          });
+        else {
+          this.listNotify.push({
+            User: user,
+            Title: notify.Title,
+            Content: notify.Content
+          })
+        }
       });
     },
     hideNotify() {
       this.showNotify = false;
+    },
+    clickToNotify() {
+      if (this.$route.path.includes('order')) {
+        this.$router.go(0)
+      } else {
+        this.$router.push('/order')
+      }
     }
   }
 };

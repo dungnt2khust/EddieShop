@@ -13,7 +13,7 @@
               @click="showImg(0)"
               class="productdetail__img cur-p"
               :style="{
-                'background-image': `url(data:image/gif;base64,${
+                'background-image': `url(${
                   ProductDetailData.Image ? ProductDetailData.Image : ''
                 }`
               }"
@@ -42,7 +42,7 @@
         </EdRow>
         <vue-easy-lightbox
           :visible="visible"
-          :imgs="[{src: `data:image/gif;base64,${ProductDetailData.Image ? ProductDetailData.Image : ''}`, title: ProductDetailData.Title}]"
+          :imgs="[{src: `${ProductDetailData.Image ? ProductDetailData.Image : ''}`, title: ProductDetailData.Title}]"
           :index="0"
           @hide="handleHide"
           @on-prev-click="prevImage"

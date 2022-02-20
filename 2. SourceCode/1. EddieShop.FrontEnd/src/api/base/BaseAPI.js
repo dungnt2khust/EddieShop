@@ -96,11 +96,16 @@ export default class BaseAPI {
      * CreatedBy: NTDUNG(29/10/2021)
 	 * ModifiedBy: NTDUNG (10/12/2021)
      */
-    GetFilterPaging(filterString, pageNumber, pageSize, filterData = {}) {
+    GetFilterPaging(filterString, pageNumber, pageSize, filterData = {}, storeCustom = "") {
 		filterData.TotalFields = filterData.TotalFields ? filterData.TotalFields : [];
 		filterData.Sorts = filterData.Sorts ? filterData.Sorts : [];
 		filterData.RangeDates = filterData.RangeDates ? filterData.RangeDates : [];
-        let api = this.controller + `/Paging?filterString=${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}` + `&&${this.GetSession()}`;
+		filterData.Conditions = filterData.Conditions ? filterData.Conditions : [];
+		let api;
+		if (filterString)
+			api = this.controller + `/Paging?filterString=${filterString}&pageNumber=${pageNumber}&pageSize=${pageSize}` + `&${this.GetSession()}`;
+		else	
+			api = this.controller + `/Paging?pageNumber=${pageNumber}&pageSize=${pageSize}&storeCustom=${storeCustom}` + `&${this.GetSession()}`;
         return BaseAPIConfig.post(api, filterData);
     }
 

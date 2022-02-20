@@ -71,6 +71,10 @@
 export default {
   name: "SelectBox",
   props: {
+    disable: {
+      type: Boolean,
+      default: false
+    },
     value: {
       type: [Number, String],
       default: null
@@ -170,6 +174,7 @@ export default {
      * CreatedBy: NTDUNG (08/12/2021)
      */
     toggleSelectBox() {
+      if (!this.disable)
       this.selectBoxState = !this.selectBoxState;
     },
     /**

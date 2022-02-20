@@ -74,14 +74,14 @@
           </div>
           <!-- Thông tin -->
           <div class="product-item__action">
-            <!-- Like -->
+            <!-- _Like -->
             <span class="product-item__like">
               <i
-                v-if="product.Like"
+                v-if="product._Like"
                 class="product-item__liked fas fa-heart"
               ></i>
               <i
-                v-if="!product.Like"
+                v-if="!product._Like"
                 class="product-item__unliked far fa-heart"
               ></i>
             </span>

@@ -41,11 +41,12 @@ namespace EddieShop.Controller.API
             services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
             {
                 // Access cors gọi api bình thường
-                builder.WithOrigins("https://eddieshop.netlify.app")
+                builder.WithOrigins("https://eddieshop.netlify.app", "http://localhost:8080")
                        .AllowAnyMethod()
                        .AllowAnyHeader()
                        .AllowCredentials()
-                       .SetIsOriginAllowed((host) => true);
+                       .SetIsOriginAllowedToAllowWildcardSubdomains();
+                       //.SetIsOriginAllowed((host) => true);
 
                 // Access cors kết nối client 
             }));
@@ -70,11 +71,15 @@ namespace EddieShop.Controller.API
             services.AddScoped<ISignalRHub, SignalRHub>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
+            services.AddScoped<IUploadRepository, UploadRepository>();
             // Service DI
             services.AddScoped(typeof(IBaseService<>), typeof(BaseService<>));
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IUploadService, UploadService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

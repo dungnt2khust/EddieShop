@@ -1,4 +1,5 @@
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\EddieShop.Controller.API.exe
+F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\web.config
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\appsettings.Development.json
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\appsettings.json
 F:\HUST\20211\Tài liệu 20211\7. Project III - Thầy Trần Hải Anh\EddieShop\2. SourceCode\2. EddieShop.BackEnd\EddieShop.Controller.API\obj\Release\netcoreapp3.0\PubTmp\Out\EddieShop.Controller.API.dll

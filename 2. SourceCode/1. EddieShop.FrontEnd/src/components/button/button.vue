@@ -61,7 +61,7 @@ export default {
       default: null
     },
     type: {
-      type: String,
+      type: [String, Number],
       default: 'button'
     },
     id: {

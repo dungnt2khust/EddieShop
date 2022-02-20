@@ -1,6 +1,6 @@
 <template lang="">
   <div class="login">
-    <FullScreen class="fx-center">
+    <FullScreen class="fx-center" image="https://wallpaperaccess.com/full/2421171.jpg">
       <BaseContentFrame
         :title="$t('i18nMenu.Authen.Login')"
         :autoScroll="false"

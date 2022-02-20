@@ -13,7 +13,8 @@ export default {
             this.products = res.data.Data.Records;
             this.products = this.products.map(product => {
               if (product.Image) {
-                var src = "data:image/gif;base64," + product.Image;
+                // var src = "data:image/gif;base64," + product.Image;
+                var src = product.Image + "";
                 product.Image = {
                   src: src,
                   width: width,

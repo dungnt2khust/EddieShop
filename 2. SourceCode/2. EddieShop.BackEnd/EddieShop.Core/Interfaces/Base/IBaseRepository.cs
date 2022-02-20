@@ -124,7 +124,7 @@ namespace EddieShop.Core.Interfaces.Base
         /// <returns></returns>
         /// CreatedBy: NTDUNG(27/10/2021)
         /// ModifiedBy: NTDUNG (10/12/2021)
-        Object GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID);
+        Object GetFilterPaging(string filterString, int pageNumber, int pageSize, FilterData filterData, Guid? sessionID, string storeCustom);
 
         /// <summary>
         /// Cập nhật theo tên cột

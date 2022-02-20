@@ -29,11 +29,11 @@ namespace EddieShop.Core.Entities
         /// <summary>
         /// Đánh giá
         /// </summary>
-        public int Rate { get; set; }
+        public int Star { get; set; }
 
         /// <summary>
         /// Yêu thích
         /// </summary>
-        public int Like { get; set; }
+        public int _Like { get; set; }
     }
 }

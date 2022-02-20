@@ -18,7 +18,7 @@
                   <ed-button
                     label="Send"
                     @click.native="sendNotify"
-                    :type="1"
+                    :styleBtn="1"
                   />
                 </ed-row>
               </div>
@@ -65,6 +65,7 @@ export default {
           return user.checked == true;
         })
         .map(user => user.UserID);
+        console.log(userReceiveIDs)
 
       if (userReceiveIDs.length)
         this.$SignalR

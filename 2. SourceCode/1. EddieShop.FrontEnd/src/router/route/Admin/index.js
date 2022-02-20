@@ -46,14 +46,14 @@ var routes = [
       permission: [AccountType.ADMIN]
     }
   },
-  {
-    path: "/admin/cart",
-    name: "AdminCart",
-    component: () => import("@/views/Admin/Cart/Cart.vue"),
-    meta: {
-      Title: "i18nMenu.Admin.Cart",
-      permission: [AccountType.ADMIN]
-    }
-  } 
+  // {
+  //   path: "/admin/cart",
+  //   name: "AdminCart",
+  //   component: () => import("@/views/Admin/Cart/Cart.vue"),
+  //   meta: {
+  //     Title: "i18nMenu.Admin.Cart",
+  //     permission: [AccountType.ADMIN]
+  //   }
+  // } 
 ]
 export default routes

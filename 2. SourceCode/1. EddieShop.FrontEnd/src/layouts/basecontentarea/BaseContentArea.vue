@@ -1,9 +1,9 @@
 <template lang="">
   <div
-    class="base-content-area default-scrollbar"
+    class="base-content-area"
     :style="customizeStyle(styleWrapperCustom)"
   >
-    <div class="fx-col w-full h-full " :style="customizeStyle(styleCustom)">
+    <div class="fx-col w-full h-full default-scrollbar" :style="customizeStyle(styleCustom)">
       <div v-if="title" class="area-header">
         <div v-if="$store.PreviousRoute" @click="goToPreviousRoute" class="area-header__back fx-row aln-i-center m-r-10 cur-p">
           <div class="mi-back"></div>

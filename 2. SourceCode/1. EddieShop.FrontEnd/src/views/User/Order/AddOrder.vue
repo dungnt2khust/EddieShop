@@ -81,6 +81,8 @@ export default {
   },
   data() {
     return {
+      totalPrice: 0,
+      quantity: 0,
       description: "",
       listHeader: [
         {
@@ -187,7 +189,11 @@ export default {
             var order = {
               UserID: this._getLocalStorageNotParse("AccountID"),
               Description: this.description,
-              Carts: this.products
+              Status: 0,
+              Carts: this.products,
+              CreatedBy: this._getLocalStorage("AccountData").DisplayName,
+              Quantity: this.quantity,
+              TotalPrice: this.totalPrice
             }
             OrderAPI.add(order)
               .then(res => {
@@ -201,6 +207,22 @@ export default {
               });
           }
         });
+    }
+  },
+  watch: {
+    products: {
+      handler(val) {
+        this.totalPrice = 0;
+        this.quantity = 0;
+        val.forEach(row => {
+          if (row.CartQuantity)
+            this.quantity += row.CartQuantity
+          if (row.CartTotalPrice)
+            this.totalPrice = row.CartTotalPrice;
+        })
+      },
+      immediate: true,
+      deep: true
     }
   }
 };
