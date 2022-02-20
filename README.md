@@ -15,4 +15,7 @@ Bắt đầu thi công: 27/10/2021
 ### 2.3. Frontent  
 * Cài đặt môi trường nodejs cho máy của bạn (Lưu ý chọn những phiên bản phù hợp để chạy được phiên bản node-sass trong chương trình - Khuyến cáo version 12.13.0)   
 * Cài packages cho chương trình (vào đúng thư mục cùng cấp với tệp package.json trong thư mục Frontent):  npm install
-* Chạy project front-end: npm start || npm run dev || v.v (Tuỳ vào cài đặt npm)
+* Chạy project front-end: npm start || npm run dev || v.v (Tuỳ vào cài đặt npm)  
+# 3. Một số tài khoản của ứng dụng:  
+### Admin: admin001 Pass: 12345678@Admin  
+### User: username0001 Pass: 12345678@User 
