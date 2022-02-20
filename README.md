@@ -17,5 +17,6 @@ Bắt đầu thi công: 27/10/2021
 * Cài packages cho chương trình (vào đúng thư mục cùng cấp với tệp package.json trong thư mục Frontent):  npm install
 * Chạy project front-end: npm start || npm run dev || v.v (Tuỳ vào cài đặt npm)  
 # 3. Một số tài khoản của ứng dụng:  
-### Admin: admin001 Pass: 12345678@Admin  
-### User: username0001 Pass: 12345678@User 
+#### Admin: admin001 Pass: 12345678@Admin  
+#### User: username0001 Pass: 12345678@User  
+#### User: username0002 Pass: 12345678@User 
